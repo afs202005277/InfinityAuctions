@@ -1,19 +1,23 @@
 CREATE TYPE notification_type AS ENUM ('Outbid', 'New Auction', 'Report', 'Wishlist Targeted', 'Auction Ending', 'New Bid', 'Auction Ended', 'Auction Won', 'Auction Canceled');
 CREATE TYPE state AS ENUM ('Cancelled', 'Running', 'To be started', 'Ended');
 CREATE TYPE penalty AS ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life');
+CREATE TYPE gender AS ENUM ('M', 'F', 'NB', 'O');
 
 CREATE TABLE IF NOT EXISTS general_user (
 	id SERIAL PRIMARY KEY,
 	name varchar(30) NOT NULL,
+    TYPE gender NOT NULL,
 	cellphone char(9) UNIQUE,
 	email varchar(320) UNIQUE,
+    birth_date date NOT NULL,
 	address varchar(255) UNIQUE,
 	password VARCHAR NOT NULL,
 	rate REAL,
 	credits REAL,
 	wishlist TEXT [],
 	is_admin BOOLEAN NOT NULL,
-	CONSTRAINT valid_rate CHECK (rate >= 0 AND rate <= 5)
+	CONSTRAINT valid_rate CHECK (rate >= 0 AND rate <= 5),
+    CONSTRAINT valid_birth CHECK (birth_date between '1900-01-01' and sysdate - interval '18 years')
 );
 
 CREATE TABLE IF NOT EXISTS auction (
@@ -57,12 +61,12 @@ CREATE TABLE IF NOT EXISTS notification (
 	report_id INTEGER REFERENCES report
 );
 
-CREATE TABLE IF NOT EXISTS category(
+CREATE TABLE IF NOT EXISTS category (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS auction_category(
+CREATE TABLE IF NOT EXISTS auction_category (
 	category_id INTEGER REFERENCES category,
 	auction_id INTEGER REFERENCES auction,
 	PRIMARY KEY (category_id, auction_id)
