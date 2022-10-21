@@ -1,3 +1,20 @@
+DROP TABLE IF EXISTS auction_category;
+DROP TABLE IF EXISTS bid;
+DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS following;
+DROP TABLE IF EXISTS notification;
+DROP TABLE IF EXISTS report_reasons;
+DROP TABLE IF EXISTS report;
+DROP TABLE IF EXISTS report_option;
+DROP TABLE IF EXISTS auction;
+DROP TABLE IF EXISTS general_user;
+
+DROP TYPE IF EXISTS notification_type;
+DROP TYPE IF EXISTS penalty;
+DROP TYPE IF EXISTS state;
+DROP TYPE IF EXISTS gender;
+
+
 CREATE TYPE notification_type AS ENUM ('Outbid', 'New Auction', 'Report', 'Wishlist Targeted', 'Auction Ending', 'New Bid', 'Auction Ended', 'Auction Won', 'Auction Canceled');
 CREATE TYPE state AS ENUM ('Cancelled', 'Running', 'To be started', 'Ended');
 CREATE TYPE penalty AS ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life');
