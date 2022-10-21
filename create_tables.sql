@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS general_user (
 	wishlist TEXT [],
 	is_admin BOOLEAN NOT NULL,
 	CONSTRAINT valid_rate CHECK (rate >= 0 AND rate <= 5),
-    CONSTRAINT valid_birth CHECK (birth_date between '1900-01-01' and sysdate - interval '18 years')
+    CONSTRAINT valid_birth CHECK (birth_date between '1900-01-01' and now() - interval '18 years')
 );
 
 CREATE TABLE IF NOT EXISTS auction (
