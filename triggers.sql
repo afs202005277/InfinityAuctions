@@ -11,8 +11,6 @@ END $BODY$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS bid_owner ON bid;
 CREATE TRIGGER bid_owner BEFORE
 INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE bid_owner();
-
-
 -- Trigger02
 CREATE OR REPLACE FUNCTION bid_admin() RETURNS TRIGGER AS $BODY$ BEGIN IF EXISTS (
                 SELECT *
@@ -26,8 +24,6 @@ END $BODY$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS bid_admin ON bid;
 CREATE TRIGGER bid_admin BEFORE
 INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE bid_admin();
-
-
 -- Trigger03
 CREATE OR REPLACE FUNCTION bid_date() RETURNS TRIGGER AS $BODY$ BEGIN IF EXISTS (
                 SELECT *
@@ -44,9 +40,7 @@ END $BODY$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS bid_date ON bid;
 CREATE TRIGGER bid_date BEFORE
 INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE bid_date();
-
-
--- Trigger04
+-- Trigger04 / 05
 CREATE OR REPLACE FUNCTION stop_delete_users() RETURNS TRIGGER AS $BODY$ BEGIN IF EXISTS (
                 SELECT *
                 FROM auction,
@@ -76,8 +70,7 @@ RETURN NULL;
 END $BODY$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS delete_users ON general_user;
 CREATE TRIGGER delete_users BEFORE DELETE ON general_user EXECUTE PROCEDURE stop_delete_users();
-
--- Trigger05
+-- Trigger06
 CREATE OR REPLACE FUNCTION check_max_bid() RETURNS TRIGGER AS $BODY$ BEGIN IF EXISTS (
                 SELECT *
                 FROM bid
@@ -90,12 +83,11 @@ END $BODY$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS bid_lower_than_max ON bid;
 CREATE TRIGGER bid_lower_than_max BEFORE
 INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE check_max_bid();
-
--- Trigger06
+-- Trigger07
 CREATE OR REPLACE FUNCTION check_bid_user_exists() RETURNS TRIGGER AS $BODY$ BEGIN IF NOT EXISTS (
                 SELECT *
                 FROM general_user
-                WHERE id == NEW.id
+                WHERE id == NEW.id AND email IS NOT NULL
         ) THEN RAISE EXCEPTION 'User not found.';
 END IF;
 RETURN NEW;
