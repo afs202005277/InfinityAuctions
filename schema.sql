@@ -23,7 +23,7 @@ CREATE TYPE gender AS ENUM ('M', 'F', 'NB', 'O');
 CREATE TABLE IF NOT EXISTS general_user (
 	id SERIAL PRIMARY KEY,
 	name varchar(30) NOT NULL,
-    TYPE gender NOT NULL,
+    TYPE gender,
 	cellphone char(9) UNIQUE,
 	email varchar(320) UNIQUE,
     birth_date date NOT NULL,
