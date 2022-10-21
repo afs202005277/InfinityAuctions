@@ -12,3 +12,4 @@ DROP TABLE IF EXISTS general_user;
 DROP TYPE notification_type;
 DROP TYPE penalty;
 DROP TYPE state;
+DROP TYPE gender;
