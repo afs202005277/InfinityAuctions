@@ -112,15 +112,41 @@
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
 
-| **Index**           | IDX01                                  |
-| ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
-| `SQL code`                                                  ||
+<table>
+<tr> <td>  <b> Index </b>  </td> <td> IDX01 </td> </tr>
+<tr> <td>  <b> Index relation </b>  </td> <td> notifications </td> </tr>
+<tr> <td> <b> Index attribute </b> </td> <td> user_id </td> </tr>
+<tr> <td> <b> Index type </b> </td> <td> Hash </td> </tr>
+<tr> <td> <b> Cardinality </b> </td> <td> Medium </td> </tr>
+<tr> <td> <b> Clustering </b> </td> <td> No </td> </tr>
+<tr> <td> <b> Justification </b> </td> <td> Table 'notification' is very large, and it will be frequently queried to gather all the tuples associated with a certain user_id, therefore it is a good candidate to a hash type index, since the table will be queried using the equal operator (exact match). We also thought about applying clustering to this table, but since clustering is a one time operation and this table grows quickly, it wouldn't have much impact. </td> </tr>
+<tr> <td colspan="2"> <b> SQL code </b> </td> </tr>
+<tr> <td colspan="2">
 
+```sql
+CREATE INDEX IF NOT EXISTS notification_user_id ON notification USING hash(user_id);
+```
+
+</td> </tr>
+</table>
+
+<table>
+<tr> <td>  <b> Index </b>  </td> <td> IDX02 </td> </tr>
+<tr> <td>  <b> Index relation </b>  </td> <td> bid </td> </tr>
+<tr> <td> <b> Index attributes </b> </td> <td> auction_id, amount </td> </tr>
+<tr> <td> <b> Index type </b> </td> <td> B-tree </td> </tr>
+<tr> <td> <b> Cardinality </b> </td> <td> Medium </td> </tr>
+<tr> <td> <b> Clustering </b> </td> <td> No </td> </tr>
+<tr> <td> <b> Justification </b> </td> <td> We expect the 'bid' table to be very large, therefore we think it is a good idea to apply an index on it. The most frequent queries will be to find out all the bids related to a certain auction (using the auction_id attribute) and to find the largest bid of that set (find the tuple with the highest value in the 'amount' collumn, within a certain set of bids of an auction). For these reasons, we chose to use a B-tree index, since it will allow us to find the highest bid faster, while having a good time efficiency in finding the tuples with a given auction_id (logarithmic time). </td> </tr>
+<tr> <td colspan="2"> <b> SQL code </b> </td> </tr>
+<tr> <td colspan="2">
+
+```sql
+CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE(auction_id, amount);
+```
+
+</td> </tr>
+</table>
 
 ### 3. Triggers
  

@@ -22,12 +22,12 @@ CREATE TYPE gender AS ENUM ('M', 'F', 'NB', 'O');
 
 CREATE TABLE IF NOT EXISTS general_user (
 	id SERIAL PRIMARY KEY,
-	name varchar(30) NOT NULL,
+	name VARCHAR(30) NOT NULL,
     TYPE gender,
-	cellphone char(9) UNIQUE,
-	email varchar(320) UNIQUE,
-    birth_date date NOT NULL,
-	address varchar(255) UNIQUE,
+	cellphone CHAR(9) UNIQUE,
+	email VARCHAR(320) UNIQUE,
+    birth_date DATE NOT NULL,
+	address VARCHAR(255) UNIQUE,
 	password VARCHAR NOT NULL,
 	rate REAL,
 	credits REAL,
