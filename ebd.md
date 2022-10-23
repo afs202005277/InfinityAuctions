@@ -1,28 +1,32 @@
 # EBD: Database Specification Component
 
-> Project vision.
+> Bidding the future and Selling the past.
 
 ## A4: Conceptual Data Model
 
-> Brief presentation of the artefact goals.
+> The Conceptual Data Model contains the identification and description of the entities and relationships that are relevant to the database specification.
+
+> A UML class diagram is used to document the model.
 
 ### 1. Class diagram
 
 > UML class diagram containing the classes, associations, multiplicity and roles.  
 > For each class, the attributes, associations and constraints are included in the class diagram.
 
+# INSERT IMAGE
+
 ### 2. Additional Business Rules
  
 > Business rules can be included in the UML diagram as UML notes or in a table in this section.
 
+# INSERT BUSINESS RULES
 
 ---
 
 
 ## A5: Relational Schema, validation and schema refinement
 
-> Brief presentation of the artefact goals.
-
+> This artifact contains the Relational Schema obtained by mapping from the Conceptual Data Model. 
 ### 1. Relational Schema
 
 > The Relational Schema includes the relation schemas, attributes, domains, primary keys, foreign keys and other integrity rules: UNIQUE, DEFAULT, NOT NULL, CHECK.  
@@ -30,10 +34,17 @@
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01                | Table1(__id__, attribute NN)                     |
-| R02                | Table2(__id__, attribute → Table1 NN)            |
-| R03                | Table3(__id1__, id2 → Table2, attribute UK NN)   |
-| R04                | Table4((__id1__, __id2__) → Table3, id3, attribute CK attribute > 0) |
+| R01 | general_user( id, name NN, tel UK, birth_date NN email UK NN, address, gender CK type IN  Gender, password NN, rate CK rate > 0 AND rate < 5 , credits , wishlist, admin NN ) |
+| R02 | bid( id, date DF NN  Today, value NN, user_id -> User NN) |
+| R03 | notification (id, date DF Today, type NN CK type IN  Notification_type, user_id -> User NN) |
+| R04 | auction ( id, name NN, description NN, base_price NN, start_date DF NN Today, end_date NN CK start_date < end_date, buy_now, state NN, auction_owner_id -> User NN ) |
+| R05 | category (  id, name NN UK) |
+| R06 | auction_category ( id_category -> category, id_auction -> auction) |
+| R07 | following ( id_user-> User, id_auction-> Auction ) |
+| R08 | report (id, date DF Today NN, reason, penalty, reported_user -> User, reporter -> User NN, auction_reported -> Auction ) |
+| R09 | report_option ( id, name NN UK) |
+| R10 | report_reasons ( id_report_option -> report_option, id_report -> report )
+
 
 ### 2. Domains
 
@@ -41,27 +52,76 @@
 
 | Domain Name | Domain Specification           |
 | ----------- | ------------------------------ |
-| Today	      | DATE DEFAULT CURRENT_DATE      |
-| Priority    | ENUM ('High', 'Medium', 'Low') |
+| Today | DATE DEFAULT CURRENT_DATE  |
+| Notification_type | ENUM ('Outbid', 'New Auction', 'Report', 'Wishlist Targeted', ‘Auction Ending’, ‘New Bid’, ‘Auction Ended’, ‘Auction Won’, ‘Auction Canceled’ ) |
+| Gender | ENUM (‘M’, ‘F’, ‘NB’, ‘O’) |
 
 ### 3. Schema validation
 
 > To validate the Relational Schema obtained from the Conceptual Model, all functional dependencies are identified and the normalization of all relation schemas is accomplished. Should it be necessary, in case the scheme is not in the Boyce–Codd Normal Form (BCNF), the relational schema is refined using normalization.  
 
-| **TABLE R01**   | User               |
-| --------------  | ---                |
-| **Keys**        | { id }, { email }  |
-| **Functional Dependencies:** |       |
-| FD0101          | id → {email, name} |
-| FD0102          | email → {id, name} |
-| ...             | ...                |
-| **NORMAL FORM** | BCNF               |
+| Table R01 (user)| 
+| Keys: {id, tel, email} |
+| Functional Dependencies |
+| FD0101 | {id} -> { name, tel, email, address, password, rate, credits , wishlist, admin } |
+| FD0102 | {tel} -> { id, name, email, address, password, rate, credits , wishlist, admin } |
+| FD0103 | {email} -> { id, name, tel, address, password, rate, credits , wishlist, admin } |
+| Normal Form | BCNF |
+ 
+| Table R02 (bid)| 
+| Keys: {id } |
+| Functional Dependencies |
+| FD0201 | {id} -> {  date, value, id -> User } |
+| Normal Form | BCNF |
+ 
+| Table R03 (notification)| 
+| Keys: {id} |
+| Functional Dependencies |
+| FD0301 | {id} -> { date, type, id -> User} |
+| Normal Form | BCNF |
+ 
+| Table R04 (auction)| 
+| Keys: {id} |
+| Functional Dependencies |
+| FD0401 | {id} -> { name , description, base_price, start_date, end_date, buy_now, state, id -> User } |
+| Normal Form | BCNF |
+ 
+| Table R05 (category)| 
+| Keys: {id} |
+| Functional Dependencies |
+| FD0501 | {id} -> { name } |
+| Normal Form | BCNF |
+ 
+| Table R06 (auction_category)| 
+| Keys: {id_category, id_auction} |
+| Functional Dependencies |
+| FD0601 | none |
+| Normal Form | BCNF |
+ 
+| Table R07 (following)| 
+| Keys: {id_user,, id_auction} |
+| Functional Dependencies |
+| FD0701 | none |
+| Normal Form | BCNF |
+ 
+| Table R08 (report)| 
+| Keys: {id} |
+| Functional Dependencies |
+| FD0801 | {id} -> {date , reason, penalty} |
+| Normal Form | BCNF |
+ 
+| Table R09 (report_type)| 
+| Keys: {id} |
+| Functional Dependencies |
+| FD0901 | {id} -> {name} |
+| Normal Form | BCNF |
+ 
+| Table R10 (type_of_report)| 
+| Keys: {id_report_type, id_report} |
+| Functional Dependencies |
+| FD01001 | none |
+| Normal Form | BCNF |
 
-> If necessary, description of the changes necessary to convert the schema to BCNF.  
-> Justification of the BCNF.  
-
-
----
 
 
 ## A6: Indexes, triggers, transactions and database population
