@@ -34,16 +34,16 @@
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01 | general_user( id, name NN, tel UK, birth_date NN email UK NN, address, gender CK type IN  Gender, password NN, rate CK rate > 0 AND rate < 5 , credits , wishlist, admin NN ) |
-| R02 | bid( id, date DF NN  Today, value NN, user_id -> User NN) |
-| R03 | notification (id, date DF Today, type NN CK type IN  Notification_type, user_id -> User NN) |
-| R04 | auction ( id, name NN, description NN, base_price NN, start_date DF NN Today, end_date NN CK start_date < end_date, buy_now, state NN, auction_owner_id -> User NN ) |
-| R05 | category (  id, name NN UK) |
-| R06 | auction_category ( id_category -> category, id_auction -> auction) |
-| R07 | following ( id_user-> User, id_auction-> Auction ) |
-| R08 | report (id, date DF Today NN, reason, penalty, reported_user -> User, reporter -> User NN, auction_reported -> Auction ) |
-| R09 | report_option ( id, name NN UK) |
-| R10 | report_reasons ( id_report_option -> report_option, id_report -> report )
+| R01 | general_user( **id**, name NN, tel UK, birth_date NN, email UK, address UK, gender CK gender IN Gender, password NN, rate CK rate >= 0 AND rate <= 5, credits, wishlist, is_admin NN ) |
+| R02 | bid( **id**, date DF NN Today CK birth_date between '1900-01-01' and now() - interval '18 years', amount NN, user_id -> general_user NN, auction_id -> auction NN) |
+| R03 | notification (**id**, date DF Today, type NN CK type IN Notification_type, user_id -> general_user NN, auction_id -> auction, report_id -> report) |
+| R04 | auction (**id**, name NN, description NN, base_price NN, start_date DF NN Today, end_date NN CK start_date < end_date, buy_now, state NN, auction_owner_id -> general_user NN ) |
+| R05 | category ( **id**, name NN UK) |
+| R06 | auction_category ( **id_category** -> category, **id_auction** -> auction) |
+| R07 | following ( **user_id** -> general_user, **auction_id**-> auction ) |
+| R08 | report (**id**, date DF Today NN, penalty CK penalty IN Penalty, reported_user -> general_user, reporter -> general_user NN CK reported_user != reporter, auction_reported -> auction, admin_id -> general_user) |
+| R09 | report_option ( **id**, name NN UK) |
+| R10 | report_reasons ( **id_report_option** -> report_option, **id_report** -> report) |
 
 
 ### 2. Domains
@@ -54,20 +54,23 @@
 | ----------- | ------------------------------ |
 | Today | DATE DEFAULT CURRENT_DATE  |
 | Notification_type | ENUM ('Outbid', 'New Auction', 'Report', 'Wishlist Targeted', ‘Auction Ending’, ‘New Bid’, ‘Auction Ended’, ‘Auction Won’, ‘Auction Canceled’ ) |
+| State | ENUM ('Cancelled', 'Running', 'To be started', 'Ended') |
+| Penalty | ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life') |
 | Gender | ENUM (‘M’, ‘F’, ‘NB’, ‘O’) |
 
 ### 3. Schema validation
 
 > To validate the Relational Schema obtained from the Conceptual Model, all functional dependencies are identified and the normalization of all relation schemas is accomplished. Should it be necessary, in case the scheme is not in the Boyce–Codd Normal Form (BCNF), the relational schema is refined using normalization.  
 
-| Table R01 (user)| 
-| Keys: {id, tel, email} |
-| Functional Dependencies |
+| Table R01 (user)| |
+| Keys: {id, tel, email} | |
+| Functional Dependencies | |
 | FD0101 | {id} -> { name, tel, email, address, password, rate, credits , wishlist, admin } |
 | FD0102 | {tel} -> { id, name, email, address, password, rate, credits , wishlist, admin } |
 | FD0103 | {email} -> { id, name, tel, address, password, rate, credits , wishlist, admin } |
 | Normal Form | BCNF |
  
+
 | Table R02 (bid)| 
 | Keys: {id } |
 | Functional Dependencies |
@@ -156,22 +159,6 @@
 #### 2.1. Performance Indices
  
 > Indices proposed to improve performance of the identified queries.
-
-| **Index**           | IDX01                                  |
-| ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
-| **Cardinality**     | Attribute cardinality: low/medium/high |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
-| `SQL code`                                                  ||
-
-
-#### 2.2. Full-text Search Indices 
-
-> The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
-
 <table>
 <tr> <td>  <b> Index </b>  </td> <td> IDX01 </td> </tr>
 <tr> <td>  <b> Index relation </b>  </td> <td> notifications </td> </tr>
@@ -206,7 +193,14 @@ CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE(auction_id, 
 ```
 
 </td> </tr>
-</table>
+</table>                                                ||
+
+
+#### 2.2. Full-text Search Indices 
+
+> The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
+
+
 
 ### 3. Triggers
  
@@ -274,7 +268,6 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE bid_admin();
 ```
 
 </td>
-<tr>
 </tr>
 </table>
 
@@ -310,7 +303,6 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE bid_date();
 ```
 
 </td>
-<tr>
 </tr>
 </table>
 
@@ -361,7 +353,6 @@ CREATE TRIGGER delete_users BEFORE DELETE ON general_user EXECUTE PROCEDURE stop
 ```
 
 </td>
-<tr>
 </tr>
 </table>
 
@@ -394,7 +385,6 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE check_max_bid();
 ```
 
 </td>
-<tr>
 </tr>
 </table>
 
@@ -426,7 +416,6 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE check_bid_user_exists();
 ```
 
 </td>
-<tr>
 </tr>
 </table>
 
