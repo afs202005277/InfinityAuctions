@@ -193,6 +193,24 @@ CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE(auction_id, 
 ```
 
 </td> </tr>
+</table>
+
+<table>
+<tr> <td>  <b> Index </b>  </td> <td> IDX03 </td> </tr>
+<tr> <td>  <b> Index relation </b>  </td> <td> general_user </td> </tr>
+<tr> <td> <b> Index attributes </b> </td> <td> wishlist </td> </tr>
+<tr> <td> <b> Index type </b> </td> <td> GIN </td> </tr>
+<tr> <td> <b> Cardinality </b> </td> <td> Medium </td> </tr>
+<tr> <td> <b> Clustering </b> </td> <td> No </td> </tr>
+<tr> <td> <b> Justification </b> </td> <td> Table 'general_user' will be regularly queried, especially on functionalities related to the user's wishlist. The 'wishlist' attribute is an array of strings, hence why we use a GIN type index, to efficiently handle queries that test for the presence of a specific string in the array. </td> </tr>
+<tr> <td colspan="2"> <b> SQL code </b> </td> </tr>
+<tr> <td colspan="2">
+
+```sql
+CREATE INDEX IF NOT EXISTS user_wishlist ON general_user USING GIN(wishlist);
+```
+
+</td> </tr>
 </table>                                                ||
 
 
