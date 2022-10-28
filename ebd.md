@@ -198,36 +198,125 @@
 </tbody>
 </table>
  
-| Table R06 (auction_category)| 
-| Keys: {id_category, id_auction} |
-| Functional Dependencies |
-| FD0601 | none |
-| Normal Form | BCNF |
- 
-| Table R07 (following)| 
-| Keys: {id_user,, id_auction} |
-| Functional Dependencies |
-| FD0701 | none |
-| Normal Form | BCNF |
- 
-| Table R08 (report)| 
-| Keys: {id} |
-| Functional Dependencies |
-| FD0801 | {id} -> {date , reason, penalty} |
-| Normal Form | BCNF |
- 
-| Table R09 (report_type)| 
-| Keys: {id} |
-| Functional Dependencies |
-| FD0901 | {id} -> {name} |
-| Normal Form | BCNF |
- 
-| Table R10 (type_of_report)| 
-| Keys: {id_report_type, id_report} |
-| Functional Dependencies |
-| FD01001 | none |
-| Normal Form | BCNF |
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R06 </strong>(auction_category)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id_category, id_auction}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0601</td>
+    <td colspan="2"> none </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
 
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R07 </strong>(following)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id_user, id_auction}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0701</td>
+    <td colspan="2"> none </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R08 </strong>(report)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0801</td>
+    <td colspan="2"> {id} -> {date , reason, penalty} </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R09 </strong>(report_type)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0901</td>
+    <td colspan="2"> {id} -> {name} </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R10 </strong>(type_of_report)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id_report_type, id_report} </td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD1001</td>
+    <td colspan="2"> none </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
 
 
 ## A6: Indexes, triggers, transactions and database population
