@@ -45,6 +45,13 @@
 | R09 | report_option ( **id**, name NN UK) |
 | R10 | report_reasons ( **id_report_option** -> report_option, **id_report** -> report) |
 
+ 
+**Justification for Generalizations**
+ | Generalization | Justification           |
+| ----------- | --------------------------------------------- |
+| **User / Admin / General User** | Decided to generalize it using null fields in certain columns because the difference between a User and an Admin is nothing more than a bool field. |
+| **Reports / Auction Reports / User Reports** | Once again Auction reports share the vast majority of their attributes and therefore it makes more sense to simply use nulls to express the difference between both.|
+
 
 ### 2. Domains
 
@@ -62,38 +69,134 @@
 
 > To validate the Relational Schema obtained from the Conceptual Model, all functional dependencies are identified and the normalization of all relation schemas is accomplished. Should it be necessary, in case the scheme is not in the Boyce–Codd Normal Form (BCNF), the relational schema is refined using normalization.  
 
-| Table R01 (user)| |
-| Keys: {id, tel, email} | |
-| Functional Dependencies | |
-| FD0101 | {id} -> { name, tel, email, address, password, rate, credits , wishlist, admin } |
-| FD0102 | {tel} -> { id, name, email, address, password, rate, credits , wishlist, admin } |
-| FD0103 | {email} -> { id, name, tel, address, password, rate, credits , wishlist, admin } |
-| Normal Form | BCNF |
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R01 </strong>(user)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id, tel, email}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0101</td>
+    <td colspan="2"> {id} -> { name, tel, email, address,gender, password, rate, credits , wishlist, admin } </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0102</td>
+    <td colspan="2">{tel} -> { id, name, email, address, gender password, rate, credits , wishlist, admin }</td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0103</td>
+    <td colspan="2">{email} -> { id, name, tel, address,gender, password, rate, credits , wishlist, admin }</td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
  
 
-| Table R02 (bid)| 
-| Keys: {id } |
-| Functional Dependencies |
-| FD0201 | {id} -> {  date, value, id -> User } |
-| Normal Form | BCNF |
- 
-| Table R03 (notification)| 
-| Keys: {id} |
-| Functional Dependencies |
-| FD0301 | {id} -> { date, type, id -> User} |
-| Normal Form | BCNF |
- 
-| Table R04 (auction)| 
-| Keys: {id} |
-| Functional Dependencies |
-| FD0401 | {id} -> { name , description, base_price, start_date, end_date, buy_now, state, id -> User } |
-| Normal Form | BCNF |
- 
-| Table R05 (category)| 
-| Keys: {id} |
-| Functional Dependencies |
-| FD0501 | {id} -> { name } |
-| Normal Form | BCNF |
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R02 </strong>(bid)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0201</td>
+    <td colspan="2"> {id} -> id} -> {  date, value, id -> User } </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R03 </strong>(notification)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0301</td>
+    <td colspan="2"> {id} -> { date, type, id -> User} </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R04 </strong>(auction)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0401</td>
+    <td colspan="2"> {id} -> { name , description, base_price, start_date, end_date, buy_now, state, id -> User } </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+  <tr>
+    <td colspan="4"> <strong> Table R05 </strong>(category)</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td colspan="4"> <strong> Keys: </strong>{id}</td>
+  </tr>
+  <tr>
+    <td colspan="4"> <strong> Functional Dependencies </strong> </td>
+  </tr>
+  <tr>
+    <td colspan="2">FD0501</td>
+    <td colspan="2"> {id} -> { name } </td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong> Normal Form </strong> </td>
+    <td colspan="2">BCNF</td>
+  </tr>
+</tbody>
+</table>
  
 | Table R06 (auction_category)| 
 | Keys: {id_category, id_auction} |
