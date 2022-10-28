@@ -1,3 +1,5 @@
+SET search_path TO lbaw2271;
+
 DROP TABLE IF EXISTS auction_category;
 DROP TABLE IF EXISTS bid;
 DROP TABLE IF EXISTS category;
