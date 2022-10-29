@@ -53,11 +53,11 @@
 | R10                | report_reason        | 1 k | 1 per week |
 
 
-### 2. Proposed Indices
+### 2. Proposed Indexes
 
-#### 2.1. Performance Indices
+#### 2.1. Performance Indexes
  
-> Indices proposed to improve performance of the identified queries.
+> Indexes proposed to improve performance of the identified queries.
 <table>
 <tr> <td>  <b> Index </b>  </td> <td> IDX01 </td> </tr>
 <tr> <td>  <b> Index relation </b>  </td> <td> notifications </td> </tr>
@@ -113,15 +113,64 @@ CREATE INDEX IF NOT EXISTS user_wishlist ON general_user USING GIN(wishlist);
 </table>
 
 
-#### 2.2. Full-text Search Indices 
+#### 2.2. Full-text Search Indexes 
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
 
+<table>
+<tr> <td>  <b> Index </b>  </td> <td> IDX11 </td> </tr>
+<tr> <td>  <b> Index relation </b>  </td> <td> auction </td> </tr>
+<tr> <td> <b> Index attributes </b> </td> <td> auction_tokens </td> </tr>
+<tr> <td> <b> Index type </b> </td> <td> GIN </td> </tr>
+<tr> <td> <b> Cardinality </b> </td> <td> Medium </td> </tr>
+<tr> <td> <b> Clustering </b> </td> <td> No </td> </tr>
+<tr> <td> <b> Justification </b> </td> <td> TO DO </td> </tr>
+<tr> <td colspan="2"> <b> SQL code </b> </td> </tr>
+<tr> <td colspan="2">
 
+```sql
+-- Add new column in auction for tsvectors
+ALTER TABLE auction
+ADD COLUMN auction_tokens TSVECTOR;
+
+-- Update tsvectors in auction table
+UPDATE auction d1  
+SET auction_tokens = (setweight(to_tsvector('english', coalesce(d1.name, '')), 'A') || setweight(to_tsvector('english', coalesce(d1.description, '')), 'B'))
+FROM auction d2;
+
+-- Function to automatically update auction_tokens
+CREATE FUNCTION auction_tokens_update() RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        NEW.auction_tokens = (setweight(to_tsvector('english', coalesce(NEW.name, '')), 'A') || setweight(to_tsvector('english', coalesce(NEW.description, '')), 'B'));
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+        IF (NEW.name <> OLD.title OR NEW.description <> OLD.description) THEN
+            NEW.auction_tokens = (setweight(to_tsvector('english', coalesce(NEW.name, '')), 'A') || setweight(to_tsvector('english', coalesce(NEW.description, '')), 'B'));
+        END IF;
+    END IF;
+    RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+-- Create trigger before insert or update on auction
+CREATE TRIGGER auction_tokens_update
+    BEFORE INSERT OR UPDATE ON auction
+    FOR EACH ROW
+    EXECUTE PROCEDURE auction_tokens_update();
+
+-- Create an index on the ts_vectors.
+CREATE INDEX idx_auctions ON auction USING GIN(auction_tokens);
+```
+
+</td> </tr>
+</table>
 
 ### 3. Triggers
  
-> User-defined functions and trigger procedures that add control structures to the SQL language or perform complex computations, are identified and described to be trusted by the database server. Every kind of function (SQL functions, Stored procedures, Trigger procedures) can take base types, composite types, or combinations of these as arguments (parameters). In addition, every kind of function can return a base type or a composite type. Functions can also be defined to return sets of base or composite values.  
+> User-defined functions and trigger procedures that add control structures to the SQL language or perform complex computations, are identified and described to be trusted by the database server. Every kind of function (SQL functions, Stored procedures, Trigger procedures) can take base types, composite types, or combinations of these as arguments (parameters). In addition, every kind of function can return a base type or a composite type. Functions can also be defined to return sets of base or composite values.
+
+> The justification behind all the triggers listed below is that they are needed in order to assure the database is consistent and its data is valid. Furthermore, they are also used to enforce some business rules (specified in the description of each trigger).
 
 <table>
 <tr>
