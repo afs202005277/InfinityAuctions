@@ -64,19 +64,19 @@
   </tr>
   <tr>
     <td colspan="2">FD0101</td>
-    <td colspan="2"> {id} -> { name, gender, cellphone, email, birth_date, address, password, rate, credits , wishlist, is_admin } </td>
+    <td colspan="2"> {id} -> {name, gender, cellphone, email, birth_date, address, password, rate, credits , wishlist, is_admin} </td>
   </tr>
   <tr>
     <td colspan="2">FD0102</td>
-    <td colspan="2">{cellphone} -> { id, name, gender, email, birth_date, address, password, rate, credits , wishlist, is_admin }</td>
+    <td colspan="2">{cellphone} -> {id, name, gender, email, birth_date, address, password, rate, credits , wishlist, is_admin}</td>
   </tr>
   <tr>
     <td colspan="2">FD0103</td>
-    <td colspan="2">{email} -> { id, name, gender, cellphone, birth_date, address, password, rate, credits , wishlist, is_admin }</td>
+    <td colspan="2">{email} -> {id, name, gender, cellphone, birth_date, address, password, rate, credits , wishlist, is_admin}</td>
   </tr>
     <tr>
     <td colspan="2">FD0104</td>
-    <td colspan="2">{address} -> { id, name, gender, cellphone, email, birth_date, password, rate, credits , wishlist, is_admin }</td>
+    <td colspan="2">{address} -> {id, name, gender, cellphone, email, birth_date, password, rate, credits , wishlist, is_admin}</td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -101,7 +101,7 @@
   </tr>
   <tr>
     <td colspan="2">FD0201</td>
-    <td colspan="2"> {id} -> { date, amount, user_id -> general_user, auction_id -> auction } </td>
+    <td colspan="2"> {id} -> {date, amount, user_id -> general_user, auction_id -> auction} </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -125,7 +125,7 @@
   </tr>
   <tr>
     <td colspan="2">FD0301</td>
-    <td colspan="2"> {id} -> { date, type, user_id -> general_user, auction_id -> auction, report_id -> report} </td>
+    <td colspan="2"> {id} -> {date, type, user_id -> general_user, auction_id -> auction, report_id -> report} </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -149,7 +149,7 @@
   </tr>
   <tr>
     <td colspan="2">FD0401</td>
-    <td colspan="2"> {id} -> {name , description, base_price, start_date, end_date, buy_now, state, auction_owner_id -> general_user} </td>
+    <td colspan="2"> {id} -> {name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id -> general_user} </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -249,7 +249,7 @@
   </tr>
   <tr>
     <td colspan="2">FD0801</td>
-    <td colspan="2"> {id} -> {date ,penalty, reported_user -> general_user, auction_reported -> auction, admin_id-> general_user} </td>
+    <td colspan="2"> {id} -> {date, penalty, reported_user -> general_user, reporter -> general_user, auction_reported -> auction, admin_id-> general_user} </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
