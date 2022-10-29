@@ -57,7 +57,7 @@
 </thead>
 <tbody>
   <tr>
-    <td colspan="4"> <strong> Keys: </strong>{id, cellphone, email}</td>
+    <td colspan="4"> <strong> Keys: </strong>{id, cellphone, email, address}</td>
   </tr>
   <tr>
     <td colspan="4"> <strong> Functional Dependencies </strong> </td>
@@ -72,7 +72,11 @@
   </tr>
   <tr>
     <td colspan="2">FD0103</td>
-    <td colspan="2">{email} -> { id, name, cellphone, address,gender, password, rate, credits , wishlist, is_admin }</td>
+    <td colspan="2">{email} -> { id, name, cellphone, address, gender, password, rate, credits , wishlist, is_admin }</td>
+  </tr>
+    <tr>
+    <td colspan="2">FD0104</td>
+    <td colspan="2">{address} -> { id, name, cellphone, email, gender, password, rate, credits, wishlist, is_admin }</td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -97,7 +101,7 @@
   </tr>
   <tr>
     <td colspan="2">FD0201</td>
-    <td colspan="2"> {id} -> id} -> {  date, value, id -> User } </td>
+    <td colspan="2"> {id} -> {  date, value, id -> User } </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -162,14 +166,18 @@
 </thead>
 <tbody>
   <tr>
-    <td colspan="4"> <strong> Keys: </strong>{id}</td>
+    <td colspan="4"> <strong> Keys: </strong>{id, name}</td>
   </tr>
   <tr>
     <td colspan="4"> <strong> Functional Dependencies </strong> </td>
   </tr>
   <tr>
     <td colspan="2">FD0501</td>
-    <td colspan="2"> {id} -> { name } </td>
+    <td colspan="2"> {id} -> {name} </td>
+  </tr>
+   <tr>
+    <td colspan="2">FD0502</td>
+    <td colspan="2"> {name} -> {id} </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -258,7 +266,7 @@
 </thead>
 <tbody>
   <tr>
-    <td colspan="4"> <strong> Keys: </strong>{id}</td>
+    <td colspan="4"> <strong> Keys: </strong>{id, name}</td>
   </tr>
   <tr>
     <td colspan="4"> <strong> Functional Dependencies </strong> </td>
@@ -266,6 +274,10 @@
   <tr>
     <td colspan="2">FD0901</td>
     <td colspan="2"> {id} -> {name} </td>
+  </tr>
+    <tr>
+    <td colspan="2">FD0902</td>
+    <td colspan="2"> {name} -> {id} </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
