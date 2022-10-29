@@ -52,12 +52,12 @@
 <table>
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R01 </strong>(user)</td>
+    <td colspan="4"> <strong> Table R01 </strong>(general_user)</td>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td colspan="4"> <strong> Keys: </strong>{id, cellphone, email, address}</td>
+    <td colspan="4"> <strong> Keys: </strong>{id}, {cellphone}, {email}, {address}</td>
   </tr>
   <tr>
     <td colspan="4"> <strong> Functional Dependencies </strong> </td>
@@ -101,7 +101,7 @@
   </tr>
   <tr>
     <td colspan="2">FD0201</td>
-    <td colspan="2"> {id} -> {  date, value, id -> User } </td>
+    <td colspan="2"> {id} -> {  date, amount, user_id -> general_user, auction_id -> auction } </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -125,7 +125,7 @@
   </tr>
   <tr>
     <td colspan="2">FD0301</td>
-    <td colspan="2"> {id} -> { date, type, id -> User} </td>
+    <td colspan="2"> {id} -> { date, type, user_id -> general_user} </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -149,7 +149,7 @@
   </tr>
   <tr>
     <td colspan="2">FD0401</td>
-    <td colspan="2"> {id} -> { name , description, base_price, start_date, end_date, buy_now, state, id -> User } </td>
+    <td colspan="2"> {id} -> { name , description, base_price, start_date, end_date, buy_now, state, id -> general_user } </td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -166,7 +166,7 @@
 </thead>
 <tbody>
   <tr>
-    <td colspan="4"> <strong> Keys: </strong>{id, name}</td>
+    <td colspan="4"> <strong> Keys: </strong>{id}, {name}</td>
   </tr>
   <tr>
     <td colspan="4"> <strong> Functional Dependencies </strong> </td>
@@ -289,12 +289,12 @@
 <table>
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R10 </strong>(type_of_report)</td>
+    <td colspan="4"> <strong> Table R10 </strong>(report_reasons)</td>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td colspan="4"> <strong> Keys: </strong>{id_report_type, id_report} </td>
+    <td colspan="4"> <strong> Keys: </strong>{id_report_option, id_report} </td>
   </tr>
   <tr>
     <td colspan="4"> <strong> Functional Dependencies </strong> </td>
