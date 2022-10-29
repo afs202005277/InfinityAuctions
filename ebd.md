@@ -13,13 +13,24 @@
 > UML class diagram containing the classes, associations, multiplicity and roles.  
 > For each class, the attributes, associations and constraints are included in the class diagram.
 
-# INSERT IMAGE
+> Additional restrictions and atribute domains that didn't fit in the class box were written in uml notes.
+
+> ![CDM](./Diagrams/CDM_UML.png)
+
+> The default value 'today' refers to the instance of time when new values are inserted into a table.
 
 ### 2. Additional Business Rules
- 
-> Business rules can be included in the UML diagram as UML notes or in a table in this section.
 
-# INSERT BUSINESS RULES
+> - BR01. Administrator accounts are independent of the user accounts, i.e. they cannot create or participate in auctions.
+> - BR02. An auction can only be canceled if there are no bids.
+> - BR03. A user cannot bid on its own auction.
+> - BR04. When an account gets deleted, user activity is saved, but all personal data is erased.
+> - BR05. Items considered illegal to be sold (in the respective countries) can't be auctioned.
+> - BR06. The ending date of a given auction, as well as its biddings, is greater or equal then the starting date.
+> - BR07. Bids can only be done while the auction is active.
+> - BR08. A user can not delete an account if any of its bids are the highest in an active auction.
+> - BR09. Only valid users (not deleted accounts) can bid.
+> - BR10. Bidders can not make bids below the currently highest bid.
 
 ---
 
