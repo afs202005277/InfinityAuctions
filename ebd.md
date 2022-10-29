@@ -115,8 +115,6 @@ CREATE INDEX IF NOT EXISTS user_wishlist ON general_user USING GIN(wishlist);
 
 #### 2.2. Full-text Search Indexes 
 
-> The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
-
 <table>
 <tr> <td>  <b> Index </b>  </td> <td> IDX11 </td> </tr>
 <tr> <td>  <b> Index relation </b>  </td> <td> auction </td> </tr>
@@ -124,7 +122,7 @@ CREATE INDEX IF NOT EXISTS user_wishlist ON general_user USING GIN(wishlist);
 <tr> <td> <b> Index type </b> </td> <td> GIN </td> </tr>
 <tr> <td> <b> Cardinality </b> </td> <td> Medium </td> </tr>
 <tr> <td> <b> Clustering </b> </td> <td> No </td> </tr>
-<tr> <td> <b> Justification </b> </td> <td> TO DO </td> </tr>
+<tr> <td> <b> Justification </b> </td> <td> Since our Web Application will have a search engine to find auctions, having an index for full-text search on the auctions' name and description (the name having more weight than the description) was a obvious addition to increase the performance of user searches. Due to the auctions' static nature we are using the GIN index type which has better perfomance for this particular type of data.</td> </tr>
 <tr> <td colspan="2"> <b> SQL code </b> </td> </tr>
 <tr> <td colspan="2">
 
