@@ -390,11 +390,136 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE check_bid_user_exists();
  
 > Transactions needed to assure the integrity of the data.  
 
-| SQL Reference   | Transaction Name                    |
-| --------------- | ----------------------------------- |
-| Justification   | Justification for the transaction.  |
-| Isolation level | Isolation level of the transaction. |
-| `Complete SQL Code`                                   ||
+<table>
+<tr>
+<td>  <b> Transaction </b>  </td> <td> TRAN01 </td>
+</tr>
+<tr>
+<td> <b> Description </b> </td> <td> Create a new auction with category </td>
+</tr>
+<tr>
+<td> <b> Justification </b> </td> <td> When creating an auction the auction owner must input the auction category. If for some reason in the time between retrieving all possible auction categories and submitting the auction to the database the auction category is eliminated by the admin or something happens to the server and the auction will be created without auction_category which will eventually break the db - phantom read. </td>
+</tr>
+<tr>
+<td colspan="2"> <b> SQL code </b> </td>
+</tr>
+<tr>
+<td colspan="2">
+
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Select Auction Categories
+SELECT *
+FROM auction_categories
+
+-- Insert Auction
+INSERT INTO auction  (id, name, description, base_price, start_date, end_date, buy_now,  state, auction_owner_id )
+VALUES ($id,$ name, $description, $base_price, $start_date, $end_date, $buy_now,  $state, $auction_owner_id);
+
+-- Insert Auction Category
+INSERT INTO auction_category (category_id, auction_id)
+VALUES ($category_id, $auction_id);
+
+END TRANSACTION; 
+```
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>  <b> Transaction </b>  </td> <td> TRAN02 </td>
+</tr>
+<tr>
+<td> <b> Description </b> </td> <td> Auction end, credit transition </td>
+</tr>
+<tr>
+<td> <b> Justification </b> </td> <td> When creating an auction the auction owner must input the auction category. If for some reason in the time between retrieving all possible auction categories and submitting the auction to the database the auction category is eliminated by the admin or something happens to the server and the auction will be created without auction_category which will eventually break the db - dirty read. </td>
+</tr>
+<tr>
+<td colspan="2"> <b> SQL code </b> </td>
+</tr>
+<tr>
+<td colspan="2">
+
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
+
+–Select Auction Categories
+BEGIN ;
+
+UPDATE auction SET state = “END”
+	WHERE title = $title;
+
+–Add funds to auction owner
+UPDATE user SET credits = credits + (SELECT value from bid WHERE auction_id = $auction_id)
+	WHERE user = $auctionOwner
+
+–Remove funds from winning bidder
+UPDATE user SET credits = credits - (SELECT value from bid WHERE auction_id = $auction_id)
+	WHERE user = (SELECT bidder from bid WHERE auction_id = $auction_id)
+
+COMMIT;
+
+END TRANSACTION; 
+```
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>  <b> Transaction </b>  </td> <td> TRAN03 </td>
+</tr>
+<tr>
+<td> <b> Description </b> </td> <td> Auction start, notification issued </td>
+</tr>
+<tr>
+<td> <b> Justification </b> </td> <td> When creating an auction there should be issued a notification to all the users with the title of the auction in their  wishlist. If after selecting the user a competing operation changes the users in the db or their wishlist we can have a phantom read. Therefore we should perform this action as a block also protecting us from creating an auction and due to some failure the part where the notification is issued not being performed. </td>
+</tr>
+<tr>
+<td colspan="2"> <b> SQL code </b> </td>
+</tr>
+<tr>
+<td colspan="2">
+
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
+
+BEGIN ;
+
+–Auction Started
+UPDATE auction SET state = “START”
+	WHERE auction = $auction
+
+– Find the Users that should be receiving the notification
+SELECT id FROM users WHERE wishlist 
+
+– Issue the notification
+UPDATE
+
+
+COMMIT;
+
+END TRANSACTION; 
+```
+
+</td>
+</tr>
+</table>
+
+
+
+
 
 
 ## Annex A. SQL Code
