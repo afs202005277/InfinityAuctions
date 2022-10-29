@@ -17,8 +17,6 @@
 
 > ![CDM](./Diagrams/CDM_UML.png)
 
-> The default value 'today' refers to the instance of time when new values are inserted into a table.
-
 ### 2. Additional Business Rules
 
 > - BR01. Administrator accounts are independent of the user accounts, i.e. they cannot create or participate in auctions.
