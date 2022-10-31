@@ -74,10 +74,10 @@
 | Domain Name       | Domain Specification                                                                                                                            |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | Today             | DATE DEFAULT CURRENT_DATE                                                                                                                       |
-| Notification_type | ENUM ('Outbid', 'New Auction', 'Report', 'Wishlist Targeted', ‘Auction Ending’, ‘New Bid’, ‘Auction Ended’, ‘Auction Won’, ‘Auction Canceled’ ) |
-| State             | ENUM ('Cancelled', 'Running', 'To be started', 'Ended')                                                                                         |
-| Penalty           | ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life')                                                                 |
-| Gender            | ENUM (‘M’, ‘F’, ‘NB’, ‘O’)                                                                                                                      |
+| notification_type | ENUM ('Outbid', 'New Auction', 'Report', 'Wishlist Targeted', ‘Auction Ending’, ‘New Bid’, ‘Auction Ended’, ‘Auction Won’, ‘Auction Canceled’ ) |
+| auction_possible_state             | ENUM ('Cancelled', 'Running', 'To be started', 'Ended')                                                                                         |
+| penalty_type           | ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life')                                                                 |
+| gender_possible            | ENUM (‘M’, ‘F’, ‘NB’, ‘O’)                                                                                                                      |
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -385,7 +385,7 @@
 | R02                    | bid               | 100 k                  | 100 per day          |
 | R03                    | notification      | 1 M                    | thousands per day    |
 | R04                    | auction           | 1 k                    | 1 per day            |
-| R05                    | category          | 10                     | no growth            |
+| R05                    | category          | 10                     | 1 per month          |
 | R06                    | auction_category  | 1 k                    | 1 per day            |
 | R07                    | following         | 10 k                   | 10 per day           |
 | R08                    | report            | 1 k                    | 1 per week           |
@@ -479,7 +479,7 @@ SET auction_tokens = (setweight(to_tsvector('english', coalesce(d1.name, '')), '
 FROM auction d2;
 
 -- Function to automatically update auction_tokens
-CREATE FUNCTION auction_tokens_update() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION auction_tokens_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
         NEW.auction_tokens = (setweight(to_tsvector('english', coalesce(NEW.name, '')), 'A') || setweight(to_tsvector('english', coalesce(NEW.description, '')), 'B'));
@@ -755,21 +755,20 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE check_bid_user_exists();
 ```sql
 BEGIN TRANSACTION;
 
-SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
---Select Auction Categories
-SELECT *
-FROM auction_categories
-
+SELECT * FROM auction_category;
+  
 -- Insert Auction
-INSERT INTO auction  (id, name, description, base_price, start_date, end_date, buy_now,  state, auction_owner_id )
-VALUES ($id,$ name, $description, $base_price, $start_date, $end_date, $buy_now,  $state, $auction_owner_id);
+INSERT INTO auction (id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id )
+VALUES ($name, $description, $base_price, $start_date, $end_date, $buy_now, $state, $auction_owner_id);
 
 -- Insert Auction Category
 INSERT INTO auction_category (category_id, auction_id)
-VALUES ($category_id, $auction_id);
+VALUES ($category_id, $auction_id); 
 
-END TRANSACTION; 
+
+END TRANSACTION;
 ```
 
 </td>
@@ -795,23 +794,18 @@ END TRANSACTION;
 ```sql
 BEGIN TRANSACTION;
 
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
--- Select Auction Categories
-BEGIN ;
-
-UPDATE auction SET state = “END”
-	WHERE title = $title;
+UPDATE auction SET state = "Ended"
+    WHERE id = $auction_id;
 
 -- Add funds to auction owner
-UPDATE user SET credits = credits + (SELECT value from bid WHERE auction_id = $auction_id)
-	WHERE user = $auctionOwner
+UPDATE user SET credits = credits + (SELECT value from bid WHERE id = $bid_id)
+    WHERE id = $auction_owner_id;
 
 -- Remove funds from winning bidder
-UPDATE user SET credits = credits - (SELECT value from bid WHERE auction_id = $auction_id)
-	WHERE user = (SELECT bidder from bid WHERE auction_id = $auction_id)
-
-COMMIT;
+UPDATE user SET credits = credits - (SELECT value from bid WHERE id = $bid_id)
+    WHERE user = (SELECT user_id from bid WHERE id = $bid_id);
 
 END TRANSACTION; 
 ```
@@ -839,31 +833,25 @@ END TRANSACTION;
 ```sql
 BEGIN TRANSACTION;
 
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
-
-BEGIN ;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 -- Auction Started
-UPDATE auction SET state = “START”
-	WHERE auction = $auction
+UPDATE auction SET state = "Running"
+    WHERE id = $auction_id;
 
 -- Find the Users that should be receiving the notification
-SELECT id FROM users WHERE wishlist 
+SELECT id FROM users WHERE $auction_title = ANY(wishlist);
 
 -- Issue the notification
-UPDATE
+INSERT INTO notification (id, date, type, user_id, auction_id, report_id)
+VALUES ($date, $type, $user_id, $auction_id, NULL);
 
-
-COMMIT;
-
-END TRANSACTION; 
+END TRANSACTION;
 ```
 
 </td>
 </tr>
 </table>
-
-
 
 
 
@@ -897,20 +885,20 @@ DROP TABLE IF EXISTS auction;
 DROP TABLE IF EXISTS general_user;
 
 DROP TYPE IF EXISTS notification_type;
-DROP TYPE IF EXISTS penalty;
-DROP TYPE IF EXISTS state;
-DROP TYPE IF EXISTS gender;
+DROP TYPE IF EXISTS penalty_type;
+DROP TYPE IF EXISTS auction_possible_state;
+DROP TYPE IF EXISTS gender_possible;
 
 
 CREATE TYPE notification_type AS ENUM ('Outbid', 'New Auction', 'Report', 'Wishlist Targeted', 'Auction Ending', 'New Bid', 'Auction Ended', 'Auction Won', 'Auction Canceled');
-CREATE TYPE state AS ENUM ('Cancelled', 'Running', 'To be started', 'Ended');
-CREATE TYPE penalty AS ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life');
-CREATE TYPE gender AS ENUM ('M', 'F', 'NB', 'O');
+CREATE TYPE auction_possible_state AS ENUM ('Cancelled', 'Running', 'To be started', 'Ended');
+CREATE TYPE penalty_type AS ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life');
+CREATE TYPE gender_possible AS ENUM ('M', 'F', 'NB', 'O');
 
 CREATE TABLE IF NOT EXISTS general_user (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(30) NOT NULL,
-    TYPE gender,
+    gender gender_possible,
 	cellphone CHAR(9) UNIQUE,
 	email VARCHAR(320) UNIQUE,
     birth_date DATE NOT NULL,
@@ -932,8 +920,8 @@ CREATE TABLE IF NOT EXISTS auction (
 	start_date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
 	end_date TIMESTAMP WITH TIME ZONE NOT NULL,
 	buy_now REAL,
-	TYPE state NOT NULL,
-	auction_owner_id INTEGER REFERENCES general_user NOT NULL,
+	state auction_possible_state NOT NULL,
+	auction_owner_id INTEGER REFERENCES general_user ON UPDATE CASCADE NOT NULL,
 	CONSTRAINT valid_dates CHECK (start_date < end_date)
 );
 
@@ -941,18 +929,18 @@ CREATE TABLE IF NOT EXISTS bid (
 	id SERIAL PRIMARY KEY,
 	date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
  	amount REAL NOT NULL,
-	user_id INTEGER REFERENCES general_user NOT NULL,
-	auction_id INTEGER REFERENCES auction NOT NULL
+	user_id INTEGER REFERENCES general_user ON UPDATE CASCADE NOT NULL,
+	auction_id INTEGER REFERENCES auction ON UPDATE CASCADE ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS report (
 	id SERIAL PRIMARY KEY,
 	date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
-	TYPE penalty,
-	reported_user INTEGER REFERENCES general_user,
-	reporter INTEGER REFERENCES general_user NOT NULL,
-	auction_reported INTEGER REFERENCES auction,
-	admin_id INTEGER REFERENCES general_user,
+	penalty penalty_type,
+	reported_user INTEGER REFERENCES general_user ON UPDATE CASCADE ON DELETE CASCADE,
+	reporter INTEGER REFERENCES general_user ON UPDATE CASCADE NOT NULL,
+	auction_reported INTEGER REFERENCES auction ON UPDATE CASCADE,
+	admin_id INTEGER REFERENCES general_user ON UPDATE CASCADE,
 	CONSTRAINT no_self_reports CHECK (reported_user != reporter)
 );
 
@@ -960,9 +948,9 @@ CREATE TABLE IF NOT EXISTS notification (
 	id SERIAL PRIMARY KEY,
 	date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
 	TYPE notification_type NOT NULL,
-	user_id INTEGER REFERENCES general_user NOT NULL,
-	auction_id INTEGER REFERENCES auction,
-	report_id INTEGER REFERENCES report
+	user_id INTEGER REFERENCES general_user ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	auction_id INTEGER REFERENCES auction ON UPDATE CASCADE,
+	report_id INTEGER REFERENCES report ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS category (
@@ -971,14 +959,14 @@ CREATE TABLE IF NOT EXISTS category (
 );
 
 CREATE TABLE IF NOT EXISTS auction_category (
-	category_id INTEGER REFERENCES category,
-	auction_id INTEGER REFERENCES auction,
+	category_id INTEGER REFERENCES category ON UPDATE CASCADE,
+	auction_id INTEGER REFERENCES auction ON UPDATE CASCADE,
 	PRIMARY KEY (category_id, auction_id)
 );
 
 CREATE TABLE IF NOT EXISTS following (
-	user_id INTEGER REFERENCES general_user,
-	auction_id INTEGER REFERENCES auction,
+	user_id INTEGER REFERENCES general_user ON UPDATE CASCADE,
+	auction_id INTEGER REFERENCES auction ON UPDATE CASCADE,
 	PRIMARY KEY (user_id, auction_id)
 );
 
@@ -988,15 +976,26 @@ CREATE TABLE IF NOT EXISTS report_option (
 );
 
 CREATE TABLE IF NOT EXISTS report_reasons (
-	id_report_option INTEGER REFERENCES report_option,
-	id_report INTEGER REFERENCES report,
+	id_report_option INTEGER REFERENCES report_option ON UPDATE CASCADE,
+	id_report INTEGER REFERENCES report ON UPDATE CASCADE,
 	PRIMARY KEY (id_report_option, id_report)
 );
 ```
 
 ### A.2. Database population
 
-> Only a sample of the database population script may be included here, e.g. the first 10 lines. The full script must be available in the repository.
+```sql
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(1, 'Rafael Pinta', 'M', '913547483', 'rafaelpinta@fe.up.pt', '1982-05-14', '271 Unnamed 051', '$2b$12$CIaa06HtI/stVPNQp3hb2OXSmBvDUkPzzGQP8rvLpBaVQdr6QhayW', 3.6, 2212, ARRAY []::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(2, 'Quintin Fankhanel', 'M', '929138897', 'quintinfankhanel@fe.up.pt', '1964-04-06', '388 Wayland st', '$2b$12$IGg02jV1OffqddVLwDG4Ou8JlDRrDiPDl8jxEhe1gYYtBAF4N90dS', 5, 3016, ARRAY ['records']::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(3, 'Earnestine Morado', 'F', '965502523', 'earnestine.morado@gmail.com', '1967-12-28', '168 Weston ct', '$2b$12$N5M.PEHCHcKwBTy5UeGyg.FtcSJ3K2HfRKaklRFYuXjolE4wQX9HG', 5, 1589, ARRAY ['dolls', 'baseball cards', 'trading cards']::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(4, 'Selina Jankoviak', 'F', '931886980', 'selinajankoviak@icloud.com', '1979-12-19', '671 Peacemakers st', '$2b$12$V3hWJJxEGAjGPrGJWlk/t.jvfGYWij7xlNqzaz967BYtXG6pV1bYO', 5, 2045, ARRAY ['records', 'coin', 'diamond', 'vinyl', 'currency']::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(5, 'Auther Warnell', 'M', '913664514', 'auther.warnell@icloud.com', '1996-06-28', '388 Le conte ave', '$2b$12$fz9jEFspK2zbbDYgpji/w.ZpzIlveKNW39vADLlxDndyhH/YUo.Xa', 3.0, 597, ARRAY []::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(6, 'Geraldine Siggers', 'F', '93635200', 'geraldinesiggers@yahoo.com', '1971-09-16', '747 Skyline blvd', '$2b$12$H7SsXwk/t2PmPnGS8w6uhuigxL56i7BoF.ZoOsQMLUI28JwF0vk9G', 4.5, 1713, ARRAY []::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(7, 'Reno Pleites', 'M', '961273494', 'renopleites@icloud.com', '1964-07-01', '178 Gould st', '$2b$12$LEvDsol8hbuu6CtdjfPbSuqeW75t9JXUOhTn.ATpa1MkmPdKT7GBC', 4.1, 2928, ARRAY []::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(8, 'Annie Mccally', 'F', '962094294', 'anniemccally@fe.up.pt', '1977-06-08', '64 Ortega way', '$2b$12$EvuSdCHCgH2CBloMPnjLNOnRFujn4JnIBALfaRjVHig91CVMi.NZ.', 3.1, 2782, ARRAY ['nb550', 'diamond', 'trading cards', 'rolex']::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(9, 'Quentin Kola', 'M', '932400131', 'quentinkola@yahoo.com', '1972-04-05', '21 Merced ave', '$2b$12$55PeOaSFlZ8Lbq3SlYFozepraMiCVCHBGAp.6sK60TQSlPxvRI5hy', 4.6, 2177, ARRAY []::text[], FALSE);
+insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(10, 'Hal Alcius', 'M', '936711449', 'halalcius@fe.up.pt', '1991-02-19', '415 Cornwall st', '$2b$12$eOKxR3z0n6QdPkgpZf8djOtl8zp0LltlS3K9Kt8xZXDJ4dNiw0dFW', 2.1, 1816, ARRAY ['comic', 'dolls', 'art', 'doll', 'stamps']::text[], FALSE);
+```
 
 ---
 
