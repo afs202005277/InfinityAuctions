@@ -40,18 +40,18 @@
 > The Relational Schema includes the relation schemas, attributes, domains, primary keys, foreign keys and other integrity rules: UNIQUE, DEFAULT, NOT NULL, CHECK.  
 > Relation schemas are specified in the compact notation:  
 
-| Relation reference | Relation Compact Notation                        |
-| ------------------ | ------------------------------------------------ |
-| R01 | general_user( <ins>id</ins>, name **NN**, gender **CK** gender IN Gender, cellphone **UK**, email **UK**, birth_date **NN**, address **UK**, password **NN**, rate **CK** rate >= 0 AND rate <= 5, credits, wishlist, is_admin **NN** ) |
-| R02 | bid( <ins>id</ins>, date **NN** **DF** Today, amount **NN**, user_id -> general_user **NN**, auction_id -> auction **NN**) |
-| R03 | notification (<ins>id</ins>, date **DF** Today **NN**, type **NN** **CK** type IN Notification_type, user_id -> general_user **NN**, auction_id -> auction, report_id -> report) |
-| R04 | auction (<ins>id</ins>, name **NN**, description **NN**, base_price **NN**, start_date **NN** **DF** Today, end_date **NN** **CK** start_date < end_date, buy_now, state **NN**, auction_owner_id -> general_user **NN** ) |
-| R05 | category ( <ins>id</ins>, name **NN** **UK**) |
-| R06 | auction_category ( <ins>category_id</ins> -> category, <ins>auction_id</ins> -> auction) |
-| R07 | following ( <ins>user_id</ins> -> general_user, <ins>auction_id</ins>-> auction ) |
-| R08 | report (<ins>id</ins>, date **DF** Today **NN**, penalty **CK** penalty IN Penalty, reported_user -> general_user, reporter -> general_user **NN** **CK** reported_user != reporter, auction_reported -> auction, admin_id -> general_user) |
-| R09 | report_option ( <ins>id</ins>, name **NN** **UK**) |
-| R10 | report_reasons ( <ins>id_report_option</ins> -> report_option, <ins>id_report</ins> -> report) |
+| Relation reference | Relation Compact Notation                                                                                                                                                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R01                | general_user( <ins>id</ins>, name **NN**, gender **CK** gender IN Gender, cellphone **UK**, email **UK**, birth_date **NN**, address **UK**, password **NN**, rate **CK** rate >= 0 AND rate <= 5, credits, wishlist, is_admin **NN** )     |
+| R02                | bid( <ins>id</ins>, date **NN** **DF** Today, amount **NN**, user_id -> general_user **NN**, auction_id -> auction **NN**)                                                                                                                  |
+| R03                | notification (<ins>id</ins>, date **DF** Today **NN**, type **NN** **CK** type IN Notification_type, user_id -> general_user **NN**, auction_id -> auction, report_id -> report)                                                            |
+| R04                | auction (<ins>id</ins>, name **NN**, description **NN**, base_price **NN**, start_date **NN** **DF** Today, end_date **NN** **CK** start_date < end_date, buy_now, state **NN**, auction_owner_id -> general_user **NN** )                  |
+| R05                | category ( <ins>id</ins>, name **NN** **UK**)                                                                                                                                                                                               |
+| R06                | auction_category ( <ins>category_id</ins> -> category, <ins>auction_id</ins> -> auction)                                                                                                                                                    |
+| R07                | following ( <ins>user_id</ins> -> general_user, <ins>auction_id</ins>-> auction )                                                                                                                                                           |
+| R08                | report (<ins>id</ins>, date **DF** Today **NN**, penalty **CK** penalty IN Penalty, reported_user -> general_user, reporter -> general_user **NN** **CK** reported_user != reporter, auction_reported -> auction, admin_id -> general_user) |
+| R09                | report_option ( <ins>id</ins>, name **NN** **UK**)                                                                                                                                                                                          |
+| R10                | report_reasons ( <ins>id_report_option</ins> -> report_option, <ins>id_report</ins> -> report)                                                                                                                                              |
 
 * Legend:
   - **UK** = UNIQUE KEY
@@ -61,56 +61,58 @@
 
  
 **Justification for Generalizations**
- | Generalization | Justification           |
-| ----------- | --------------------------------------------- |
-| **User / Admin / General User** | Since the differences between an User and an Admin are few, we chose to generalize this using null fields in certain columns, namely: address, rate, credits and wishlist. Furthermore, we added a collumn named "isAdmin" that is composed of boolean values and is used to check if a given user is an Admin or not.|
-| **Reports / Auction Reports / User Reports** | Once again Auction reports share the vast majority of their attributes and therefore it makes more sense to simply use nulls to express the difference between both of them.|
+ | Generalization                               | Justification                                                                                                                                                                                                                                                                                                          |
+ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ | **User / Admin / General User**              | Since the differences between an User and an Admin are few, we chose to generalize this using null fields in certain columns, namely: address, rate, credits and wishlist. Furthermore, we added a collumn named "isAdmin" that is composed of boolean values and is used to check if a given user is an Admin or not. |
+ | **Reports / Auction Reports / User Reports** | Once again Auction reports share the vast majority of their attributes and therefore it makes more sense to simply use nulls to express the difference between both of them.                                                                                                                                           |
 
 
 ### 2. Domains
 
 > The specification of additional domains can also be made in a compact form, using the notation:  
 
-| Domain Name | Domain Specification           |
-| ----------- | ------------------------------ |
-| Today | DATE DEFAULT CURRENT_DATE  |
+| Domain Name       | Domain Specification                                                                                                                            |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Today             | DATE DEFAULT CURRENT_DATE                                                                                                                       |
 | Notification_type | ENUM ('Outbid', 'New Auction', 'Report', 'Wishlist Targeted', ‘Auction Ending’, ‘New Bid’, ‘Auction Ended’, ‘Auction Won’, ‘Auction Canceled’ ) |
-| State | ENUM ('Cancelled', 'Running', 'To be started', 'Ended') |
-| Penalty | ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life') |
-| Gender | ENUM (‘M’, ‘F’, ‘NB’, ‘O’) |
+| State             | ENUM ('Cancelled', 'Running', 'To be started', 'Ended')                                                                                         |
+| Penalty           | ENUM ('3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life')                                                                 |
+| Gender            | ENUM (‘M’, ‘F’, ‘NB’, ‘O’)                                                                                                                      |
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 ### 3. Schema validation
 
 > To validate the Relational Schema obtained from the Conceptual Model, all functional dependencies are identified and the normalization of all relation schemas is accomplished. Should it be necessary, in case the scheme is not in the Boyce–Codd Normal Form (BCNF), the relational schema is refined using normalization.  
 
-<table>
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R01 </strong>(general_user)</td>
+    <th colspan="4"> <strong> Table R01 </strong>(general_user)</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td colspan="4"> <strong> Keys: </strong>{id}, {cellphone}, {email}, {address}</td>
+    <td colspan="4"> <strong> Keys: </strong> {id}, {cellphone}, {email}, {address}</td>
   </tr>
   <tr>
     <td colspan="4"> <strong> Functional Dependencies </strong> </td>
   </tr>
   <tr>
     <td colspan="2">FD0101</td>
-    <td colspan="2"> {id} -> {name, gender, cellphone, email, birth_date, address, password, rate, credits , wishlist, is_admin} </td>
+    <td colspan="2"> {id} -> {name, gender, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin} </td>
   </tr>
   <tr>
     <td colspan="2">FD0102</td>
-    <td colspan="2">{cellphone} -> {id, name, gender, email, birth_date, address, password, rate, credits , wishlist, is_admin}</td>
+    <td colspan="2">{cellphone} -> {id, name, gender, email, birth_date, address, password, rate, credits, wishlist, is_admin}</td>
   </tr>
   <tr>
     <td colspan="2">FD0103</td>
-    <td colspan="2">{email} -> {id, name, gender, cellphone, birth_date, address, password, rate, credits , wishlist, is_admin}</td>
+    <td colspan="2">{email} -> {id, name, gender, cellphone, birth_date, address, password, rate, credits, wishlist, is_admin}</td>
   </tr>
     <tr>
     <td colspan="2">FD0104</td>
-    <td colspan="2">{address} -> {id, name, gender, cellphone, email, birth_date, password, rate, credits , wishlist, is_admin}</td>
+    <td colspan="2">{address} -> {id, name, gender, cellphone, email, birth_date, password, rate, credits, wishlist, is_admin}</td>
   </tr>
   <tr>
     <td colspan="2"><strong> Normal Form </strong> </td>
@@ -119,11 +121,12 @@
 </tbody>
 </table>
  
+<br>
 
-<table>
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R02 </strong>(bid)</td>
+    <th colspan="4"> <strong> Table R02 </strong>(bid)</th>
   </tr>
 </thead>
 <tbody>
@@ -144,10 +147,12 @@
 </tbody>
 </table>
 
-<table>
+<br>
+
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R03 </strong>(notification)</td>
+    <th colspan="4"> <strong> Table R03 </strong>(notification)</th>
   </tr>
 </thead>
 <tbody>
@@ -168,10 +173,13 @@
 </tbody>
 </table>
 
-<table>
+<br>
+<div style="page-break-after: always; break-after: page;"></div>
+
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R04 </strong>(auction)</td>
+    <th colspan="4"> <strong> Table R04 </strong>(auction)</th>
   </tr>
 </thead>
 <tbody>
@@ -192,15 +200,17 @@
 </tbody>
 </table>
 
-<table>
+<br>
+
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R05 </strong>(category)</td>
+    <th colspan="4"> <strong> Table R05 </strong>(category)</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td colspan="4"> <strong> Keys: </strong>{id}, {name}</td>
+    <td colspan="4"> <strong> Keys: </strong> {id}, {name} </td>
   </tr>
   <tr>
     <td colspan="4"> <strong> Functional Dependencies </strong> </td>
@@ -214,16 +224,18 @@
     <td colspan="2"> {name} -> {id} </td>
   </tr>
   <tr>
-    <td colspan="2"><strong> Normal Form </strong> </td>
-    <td colspan="2">BCNF</td>
+    <td colspan="2" display="inline-block" width="auto"><strong> Normal Form </strong> </td>
+    <td colspan="2" width="70%">BCNF</td>
   </tr>
 </tbody>
 </table>
  
-<table>
+<br>
+
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R06 </strong>(auction_category)</td>
+    <th colspan="4"> <strong> Table R06 </strong>(auction_category)</th>
   </tr>
 </thead>
 <tbody>
@@ -238,16 +250,18 @@
     <td colspan="2"> none </td>
   </tr>
   <tr>
-    <td colspan="2"><strong> Normal Form </strong> </td>
-    <td colspan="2">BCNF</td>
+    <td colspan="2" display="inline-block" width="auto"><strong> Normal Form </strong> </td>
+    <td colspan="2" width="70%">BCNF</td>
   </tr>
 </tbody>
 </table>
 
-<table>
+<br>
+
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R07 </strong>(following)</td>
+    <th colspan="4"> <strong> Table R07 </strong>(following)</th>
   </tr>
 </thead>
 <tbody>
@@ -262,16 +276,18 @@
     <td colspan="2"> none </td>
   </tr>
   <tr>
-    <td colspan="2"><strong> Normal Form </strong> </td>
-    <td colspan="2">BCNF</td>
+    <td colspan="2" display="inline-block" width="auto"><strong> Normal Form </strong> </td>
+    <td colspan="2" width="70%">BCNF</td>
   </tr>
 </tbody>
 </table>
 
-<table>
+<br>
+
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R08 </strong>(report)</td>
+    <th colspan="4"> <strong> Table R08 </strong>(report)</th>
   </tr>
 </thead>
 <tbody>
@@ -292,10 +308,12 @@
 </tbody>
 </table>
 
-<table>
+<br>
+
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R09 </strong>(report_option)</td>
+    <th colspan="4"> <strong> Table R09 </strong>(report_option)</th>
   </tr>
 </thead>
 <tbody>
@@ -314,16 +332,18 @@
     <td colspan="2"> {name} -> {id} </td>
   </tr>
   <tr>
-    <td colspan="2"><strong> Normal Form </strong> </td>
-    <td colspan="2">BCNF</td>
+    <td colspan="2" display="inline-block" width="auto"><strong> Normal Form </strong> </td>
+    <td colspan="2" width="70%">BCNF</td>
   </tr>
 </tbody>
 </table>
 
-<table>
+<br>
+
+<table width="100%">
 <thead>
   <tr>
-    <td colspan="4"> <strong> Table R10 </strong>(report_reasons)</td>
+    <th colspan="4"> <strong> Table R10 </strong>(report_reasons)</th>
   </tr>
 </thead>
 <tbody>
@@ -338,8 +358,8 @@
     <td colspan="2"> none </td>
   </tr>
   <tr>
-    <td colspan="2"><strong> Normal Form </strong> </td>
-    <td colspan="2">BCNF</td>
+    <td colspan="2" display="inline-block" width="auto"><strong> Normal Form </strong> </td>
+    <td colspan="2"width="70%">BCNF</td>
   </tr>
 </tbody>
 </table>
@@ -359,18 +379,18 @@
 > A study of the predicted system load (database load).
 > Estimate of tuples at each relation.
 
-| **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
-| ------------------ | ------------- | ------------------------- | -------- |
-| R01                | general_user        | 10 k | 10 per day |
-| R02                | bid        | 100 k | 100 per day |
-| R03                | notification        | 1 M | thousands per day |
-| R04                | auction        | 1 k | 1 per day |
-| R05                | category        | 10 | no growth |
-| R06                | auction_category        | 1 k | 1 per day |
-| R07                | following        | 10 k | 10 per day |
-| R08                | report        | 1 k | 1 per week |
-| R09                | report_option        | 10 | no growth |
-| R10                | report_reason        | 1 k | 1 per week |
+| **Relation reference** | **Relation Name** | **Order of magnitude** | **Estimated growth** |
+| ---------------------- | ----------------- | ---------------------- | -------------------- |
+| R01                    | general_user      | 10 k                   | 10 per day           |
+| R02                    | bid               | 100 k                  | 100 per day          |
+| R03                    | notification      | 1 M                    | thousands per day    |
+| R04                    | auction           | 1 k                    | 1 per day            |
+| R05                    | category          | 10                     | no growth            |
+| R06                    | auction_category  | 1 k                    | 1 per day            |
+| R07                    | following         | 10 k                   | 10 per day           |
+| R08                    | report            | 1 k                    | 1 per week           |
+| R09                    | report_option     | 10                     | no growth            |
+| R10                    | report_reason     | 1 k                    | 1 per week           |
 
 
 ### 2. Proposed Indexes
@@ -396,6 +416,8 @@ CREATE INDEX IF NOT EXISTS notification_user_id ON notification USING hash(user_
 </td> </tr>
 </table>
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 <table>
 <tr> <td>  <b> Index </b>  </td> <td> IDX02 </td> </tr>
 <tr> <td>  <b> Index relation </b>  </td> <td> bid </td> </tr>
@@ -415,8 +437,8 @@ CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE(auction_id, 
 </table>
 
 <table>
-<tr> <td>  <b> Index </b>  </td> <td> IDX03 </td> </tr>
-<tr> <td>  <b> Index relation </b>  </td> <td> general_user </td> </tr>
+<tr> <td> <b> Index </b>  </td> <td> IDX03 </td> </tr>
+<tr> <td> <b> Index relation </b>  </td> <td> general_user </td> </tr>
 <tr> <td> <b> Index attributes </b> </td> <td> wishlist </td> </tr>
 <tr> <td> <b> Index type </b> </td> <td> GIN </td> </tr>
 <tr> <td> <b> Cardinality </b> </td> <td> Medium </td> </tr>
@@ -523,6 +545,8 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE bid_owner();
 </tr>
 </table>
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 <table>
 <tr>
 <td>  <b> Trigger </b>  </td> <td> TRIGGER02 </td>
@@ -590,6 +614,7 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE bid_date();
 </tr>
 </table>
 
+<div style="page-break-after: always; break-after: page;"></div>
 
 <table>
 <tr>
@@ -639,6 +664,8 @@ CREATE TRIGGER delete_users BEFORE DELETE ON general_user EXECUTE PROCEDURE stop
 </td>
 </tr>
 </table>
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 <table>
 <tr>
@@ -703,6 +730,7 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE check_bid_user_exists();
 </tr>
 </table>
 
+<div style="page-break-after: always; break-after: page;"></div>
 
 ### 4. Transactions
  
@@ -756,7 +784,7 @@ END TRANSACTION;
 <td> <b> Description </b> </td> <td> Auction end, credit transition </td>
 </tr>
 <tr>
-<td> <b> Justification </b> </td> <td> When creating an auction, the auction owner must input the auction category. If for some reason in the time between retrieving all possible auction categories and submitting the auction to the database the auction category is eliminated by the admin or something happens to the server and the auction will be created without auction_category which will eventually break the db - dirty read. </td>
+<td> <b> Justification </b> </td> <td> When an auction ends, the auction owner should be awarded the value of the highest bid and the highest bidder should see the amount of the bid removed from the credits. A interruption in the program could lead to excess credits in one or the other resulting in an unstable intermediate state in the database. </td>
 </tr>
 <tr>
 <td colspan="2"> <b> SQL code </b> </td>
@@ -769,17 +797,17 @@ BEGIN TRANSACTION;
 
 SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
 
-–Select Auction Categories
+-- Select Auction Categories
 BEGIN ;
 
 UPDATE auction SET state = “END”
 	WHERE title = $title;
 
-–Add funds to auction owner
+-- Add funds to auction owner
 UPDATE user SET credits = credits + (SELECT value from bid WHERE auction_id = $auction_id)
 	WHERE user = $auctionOwner
 
-–Remove funds from winning bidder
+-- Remove funds from winning bidder
 UPDATE user SET credits = credits - (SELECT value from bid WHERE auction_id = $auction_id)
 	WHERE user = (SELECT bidder from bid WHERE auction_id = $auction_id)
 
@@ -815,14 +843,14 @@ SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
 
 BEGIN ;
 
-–Auction Started
+-- Auction Started
 UPDATE auction SET state = “START”
 	WHERE auction = $auction
 
-– Find the Users that should be receiving the notification
+-- Find the Users that should be receiving the notification
 SELECT id FROM users WHERE wishlist 
 
-– Issue the notification
+-- Issue the notification
 UPDATE
 
 
