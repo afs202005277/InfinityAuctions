@@ -1,3 +1,5 @@
+-- SET search_path TO lbaw2271;
+
 -- Trigger01
 CREATE OR REPLACE FUNCTION bid_owner() RETURNS TRIGGER AS $BODY$ BEGIN IF EXISTS (
                 SELECT *

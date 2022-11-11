@@ -8,7 +8,7 @@ SET auction_tokens = (setweight(to_tsvector('english', coalesce(d1.name, '')), '
 FROM auction d2;
 
 -- Function to automatically update auction_tokens
-CREATE FUNCTION auction_tokens_update() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION auction_tokens_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
         NEW.auction_tokens = (setweight(to_tsvector('english', coalesce(NEW.name, '')), 'A') || setweight(to_tsvector('english', coalesce(NEW.description, '')), 'B'));
