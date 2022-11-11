@@ -265,7 +265,7 @@ with open("instructions.txt", "w") as instr:
         u = User(user_id)
         user_id += 1
 
-        instr.write("insert into general_user(id, name, TYPE, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.rate) + ", " + str(u.credits) + ", ARRAY " + print_list(u.wishlist) + "::text[], " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
+        instr.write("insert into general_user(id, name, gender, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.rate) + ", " + str(u.credits) + ", ARRAY " + print_list(u.wishlist) + "::text[], " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
 
     instr.write("\n")
 
@@ -275,7 +275,7 @@ with open("instructions.txt", "w") as instr:
         acs.append(a)
         auction_id += 1
 
-        instr.write("insert into auction(id, name, description, base_price, start_date, end_date, buy_now, TYPE, auction_owner_id) values(" + str(a.id) + ", '" + a.name + "', '" + a.description + "', " + str(a.base_price) + ", '" + a.start_date + "', '" + a.end_date + "', " + (str(a.buy_now) if a.buy_now != -1 else "NULL") + ", '" + a.state + "', " + str(a.user_id) + ");\n")
+        instr.write("insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(" + str(a.id) + ", '" + a.name + "', '" + a.description + "', " + str(a.base_price) + ", '" + a.start_date + "', '" + a.end_date + "', " + (str(a.buy_now) if a.buy_now != -1 else "NULL") + ", '" + a.state + "', " + str(a.user_id) + ");\n")
 
     instr.write("\n")
 
@@ -295,7 +295,7 @@ with open("instructions.txt", "w") as instr:
         r = Report(report_id, random.choice(acs))
         report_id += 1
 
-        instr.write("insert into report(id, date, TYPE, reported_user, reporter, auction_reported, admin_id) values(" + str(r.id) + ", '" + r.date + "', '" + r.type_ban + "', " + (str(r.reported_user) if r.reported_user != -1 else "NULL") + ", " + str(r.reporter) + ", " + (str(r.reported_auction) if r.reported_auction != -1 else "NULL") + ", NULL);\n")
+        instr.write("insert into report(id, date, penalty, reported_user, reporter, auction_reported, admin_id) values(" + str(r.id) + ", '" + r.date + "', '" + r.type_ban + "', " + (str(r.reported_user) if r.reported_user != -1 else "NULL") + ", " + str(r.reporter) + ", " + (str(r.reported_auction) if r.reported_auction != -1 else "NULL") + ", NULL);\n")
 
     instr.write("\n")
 
