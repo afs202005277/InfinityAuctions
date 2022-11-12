@@ -11,7 +11,7 @@ class Report extends Model
     // use HasFactory;
 
     public function reporter(){
-        return $this->belongsTo(General_User::class, 'reporter');
+        return $this->belongsTo(User::class, 'reporter');
     }
 
     public function notifications(){
@@ -23,7 +23,7 @@ class Report extends Model
     }
 
     public function reportedUser(){
-        return $this->belongsTo(General_User::class, 'reported_user');
+        return $this->belongsTo(User::class, 'reported_user');
     }
 
     public function reportedAuction(){
@@ -31,6 +31,6 @@ class Report extends Model
     }
 
     public function handledBy(){
-        return $this->belongsTo(General_User::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

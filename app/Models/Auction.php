@@ -15,11 +15,11 @@ class Auction extends Model
     }
 
     public function followers(){
-        return $this->belongsToMany(General_User::class);
+        return $this->belongsToMany(User::class);
     }
 
     public function owner(){
-        return $this->belongsTo(General_User::class, 'auction_owner_id');
+        return $this->belongsTo(User::class, 'auction_owner_id');
     }
 
     public function notifications(){

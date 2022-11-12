@@ -1,8 +1,11 @@
+ALTER TABLE users ADD COLUMN remember_token CHAR(100);
+
+
 CREATE INDEX IF NOT EXISTS notification_user_id ON notification USING hash(user_id);
 
 CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE(auction_id, amount);
 
-CREATE INDEX IF NOT EXISTS user_wishlist ON general_user USING GIN(wishlist);-- SET search_path TO lbaw2271;
+CREATE INDEX IF NOT EXISTS user_wishlist ON users USING GIN(wishlist);-- SET search_path TO lbaw2271;
 
 -- Trigger01
 CREATE OR REPLACE FUNCTION bid_owner() RETURNS TRIGGER AS $BODY$ BEGIN IF EXISTS (
@@ -20,7 +23,7 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE bid_owner();
 -- Trigger02
 CREATE OR REPLACE FUNCTION bid_admin() RETURNS TRIGGER AS $BODY$ BEGIN IF EXISTS (
                 SELECT *
-                FROM general_user
+                FROM users
                 WHERE NEW.user_id = id
                         AND is_admin = TRUE
         ) THEN RAISE EXCEPTION 'An Admin cannot bid.';
@@ -74,8 +77,8 @@ SET name = "Deleted Account",
 WHERE id == OLD.id;
 RETURN NULL;
 END $BODY$ LANGUAGE plpgsql;
-DROP TRIGGER IF EXISTS delete_users ON general_user;
-CREATE TRIGGER delete_users BEFORE DELETE ON general_user EXECUTE PROCEDURE stop_delete_users();
+DROP TRIGGER IF EXISTS delete_users ON users;
+CREATE TRIGGER delete_users BEFORE DELETE ON users EXECUTE PROCEDURE stop_delete_users();
 -- Trigger06
 CREATE OR REPLACE FUNCTION check_max_bid() RETURNS TRIGGER AS $BODY$ BEGIN IF EXISTS (
                 SELECT *
@@ -92,7 +95,7 @@ INSERT ON bid FOR EACH ROW EXECUTE PROCEDURE check_max_bid();
 -- Trigger07
 CREATE OR REPLACE FUNCTION check_bid_user_exists() RETURNS TRIGGER AS $BODY$ BEGIN IF NOT EXISTS (
                 SELECT *
-                FROM general_user
+                FROM users
                 WHERE id == NEW.id AND email IS NOT NULL
         ) THEN RAISE EXCEPTION 'User not found.';
 END IF;
@@ -105,7 +108,7 @@ ALTER TABLE auction
 ADD COLUMN auction_tokens TSVECTOR;
 
 -- Update tsvectors in auction table
-UPDATE auction d1  
+UPDATE auction d1
 SET auction_tokens = (setweight(to_tsvector('english', coalesce(d1.name, '')), 'A') || setweight(to_tsvector('english', coalesce(d1.description, '')), 'B'))
 FROM auction d2;
 

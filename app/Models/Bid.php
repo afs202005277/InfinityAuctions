@@ -15,6 +15,6 @@ class Bid extends Model
     }
 
     public function bidder(){
-        return $this->belongsTo(General_User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
