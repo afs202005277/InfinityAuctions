@@ -1,6 +1,5 @@
 ALTER TABLE users ADD COLUMN remember_token CHAR(100);
 
-
 CREATE INDEX IF NOT EXISTS notification_user_id ON notification USING hash(user_id);
 
 CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE(auction_id, amount);

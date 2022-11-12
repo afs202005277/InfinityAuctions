@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report_Option extends Model
 {
+    protected $table = 'report_option';
+
     public $timestamps = false;
     // use HasFactory;
 
