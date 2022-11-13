@@ -1,1 +1,1 @@
-<span>No auctions were found!</span>
+<span>No items were found!</span>

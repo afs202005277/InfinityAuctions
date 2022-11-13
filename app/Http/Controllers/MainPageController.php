@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Auth;
 
 class MainPageController extends Controller
 {
@@ -18,7 +19,10 @@ class MainPageController extends Controller
     public function __invoke(Request $request)
     {
         $auctionController = new AuctionController();
-        $selectedAuctions = $auctionController->selectedAuctions();
+        if (Auth::user() !== NULL)
+            $selectedAuctions = $auctionController->selectedAuctions();
+        else
+            $selectedAuctions = NULL;
         $mostActive = $auctionController->mostActive();
         $categories = (new CategoryController())->list();
         $new = $auctionController->newAuctions();

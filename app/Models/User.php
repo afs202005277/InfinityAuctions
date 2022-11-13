@@ -39,7 +39,7 @@ class User extends Authenticatable
     }
 
     public function ownedAuctions(){
-        return $this->hasMany(Auction::Class);
+        return $this->hasMany(Auction::Class, 'auction_owner_id');
     }
 
     public function reportsMade(){
