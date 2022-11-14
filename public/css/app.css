@@ -33,3 +33,20 @@
     border: 1px solid black;
     border-radius: 1em;
 }
+
+#details_plus_images{
+    display: flex;
+}
+
+#auction_images{
+    display: flex;
+    flex-wrap: wrap;
+    width: 50em;
+    align-items: flex-start;
+}
+
+#auction_images img{
+    width: 20%;
+    height: 5%;
+    margin: 1em;
+}
