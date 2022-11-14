@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Auction;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\AuctionController;
@@ -23,9 +24,9 @@ class MainPageController extends Controller
             $selectedAuctions = $auctionController->selectedAuctions();
         else
             $selectedAuctions = NULL;
-        $mostActive = $auctionController->mostActive();
+        $mostActive = (new Auction())->mostActive();
         $categories = (new CategoryController())->list();
-        $new = $auctionController->newAuctions();
+        $new = (new Auction())->newAuctions();
         return view('pages.main_page', compact('selectedAuctions', 'mostActive', 'categories', 'new'));
     }
 }

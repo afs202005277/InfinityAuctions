@@ -54,7 +54,7 @@ class AuctionController extends Controller
         $name = $owner->name;
         $auctions = $owner->ownedAuctions()->where('auction.id', '<>', $auction_id)->get();
         $bids = $details->bids()->orderBy('amount')->get();
-        $mostActive = $this->mostActive();
+        $mostActive = (new Auction())->mostActive();
         return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive'));
     }
 
@@ -95,26 +95,5 @@ class AuctionController extends Controller
     public function selectedAuctions()
     {
         return Auth::user()->followingAuctions()->get();
-    }
-
-    public function mostActive()
-    {
-        $values = DB::select(DB::raw('SELECT duration_table.*, amount.amount_bids, amount_bids::decimal / to_seconds(duration)::decimal as "rate"
-                    FROM (SELECT *, auction.end_date - auction.start_date AS "duration"
-                          FROM auction
-                          ORDER BY auction.id) AS "duration_table",
-                         (SELECT auction_id, count(*) AS "amount_bids" FROM bid GROUP BY auction_id ORDER BY auction_id) AS "amount"
-                    WHERE amount.auction_id = duration_table.id AND duration_table.state = \'Running\'
-                    ORDER BY rate DESC LIMIT 10;'));
-        return $values;
-    }
-
-    public function newAuctions()
-    {
-        $newA = DB::table('auction')
-            ->where('state', 'Running')
-            ->orderBy('start_date', 'DESC')
-            ->limit(10);
-        return $newA->get();
     }
 }
