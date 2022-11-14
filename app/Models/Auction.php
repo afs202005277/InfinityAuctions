@@ -11,9 +11,11 @@ class Auction extends Model
     protected $table = 'auction';
 
     public $timestamps = false;
+
     // use HasFactory;
 
-    public function bids(){
+    public function bids()
+    {
         return $this->hasMany(Bid::class);
     }
 
@@ -38,23 +40,36 @@ class Auction extends Model
         return $newA->get();
     }
 
-    public function followers(){
+    public function runningAuctions()
+    {
+        return DB::table('auction')
+            ->where('state', 'Running')
+            ->limit(10)
+            ->get();
+    }
+
+    public function followers()
+    {
         return $this->belongsToMany(User::class);
     }
 
-    public function owner(){
+    public function owner()
+    {
         return $this->belongsTo(User::class, 'auction_owner_id');
     }
 
-    public function notifications(){
+    public function notifications()
+    {
         return $this->hasMany(Notification::class);
     }
 
-    public function categories(){
+    public function categories()
+    {
         return $this->belongsToMany(Category::class);
     }
 
-    public function reports(){
+    public function reports()
+    {
         return $this->hasMany(Report::class);
     }
 
