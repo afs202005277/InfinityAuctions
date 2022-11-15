@@ -6,8 +6,8 @@ info:
  description: 'Web Resources Specification (A7) for Infinity Auction'
 
 servers:
-- url: http://lbaw2271.lbaw.fe.up.pt
- description: Production server
+ - url: http://lbaw2271.lbaw.fe.up.pt
+   description: Production server
 
 externalDocs:
  description: Find more info here.
@@ -17,11 +17,11 @@ tags:
  - name: 'M01: Registration and authentication'
  - name: 'M02: Static pages'
  - name: 'M03: Platform administration'
- - name: 'M04: Users'
- - name: 'M05: Auctions'
+ - name: 'M04: Individual user'
  - name: 'M05: Auctions'
  - name: 'M06: Reports'
- - name: 'M07: Reviews & Wishlists'
+ - name: 'M07: Wishlist'
+ - name: 'M08: Notifications'
  
 
 paths:
@@ -143,8 +143,7 @@ paths:
                  description: 'Failed authentication. Redirect to login form.'
                  value: '/login'
 
-
-  /about:
+ /about:
     get:
       operationId: R201
       summary: 'R201: About page'
@@ -154,7 +153,8 @@ paths:
       responses:
         '200':
           description: 'Ok. Show about us UI'
-  /services:
+
+ /services:
     get:
       operationId: R202
       summary: 'R202: Services page'
@@ -164,7 +164,7 @@ paths:
       responses:
         '200':
           description: 'Ok. Show Services Page UI'
-  /faq:
+ /faq:
     get:
       operationId: R203
       summary: 'R203: About page'
@@ -174,7 +174,7 @@ paths:
       responses:
         '200':
           description: 'Ok. FAQ UI'
-  /contacts:
+ /contacts:
     get:
       operationId: R204
       summary: 'R203: Contacts page'
@@ -184,17 +184,23 @@ paths:
       responses:
         '200':
           description: 'Ok. Show contacts page UI'
-    
-  
- /auction/{id}:
-   post:
-     operationId: R301
-     summary: 'R301: Edit Auction'
-     description: 'Allows the admin to change info of a certain auction, ranging from the enddate of the auction to the media of said auction. Access: ADM'
-     tags:
+
+ /manage/auction/{id}:
+     post:
+      parameters:
+          - in: path
+            name: id
+            schema:
+              type: integer
+            required: true
+            description: Numeric ID of the auction to get
+      operationId: R301
+      summary: 'R301: Edit Auction'
+      description: 'Allows the admin to change info of a certain auction, ranging from the enddate of the auction to the media of said auction. Access: ADM'
+      tags:
        - 'M03: Platform administration'
 
-     requestBody:
+      requestBody:
        required: true
        content:
          application/x-www-form-urlencoded:
@@ -216,7 +222,7 @@ paths:
                state:
                  type: string
 
-     responses:
+      responses:
        '302':
          description: 'Redirect after processing the data change.'
          headers:
@@ -230,15 +236,21 @@ paths:
                302Failure:
                  description: 'Failed edit. Redirect to the same page to attempt a new change.'
                  value: '/auction/{id}'
+     delete:
+      parameters:
+          - in: path
+            name: id
+            schema:
+              type: integer
+            required: true
+            description: Numeric ID of the auction to get'
+      operationId: R302
+      summary: 'R302: Delete Auction'
+      description: 'Allows the admin to delete an auction. Access: ADM'
+      tags:
+        - 'M03: Platform administration'
 
-  delete:
-     operationId: R302
-     summary: 'R302: Delete Auction'
-     description: 'Allows the admin to delete an auction. Access: ADM'
-     tags:
-       - 'M03: Platform administration'
-
-     requestBody:
+      requestBody:
        required: true
        content:
          application/x-www-form-urlencoded:
@@ -250,7 +262,7 @@ paths:
              required:
                   - password
 
-     responses:
+      responses:
        '302':
          description: 'Redirect after deleting.'
          headers:
@@ -265,8 +277,15 @@ paths:
                  description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
                  value: '/auction/{id}'
 
-/users/{id}:
+ /manage/users/{id}:
    post:
+     parameters:
+          - in: path
+            name: id
+            schema:
+              type: integer
+            required: true
+            description: Numeric ID of the user to get
      operationId: R303
      summary: 'R303: Manage User'
      description: 'Allows the admin to change info of the user. Access: ADM'
@@ -315,8 +334,14 @@ paths:
                302Failure:
                  description: 'Failed edit. Redirect to the same page to attempt a new change.'
                  value: 'users/{id}'
-
-  delete:
+   delete:
+     parameters:
+          - in: path
+            name: id
+            schema:
+              type: integer
+            required: true
+            description: Numeric ID of the auction to get
      operationId: R304
      summary: 'R304: Delete Auction'
      description: 'Allows the admin to delete a user. Access: ADM'
@@ -350,7 +375,7 @@ paths:
                  description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
                  value: '/users/{id}'
 
- /reports:
+ /manage/reports:
    get:
      operationId: R305
      summary: 'R305: Get reports'
@@ -360,110 +385,147 @@ paths:
      responses:
        '200':
          description: 'Ok. Show all reports UI'
+       '400':
+         description: 'Something went wrong. Please try again'
 
- /users/{id}:
+ /manage/categories:
    get:
-     operationId: R401
-     summary: 'R401: View user profile'
-     description: 'Show the individual user profile. Access: USR'
+     operationId: R306
+     summary: 'R306: Get categories'
+     description: 'See all the categories. Access: ADM'
      tags:
-       - 'M04: Users'
+       - 'M03: Platform administration'
+     responses:
+       '200':
+         description: 'Ok. Show all categories'
+       '400':
+         description: 'Something went wrong. Please try again'
+   post:
+     operationId: R307
+     summary: 'R307: Edit Auction Categories'
+     description: 'Allows the admin to change categories of auctions. Access: ADM'
+     tags:
+       - 'M03: Platform administration'
 
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: array
+             items:
+              type: string       
+     responses:
+       '200':
+         description: 'Ok. Categories edited'
+       '400':
+         description: 'Something went wrong. Please try again'
+   delete:
+     operationId: R308
+     summary: 'R308: Delete Auction'
+     description: 'Allows the admin to delete a user. Access: ADM'
+     tags:
+       - 'M03: Platform administration'
+
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: object
+             properties:
+               password:
+                type: string
+             required:
+                  - password
+     responses:
+       '200':
+         description: 'Ok. Category deleted'
+       '400':
+         description: 'Something went wrong. Please try again'
+  
+ /report/{id}:
+   get:
      parameters:
-       - in: path
-         name: id
-         schema:
-           type: integer
-         required: true
-
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the report to post to
+     operationId: R601
+     summary: 'R601: Get Reports'
+     description: 'Receive reports for admmin to handle. Access: ADM'
+     tags:
+      - 'M06: Reports'
      responses:
        '200':
-         description: 'Ok. Show User Profile UI'
-
- /auctions:
-   get:
-     operationId: R501
-     summary: 'R501: Register Form'
-     description: 'Provide new user registration form. Access: PUB'
-     tags:
-       - 'M05: Platform administration'
-     responses:
-       '200':
-         description: 'Ok. Show Sign-Up UI'
-
- /api/auctions:
-   get:
-     operationId: R501
-     summary: 'R501: Search Auctions API'
-     description: 'Searches for Auctions and returns the results as JSON. Access: PUB.'
-
-     tags:
-       - 'M05: Auctions'
-
+         description: 'Ok.  Reports received'
+       '400':
+         description: 'Something went wrong. Please try again'
+  
+   post:
      parameters:
-       - in: query
-         name: query
-         description: String to use for full-text search
-         schema:
-           type: string
-         required: false
-       - in: query
-         name: item
-         description: Category of the Auctions
-         schema:
-           type: string
-         required: false
-       - in: query
-         name: loaned
-         description: Boolean with the loaned flag value
-         schema:
-           type: boolean
-         required: false
-       - in: query
-         name: owner
-         description: Boolean with the owner flag value
-         schema:
-           type: boolean
-         required: false
-       - in: query
-         name: classification
-         description: Integer corresponding to the work classification
-         schema:
-           type: integer
-         required: false
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the report to post to
+     operationId: R602
+     summary: 'R602: Edit User'
+     description: 'Allows the admin to change info of a certain report inluding the penalty for the reported_user.'
+     tags:
+      - 'M06: Reports'
+
+     requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              date:
+                type: string
+              penalty:
+                type: integer
+              reported_user:
+                type: integer
+              reporter: 
+                type: integer
+              auction_reported:
+                type: integer
+              admin_id:
+                type: integer
 
      responses:
        '200':
-         description: Success
-         content:
-           application/json:
-             schema:
-               type: array
-               items:
-                 type: object
-                 properties:
-                   id:
-                     type: string
-                   title:
-                     type: string
-                   obs:
-                     type: string
-                   year:
-                     type: string
-                   owner:
-                     type: string
-                   type:
-                     type: string
-               example:
-                 - id: 1
-                   title: Rihanna - Unapologetic
-                   obs: Good pop music album.
-                   year: 2012
-                   owner: Joana Lima
-                   type: MP3
-                 - id: 15
-                   title: Mr. Bean
-                   obs: The best comedy movie.
-                   year: 1995
-                   owner: Manuel Teixeira
-                   type: DVD
+         description: 'Ok. Reports edited'
+       '400':
+         description: 'Something went wrong. Please try again'
+   delete:
+     operationId: R303
+     summary: 'R304: Delete Auction'
+     description: 'Allows the admin to delete a report. Access: ADM'
+     tags:
+       - 'M06: Reports'
+
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: object
+             properties:
+               password:
+                type: string
+             required:
+                  - password
+     responses:
+       '200':
+         description: 'Ok. Report deleted'
+       '400':
+         description: 'Something went wrong. Please try again'
+  
