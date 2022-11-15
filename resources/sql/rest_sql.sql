@@ -211,6 +211,6 @@ CREATE INDEX idx_auctions ON auction USING GIN (auction_tokens);
 -- Query
 SELECT name, description, ts_rank(auction_tokens, query) AS rank
 FROM auction,
-     plainto_tsquery('english', 'ford') query
+     plainto_tsquery('english', 'ford car') query
 WHERE auction_tokens @@ query
 ORDER BY rank DESC

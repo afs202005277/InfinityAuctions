@@ -13,7 +13,7 @@
 // Home
 Route::get('/', MainPageController::class);
 
-Route::get('search', SearchPageController::class);
+Route::get('search/{query}', 'AuctionController@showSearchResults');
 
 // Cards
 Route::get('cards', 'CardController@list');

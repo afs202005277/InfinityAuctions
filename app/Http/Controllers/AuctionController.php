@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -95,5 +96,12 @@ class AuctionController extends Controller
     public function selectedAuctions()
     {
         return Auth::user()->followingAuctions()->get();
+    }
+
+    public function showSearchResults($query){
+//        DB::table('auction')->whereFullText('auction_tokens', 'ford bike');
+        $active = (new Auction())->runningAuctions();
+        $categories = Category::all();
+        return view('pages.search_page', compact('active', 'categories'));
     }
 }
