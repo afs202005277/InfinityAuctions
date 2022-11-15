@@ -78,7 +78,7 @@
                             <div class="block block-four"></div>
                             <a href="#">
                                 <img class="avatar" src="{{ asset('black') }}/img/emilyz.jpg" alt="">
-                                <h5 class="title">{{ $user->value('name') }}</h5>
+                                <h5 class="title">{{ auth()->user()->name }}</h5>
                             </a>
                             <p class="description">
                                 {{ __('Ceo/Co-Founder') }}
