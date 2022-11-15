@@ -17,7 +17,7 @@ tags:
  - name: 'M01: Registration and authentication'
  - name: 'M02: Static pages'
  - name: 'M03: Platform administration'
- - name: 'M04: Individual user'
+ - name: 'M04: Users'
  - name: 'M05: Auctions'
  - name: 'M06: Reports'
  - name: 'M07: Wishlist'
@@ -25,507 +25,1077 @@ tags:
  
 
 paths:
- /login:
-   get:
-     operationId: R101
-     summary: 'R101: Login Form'
-     description: 'Provide login form. Access: PUB'
-     tags:
-       - 'M01: Registration and authentication'
-     responses:
-       '200':
-         description: 'Ok. Show Log-in UI'
-   post:
-     operationId: R102
-     summary: 'R102: Login Action'
-     description: 'Processes the login form submission. Access: PUB'
-     tags:
-       - 'M01: Registration and authentication'
-
-     requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: object
-             properties:
-               email:          # <!--- form field name
-                 type: string
-               password:    # <!--- form field name
-                 type: string
-             required:
-                  - email
-                  - password
-
-     responses:
-       '302':
-         description: 'Redirect after processing the login credentials.'
-         headers:
-           Location:
-             schema:
-               type: string
-             examples:
-               302Success:
-                 description: 'Successful authentication. Redirect to user profile.'
-                 value: '/users/{id}'
-               302Error:
-                 description: 'Failed authentication. Redirect to login form.'
-                 value: '/login'
-
- /logout:
-
-   post:
-     operationId: R103
-     summary: 'R103: Logout Action'
-     description: 'Logout the current authenticated user. Access: USR, ADM'
-     tags:
-       - 'M01: Registration and authentication'
-     responses:
-       '302':
-         description: 'Redirect after processing logout.'
-         headers:
-           Location:
-             schema:
-               type: string
-             examples:
-               302Success:
-                 description: 'Successful logout. Redirect to login form.'
-                 value: '/login'
-
- /register:
-   get:
-     operationId: R104
-     summary: 'R104: Register Form'
-     description: 'Provide new user registration form. Access: PUB'
-     tags:
-       - 'M01: Registration and authentication'
-     responses:
-       '200':
-         description: 'Ok. Show Sign-Up UI'
-
-   post:
-     operationId: R105
-     summary: 'R105: Register Action'
-     description: 'Processes the new user registration form submission. Access: PUB'
-     tags:
-       - 'M01: Registration and authentication'
-
-     requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: object
-             properties:
-               name:
-                 type: string
-               email:
-                 type: string
-               picture:
-                 type: string
-                 format: binary
-             required:
-                  - email
-                  - password
-
-     responses:
-       '302':
-         description: 'Redirect after processing the new user information.'
-         headers:
-           Location:
-             schema:
-               type: string
-             examples:
-               302Success:
-                 description: 'Successful authentication. Redirect to user profile.'
-                 value: '/users/{id}'
-               302Failure:
-                 description: 'Failed authentication. Redirect to login form.'
-                 value: '/login'
-
- /about:
+  /login:
     get:
-      operationId: R201
-      summary: 'R201: About page'
-      description: 'About Page containing info about our webpage. Access: PUB'
+      operationId: R101
+      summary: 'R101: Login Form'
+      description: 'Provide login form. Access: PUB'
       tags:
-        - 'M02: Static pages'
+        - 'M01: Registration and authentication'
       responses:
         '200':
-          description: 'Ok. Show about us UI'
-
- /services:
-    get:
-      operationId: R202
-      summary: 'R202: Services page'
-      description: 'Services Page containing info about the services we provide. Access: PUB'
+          description: 'Ok. Show Log-in UI'
+    post:
+      operationId: R102
+      summary: 'R102: Login Action'
+      description: 'Processes the login form submission. Access: PUB'
       tags:
-        - 'M02: Static pages'
-      responses:
-        '200':
-          description: 'Ok. Show Services Page UI'
- /faq:
-    get:
-      operationId: R203
-      summary: 'R203: About page'
-      description: 'FAQ page containing the most frequently asked questions. Access: PUB'
-      tags:
-        - 'M02: Static pages'
-      responses:
-        '200':
-          description: 'Ok. FAQ UI'
- /contacts:
-    get:
-      operationId: R204
-      summary: 'R203: Contacts page'
-      description: 'Contacts page containing the our contacts, address and social media. Access: PUB'
-      tags:
-        - 'M02: Static pages'
-      responses:
-        '200':
-          description: 'Ok. Show contacts page UI'
-
- /manage/auction/{id}:
-     post:
-      parameters:
-          - in: path
-            name: id
-            schema:
-              type: integer
-            required: true
-            description: Numeric ID of the auction to get
-      operationId: R301
-      summary: 'R301: Edit Auction'
-      description: 'Allows the admin to change info of a certain auction, ranging from the enddate of the auction to the media of said auction. Access: ADM'
-      tags:
-       - 'M03: Platform administration'
+        - 'M01: Registration and authentication'
 
       requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: object
-             properties:
-               name:
-                 type: string
-               description:
-                 type: string
-               basePrice:
-                 type: integer
-               startDate:
-                 type: string
-               endDate: 
-                 type: string
-               buyNow:
-                 type: integer
-               state:
-                 type: string
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:          # <!--- form field name
+                  type: string
+                password:    # <!--- form field name
+                  type: string
+              required:
+                    - email
+                    - password
 
       responses:
-       '302':
-         description: 'Redirect after processing the data change.'
-         headers:
-           Location:
-             schema:
-               type: string
-             examples:
-               302Success:
-                 description: 'Successful edit. Redirect to all auctions page.'
-                 value: '/auctions'
-               302Failure:
-                 description: 'Failed edit. Redirect to the same page to attempt a new change.'
-                 value: '/auction/{id}'
-     delete:
-      parameters:
-          - in: path
-            name: id
+        '302':
+          description: 'Redirect after processing the login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+  /logout:
+
+    post:
+      operationId: R103
+      summary: 'R103: Logout Action'
+      description: 'Logout the current authenticated user. Access: USR, ADM'
+      tags:
+        - 'M01: Registration and authentication'
+      responses:
+        '302':
+          description: 'Redirect after processing logout.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to login form.'
+                  value: '/login'
+
+  /register:
+    get:
+      operationId: R104
+      summary: 'R104: Register Form'
+      description: 'Provide new user registration form. Access: PUB'
+      tags:
+        - 'M01: Registration and authentication'
+      responses:
+        '200':
+          description: 'Ok. Show Sign-Up UI'
+
+    post:
+      operationId: R105
+      summary: 'R105: Register Action'
+      description: 'Processes the new user registration form submission. Access: PUB'
+      tags:
+        - 'M01: Registration and authentication'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
             schema:
-              type: integer
-            required: true
-            description: Numeric ID of the auction to get'
-      operationId: R302
-      summary: 'R302: Delete Auction'
-      description: 'Allows the admin to delete an auction. Access: ADM'
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                picture:
+                  type: string
+                  format: binary
+              required:
+                    - email
+                    - password
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+  /about:
+      get:
+        operationId: R201
+        summary: 'R201: About page'
+        description: 'About Page containing info about our webpage. Access: PUB'
+        tags:
+          - 'M02: Static pages'
+        responses:
+          '200':
+            description: 'Ok. Show about us UI'
+
+  /services:
+      get:
+        operationId: R202
+        summary: 'R202: Services page'
+        description: 'Services Page containing info about the services we provide. Access: PUB'
+        tags:
+          - 'M02: Static pages'
+        responses:
+          '200':
+            description: 'Ok. Show Services Page UI'
+  /faq:
+      get:
+        operationId: R203
+        summary: 'R203: About page'
+        description: 'FAQ page containing the most frequently asked questions. Access: PUB'
+        tags:
+          - 'M02: Static pages'
+        responses:
+          '200':
+            description: 'Ok. FAQ UI'
+  /contacts:
+      get:
+        operationId: R204
+        summary: 'R203: Contacts page'
+        description: 'Contacts page containing the our contacts, address and social media. Access: PUB'
+        tags:
+          - 'M02: Static pages'
+        responses:
+          '200':
+            description: 'Ok. Show contacts page UI'
+
+  /manage/auction/{id}:
+      post:
+        parameters:
+            - in: path
+              name: id
+              schema:
+                type: integer
+              required: true
+              description: Numeric ID of the auction to get
+        operationId: R301
+        summary: 'R301: Edit Auction'
+        description: 'Allows the admin to change info of a certain auction, ranging from the enddate of the auction to the media of said auction. Access: ADM'
+        tags:
+        - 'M03: Platform administration'
+
+        requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  basePrice:
+                    type: integer
+                  startDate:
+                    type: string
+                  endDate: 
+                    type: string
+                  buyNow:
+                    type: integer
+                  state:
+                    type: string
+
+        responses:
+          '302':
+            description: 'Redirect after processing the data change.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  302Success:
+                    description: 'Successful edit. Redirect to all auctions page.'
+                    value: '/auctions'
+                  302Failure:
+                    description: 'Failed edit. Redirect to the same page to attempt a new change.'
+                    value: '/auction/{id}'
+      delete:
+        parameters:
+            - in: path
+              name: id
+              schema:
+                type: integer
+              required: true
+              description: Numeric ID of the auction to get'
+        operationId: R302
+        summary: 'R302: Delete Auction'
+        description: 'Allows the admin to delete an auction. Access: ADM'
+        tags:
+          - 'M03: Platform administration'
+
+        requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  password:
+                    type: string
+                required:
+                      - password
+
+        responses:
+          '302':
+            description: 'Redirect after deleting.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  302Success:
+                    description: 'Successful deletion. Redirect to all auctions page.'
+                    value: '/auctions'
+                  302Failure:
+                    description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
+                    value: '/auction/{id}'
+
+  /manage/users/{id}:
+    post:
+      parameters:
+            - in: path
+              name: id
+              schema:
+                type: integer
+              required: true
+              description: Numeric ID of the user to get
+      operationId: R303
+      summary: 'R303: Manage User'
+      description: 'Allows the admin to change info of the user. Access: ADM'
       tags:
         - 'M03: Platform administration'
 
       requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: object
-             properties:
-               password:
-                type: string
-             required:
-                  - password
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                gender:
+                  type: string
+                cellphone:
+                  type: integer
+                email:
+                  type: string
+                birth_date: 
+                  type: string
+                address:
+                  type: string
+                rate:
+                  type: integer
+                credits:
+                  type: integer
+                wishlist:
+                  type: string
+                
+                
 
       responses:
-       '302':
-         description: 'Redirect after deleting.'
-         headers:
-           Location:
-             schema:
-               type: string
-             examples:
-               302Success:
-                 description: 'Successful deletion. Redirect to all auctions page.'
-                 value: '/auctions'
-               302Failure:
-                 description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
-                 value: '/auction/{id}'
+        '302':
+          description: 'Redirect after processing the data change.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edit. Redirect to all users page.'
+                  value: '/users'
+                302Failure:
+                  description: 'Failed edit. Redirect to the same page to attempt a new change.'
+                  value: 'users/{id}'
+    delete:
+      parameters:
+            - in: path
+              name: id
+              schema:
+                type: integer
+              required: true
+              description: Numeric ID of the auction to get
+      operationId: R304
+      summary: 'R304: Delete Auction'
+      description: 'Allows the admin to delete a user. Access: ADM'
+      tags:
+        - 'M03: Platform administration'
 
- /manage/users/{id}:
-   post:
-     parameters:
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+              required:
+                    - password
+
+      responses:
+        '302':
+          description: 'Redirect after deleting.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful deletion. Redirect to all users page.'
+                  value: '/users'
+                302Failure:
+                  description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
+                  value: '/users/{id}'
+
+  /manage/reports:
+    get:
+      operationId: R305
+      summary: 'R305: Get reports'
+      description: 'See all the reports. Access: ADM'
+      tags:
+        - 'M03: Platform administration'
+      responses:
+        '200':
+          description: 'Ok. Show all reports UI'
+        '400':
+          description: 'Something went wrong. Please try again'
+
+  /manage/categories:
+    get:
+      operationId: R306
+      summary: 'R306: Get categories'
+      description: 'See all the categories. Access: ADM'
+      tags:
+        - 'M03: Platform administration'
+      responses:
+        '200':
+          description: 'Ok. Show all categories'
+        '400':
+          description: 'Something went wrong. Please try again'
+    post:
+      operationId: R307
+      summary: 'R307: Edit Auction Categories'
+      description: 'Allows the admin to change categories of auctions. Access: ADM'
+      tags:
+        - 'M03: Platform administration'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: array
+              items:
+                type: string       
+      responses:
+        '200':
+          description: 'Ok. Categories edited'
+        '400':
+          description: 'Something went wrong. Please try again'
+    delete:
+      operationId: R308
+      summary: 'R308: Delete Auction'
+      description: 'Allows the admin to delete a user. Access: ADM'
+      tags:
+        - 'M03: Platform administration'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+              required:
+                    - password
+      responses:
+        '200':
+          description: 'Ok. Category deleted'
+        '400':
+          description: 'Something went wrong. Please try again'
+    
+  /report/{id}:
+    get:
+      parameters:
           - in: path
             name: id
             schema:
               type: integer
             required: true
-            description: Numeric ID of the user to get
-     operationId: R303
-     summary: 'R303: Manage User'
-     description: 'Allows the admin to change info of the user. Access: ADM'
-     tags:
-       - 'M03: Platform administration'
-
-     requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: object
-             properties:
-               name:
-                 type: string
-               gender:
-                 type: string
-               cellphone:
-                 type: integer
-               email:
-                 type: string
-               birth_date: 
-                 type: string
-               address:
-                 type: string
-               rate:
-                 type: integer
-               credits:
-                 type: integer
-               wishlist:
-                 type: string
-              
-               
-
-     responses:
-       '302':
-         description: 'Redirect after processing the data change.'
-         headers:
-           Location:
-             schema:
-               type: string
-             examples:
-               302Success:
-                 description: 'Successful edit. Redirect to all users page.'
-                 value: '/users'
-               302Failure:
-                 description: 'Failed edit. Redirect to the same page to attempt a new change.'
-                 value: 'users/{id}'
-   delete:
-     parameters:
+            description: Numeric ID of the report to post to
+      operationId: R601
+      summary: 'R601: Get Reports'
+      description: 'Receive reports for admmin to handle. Access: ADM'
+      tags:
+        - 'M06: Reports'
+      responses:
+        '200':
+          description: 'Ok.  Reports received'
+        '400':
+          description: 'Something went wrong. Please try again'
+    
+    post:
+      parameters:
           - in: path
             name: id
             schema:
               type: integer
             required: true
-            description: Numeric ID of the auction to get
-     operationId: R304
-     summary: 'R304: Delete Auction'
-     description: 'Allows the admin to delete a user. Access: ADM'
-     tags:
-       - 'M03: Platform administration'
+            description: Numeric ID of the report to post to
+      operationId: R602
+      summary: 'R602: Edit User'
+      description: 'Allows the admin to change info of a certain report inluding the penalty for the reported_user.'
+      tags:
+        - 'M06: Reports'
 
-     requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: object
-             properties:
-               password:
-                type: string
-             required:
-                  - password
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                date:
+                  type: string
+                penalty:
+                  type: integer
+                reported_user:
+                  type: integer
+                reporter: 
+                  type: integer
+                auction_reported:
+                  type: integer
+                admin_id:
+                  type: integer
 
-     responses:
-       '302':
-         description: 'Redirect after deleting.'
-         headers:
-           Location:
-             schema:
-               type: string
-             examples:
-               302Success:
-                 description: 'Successful deletion. Redirect to all users page.'
-                 value: '/users'
-               302Failure:
-                 description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
-                 value: '/users/{id}'
+      responses:
+        '200':
+          description: 'Ok. Reports edited'
+        '400':
+          description: 'Something went wrong. Please try again'
+    delete:
+      operationId: R303
+      summary: 'R304: Delete Auction'
+      description: 'Allows the admin to delete a report. Access: ADM'
+      tags:
+        - 'M06: Reports'
 
- /manage/reports:
-   get:
-     operationId: R305
-     summary: 'R305: Get reports'
-     description: 'See all the reports. Access: ADM'
-     tags:
-       - 'M03: Platform administration'
-     responses:
-       '200':
-         description: 'Ok. Show all reports UI'
-       '400':
-         description: 'Something went wrong. Please try again'
-
- /manage/categories:
-   get:
-     operationId: R306
-     summary: 'R306: Get categories'
-     description: 'See all the categories. Access: ADM'
-     tags:
-       - 'M03: Platform administration'
-     responses:
-       '200':
-         description: 'Ok. Show all categories'
-       '400':
-         description: 'Something went wrong. Please try again'
-   post:
-     operationId: R307
-     summary: 'R307: Edit Auction Categories'
-     description: 'Allows the admin to change categories of auctions. Access: ADM'
-     tags:
-       - 'M03: Platform administration'
-
-     requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: array
-             items:
-              type: string       
-     responses:
-       '200':
-         description: 'Ok. Categories edited'
-       '400':
-         description: 'Something went wrong. Please try again'
-   delete:
-     operationId: R308
-     summary: 'R308: Delete Auction'
-     description: 'Allows the admin to delete a user. Access: ADM'
-     tags:
-       - 'M03: Platform administration'
-
-     requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: object
-             properties:
-               password:
-                type: string
-             required:
-                  - password
-     responses:
-       '200':
-         description: 'Ok. Category deleted'
-       '400':
-         description: 'Something went wrong. Please try again'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+              required:
+                    - password
+      responses:
+        '200':
+          description: 'Ok. Report deleted'
+        '400':
+          description: 'Something went wrong. Please try again'
   
- /report/{id}:
-   get:
-     parameters:
+  # M04: User
+  /my:
+    get:
+      operationId: R401
+      summary: 'R401: My profile'
+      description: 'Show signed user account. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      responses:
+        '200':
+          description: 'Ok. Show My Profile UI'
+        '401':
+          description: 'Error user is not logged in'
+  
+  /my/settings:
+    get:
+      operationId: R402
+      summary: 'R402: My profile settings'
+      description: 'Show signed user profile settings. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      responses:
+        '200':
+          description: 'Ok. Show My Profile settings UI'
+        '401':
+          description: 'Error user is not logged in'
+    
+    put:
+      operationId: R403
+      summary: 'R403: Change profile settings'
+      description: 'Process new profile settings. Access: USR'
+      tags:
+        - 'M04: Users'
+      
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                gender:
+                  type: string
+                  enum: ['M', 'F', 'NB', 'O']
+                phone:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                birthdate:
+                  type: string
+                  format: date
+                address:
+                  type: string
+                picture:
+                  type: string
+                  format: binary
+      
+      responses:
+        '200':
+          description: 'Ok. Show My Profile settings UI'
+        '401':
+          description: 'Error user is not logged in'
+
+  
+  /my/settings/password:
+    get:
+      operationId: R404
+      summary: 'R404: Change password'
+      description: 'Show password form. Access: USR'
+      tags:
+        - 'M04: Users'
+      
+      responses:
+        '200':
+          description: 'Ok. Show change password page.'
+        '401':
+          description: 'Error user is not logged in'
+    
+    put:
+      operationId: R405
+      summary: 'R405: New Password'
+      description: 'Processes new password submission. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                  format: password
+                new_password:
+                  type: string
+                  format: password
+              required:
+                  - old_password
+                  - new_password
+      
+      responses:
+        '302':
+          description: 'Redirect after changing password.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully changed. Redirect user settings page.'
+                  value: '/my/settings'
+                302Failure:
+                  description: 'Failed. Redirect to the same page for new attempt.'
+                  value: '/my/settings/password'
+        '401':
+          description: 'Error user is not logged in'
+  
+  /my/settings/delete_account:
+    put:
+      operationId: R406
+      summary: 'R406: Delete account'
+      description: 'Deletes personal information. Access: USR'
+      tags:
+        - 'M04: Users'
+      
+      responses:
+        '302':
+          description: 'Redirect after deleting account.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully deleted account. Redirect to main page.'
+                  value: '/'
+                302Failure:
+                  description: 'Failed to delete account. Redirect to the account settings page.'
+                  value: '/my/settings'
+        '401':
+          description: 'Error user is not logged in'
+  
+  /my/add_credits:
+    get:
+      operationId: R407
+      summary: 'R407: Add credits form'
+      description: 'Shows user credits form. Access: USR'
+      tags:
+        - 'M04: Users'
+      
+      responses:
+        '200':
+          description: 'Ok. Show Credits UI'
+        '401':
+          description: 'Error user is not logged in'
+
+    put:
+      operationId: R408
+      summary: 'R408: Add credits to account'
+      description: 'Processes request to add credits'
+      tags:
+        - 'M04: Users'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                added_funds:
+                  type: integer
+                  minimum: 1
+              required:
+                - added_funds
+      
+      responses:
+        '302':
+          description: 'Redirect after adding credits.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully added credits to account. Redirect to account page.'
+                  value: '/my'
+                302Failure:
+                  description: 'Failed to add credits to account. Redirect to add credits form.'
+                  value: '/my/add_credits'
+        '401':
+          description: 'Error user is not logged in'
+
+  /my/followed:
+    get:
+      operationId: R409
+      summary: 'R409: Followed auctions'
+      description: 'Show signed user followed auctions. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      responses:
+        '200':
+          description: 'Ok. Show followed auctions list'
+        '401':
+          description: 'Error user is not logged in'
+  
+  /my/bidded:
+    get:
+      operationId: R410
+      summary: 'R410: Bidded auctions'
+      description: 'Show signed user bidded auctions. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      responses:
+        '200':
+          description: 'Ok. Show bidded auctions list'
+        '401':
+          description: 'Error user is not logged in'
+  
+  /my/auctions:
+    get:
+      operationId: R411
+      summary: 'R411: Users auctions list'
+      description: 'Collection of auctions that belong to the user. Access: OWN'
+      tags:
+        - 'M04: Users'
+
+      responses:
+        '200':
+          description: 'Ok. Show auctions list'
+        '401':
+          description: 'Error user is not logged in'
+
+
+  /users/{id}:
+    get:
+      operationId: R412
+      summary: 'R412: View user profile'
+      description: 'Show user profile. Access: PUB'
+      tags:
+        - 'M04: Users'
+
+      parameters:
         - in: path
           name: id
           schema:
             type: integer
           required: true
-          description: Numeric ID of the report to post to
-     operationId: R601
-     summary: 'R601: Get Reports'
-     description: 'Receive reports for admmin to handle. Access: ADM'
-     tags:
-      - 'M06: Reports'
-     responses:
-       '200':
-         description: 'Ok.  Reports received'
-       '400':
-         description: 'Something went wrong. Please try again'
-  
-   post:
-     parameters:
+
+      responses:
+        '200':
+          description: 'Ok. Show User Profile UI'
+
+  /my/wishlist:
+    get:
+      operationId: R413
+      summary: 'R413: My Wishlist'
+      description: 'Show wishlist configuration. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      responses:
+        '200':
+          description: 'Ok. Show wishlist UI'
+        '401':
+          description: 'Error user is not logged in'
+    
+    put:
+      operationId: R414
+      summary: 'R414: Wishlist '
+      description: 'Change Wishlist configuration. Access: USR'
+      tags:
+        - 'M04: Users'
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                whislist:
+                  type: array
+      
+      responses:
+        '200':
+          description: 'Ok. Show wishlist UI'
+        '401':
+          description: 'Error user is not logged in'
+
+
+  # M05: Auctions
+  /auctions/{id}:
+    get:
+      operationId: R501
+      summary: 'R501: View Auction'
+      description: 'Show auction page. Access: PUB'
+      tags:
+        - 'M05: Auctions'
+
+      parameters:
         - in: path
           name: id
           schema:
             type: integer
           required: true
-          description: Numeric ID of the report to post to
-     operationId: R602
-     summary: 'R602: Edit User'
-     description: 'Allows the admin to change info of a certain report inluding the penalty for the reported_user.'
-     tags:
-      - 'M06: Reports'
 
-     requestBody:
-      required: true
-      content:
-        application/x-www-form-urlencoded:
-          schema:
-            type: object
-            properties:
-              id:
-                type: integer
-              date:
-                type: string
-              penalty:
-                type: integer
-              reported_user:
-                type: integer
-              reporter: 
-                type: integer
-              auction_reported:
-                type: integer
-              admin_id:
-                type: integer
-
-     responses:
-       '200':
-         description: 'Ok. Reports edited'
-       '400':
-         description: 'Something went wrong. Please try again'
-   delete:
-     operationId: R303
-     summary: 'R304: Delete Auction'
-     description: 'Allows the admin to delete a report. Access: ADM'
-     tags:
-       - 'M06: Reports'
-
-     requestBody:
-       required: true
-       content:
-         application/x-www-form-urlencoded:
-           schema:
-             type: object
-             properties:
-               password:
-                type: string
-             required:
-                  - password
-     responses:
-       '200':
-         description: 'Ok. Report deleted'
-       '400':
-         description: 'Something went wrong. Please try again'
+      responses:
+        '200':
+          description: 'Ok. Show auction page'
   
+  /auctions/create:
+    get:
+      operationId: R502
+      summary: 'R502: Create auction page'
+      description: 'Fetch auction creation form. Access: USR'
+      tags:
+        - 'M05: Auctions'
+
+      responses:
+        '200':
+          description: 'Ok. Show creation page'
+        '401':
+          description: 'Error user is not logged in'
+    
+    post:
+      operationId: R503
+      summary: 'R503: Auction creation form'
+      description: 'Processes form in order to create the auction. Access: USR'
+      tags:
+        - 'M05: Auctions'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                base_price:
+                  type: integer
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+                buy_now:
+                  type: integer
+                auction_state:
+                  type: string
+                  enum: ['Running', 'To be started']
+              required:
+                - name
+                - description
+                - base_price
+                - start_date
+                - end_date
+                - auction_state
+
+      responses:
+        '302':
+          description: 'Redirect after creating auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully created auction. Redirect to auction page.'
+                  value: '/auction/{id}'
+                302Failure:
+                  description: 'Failed to create auction. Redirect create auction page.'
+                  value: '/auction/create'
+        '401':
+          description: 'Error user is not logged in'
+  
+  /auctions/{id}/edit:
+    get:
+      operationId: R504
+      summary: 'R504: Edit auction page'
+      description: 'Fetch form to edit the auction. Access: OWN'
+      
+      tags:
+        - 'M05: Auctions'
+      
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Show edit form UI'
+    
+    put:
+      operationId: R505
+      summary: 'R505 Edit auction form'
+      description: 'Processes form in order to edit the auction. Access: OWN'
+      
+      tags:
+        - 'M05: Auctions'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                base_price:
+                  type: integer
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+                buy_now:
+                  type: integer
+                auction_state:
+                  type: string
+                  enum: ['Running', 'To be started']
+              required:
+                - name
+                - description
+                - base_price
+                - start_date
+                - end_date
+                - auction_state
+
+      responses:
+        '302':
+          description: 'Redirect after editing auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully edited auction. Redirect to auction page.'
+                  value: '/auction/{id}'
+                302Failure:
+                  description: 'Failed to edit auction. Redirect edit auction page.'
+                  value: '/auction/{id}/edit'
+        '401':
+          description: 'Error user is not logged in'
+
+  /auctions/{id}/follow:
+    post:
+      operationId: R506
+      summary: 'R506 Follow auction'
+      description: 'User makes a request to follow a specific auction. Access: USR'
+
+      tags:
+        - 'M05: Auctions'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+              required:
+                - user_id
+      
+      responses:
+        '302':
+          description: 'Redirect after following auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully followed auction. Redirect to auction page.'
+                  value: '/auction/{id}'
+                302Failure:
+                  description: 'Failed to edit follow auction. Redirect edit auction page.'
+                  value: '/auction/{id}'
+        '401':
+          description: 'Error user is not logged in'
+
+  /auctions/{id}/bid:
+    post:
+      operationId: R507
+      summary: 'R507 Bid on auction'
+      description: 'User bids on the auction. Access: USR'
+
+      tags:
+        - 'M05: Auctions'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                value:
+                  type: integer
+                date:
+                  type: string
+                  format: date
+              required:
+                - user_id
+                - value
+                - date
+      
+      responses:
+        '302':
+          description: 'Redirect after biding on the auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfull bid. Redirect to auction page.'
+                  value: '/auction/{id}'
+                302Failure:
+                  description: 'Failed to make a bid. Redirect edit auction page.'
+                  value: '/auction/{id}'
+        '401':
+          description: 'Error user is not logged in'
