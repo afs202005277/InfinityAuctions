@@ -12,8 +12,12 @@
 */
 // Home
 Route::get('/', MainPageController::class);
+Route::get('/faqs', function () { return view('pages.faq'); });
+Route::get('/about', function () { return view('pages.about'); });
+Route::get('/contacts', function () { return view('pages.contacts'); });
+Route::get('/services', function () { return view('pages.services'); });
 
-Route::get('search', SearchPageController::class);
+Route::get('search/{query}', 'AuctionController@showSearchResults');
 
 // Cards
 Route::get('cards', 'CardController@list');
