@@ -24,7 +24,7 @@ class MainPageController extends Controller
         if (Auth::user() !== NULL)
             $selectedAuctions = $auctionController->selectedAuctions();
         else
-            $selectedAuctions = NULL;
+            $selectedAuctions = (new Auction())->mostActive();
         $mostActive = (new Auction())->mostActive();
         $categories = (new CategoryController())->list();
         $new = (new Auction())->newAuctions();

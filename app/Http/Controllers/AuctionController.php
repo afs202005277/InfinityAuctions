@@ -95,7 +95,7 @@ class AuctionController extends Controller
 
     public function selectedAuctions()
     {
-        return Auth::user()->followingAuctions()->get();
+        return Auth::user()->followingAuctions()->limit(5)->get();
     }
 
     public function showSearchResults($query){

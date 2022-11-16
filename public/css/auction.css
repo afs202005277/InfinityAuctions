@@ -1,0 +1,110 @@
+.toparea {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.toparea > .images {
+    width: 50%;
+}
+
+.toparea > .images > #auction_images {
+    display: flex;
+    justify-content: space-around;
+}
+
+.toparea > .images > #auction_images > img {
+    width: 24%;
+}
+
+.toparea > .details {
+    width: 47%;
+    margin-right: 3%;
+}
+
+.toparea > .details > div > .name {
+    font-weight: 600;
+    font-size: 3rem;
+    margin: 0;
+}
+
+.toparea > .details > div > .desc {
+    margin: 0;
+    margin-top: 2rem;
+    text-align: justify;
+    font-weight: 500;
+    font-size: 1.55rem;
+}
+
+.toparea > .details > div > .time-rem {
+
+    font-weight: 100;
+    font-size: 1.35rem;
+    margin: 0;
+    margin-top: 2.2rem;
+    color: var(--ten);
+}
+
+.toparea > .details > div > #final-date {
+    margin: 0;
+    font-size: 4rem;
+    margin-top: -1rem;
+    color: var(--ten);
+}
+
+.toparea > .details > div > .max-bid {
+    font-weight: 100;
+    font-size: 1.35rem;
+    margin: 0;
+    margin-top: 2.2rem;
+}
+
+.toparea > .details > div > .bid-amount {
+    margin: 0;
+    font-size: 6rem;
+    font-weight: 600;
+    margin-top: -1rem;
+}
+
+.toparea > .details > div > .bid-amount > span {
+    font-size: 4rem;
+}
+
+.toparea > .details > div > .info-bid {
+    font-size: 1.3rem;
+    margin: 0;
+    margin-top: -2rem;
+}
+
+.toparea > .details > div > .info-bid > span {
+    color: var(--ten);
+}
+
+.toparea > .details > div > form {
+    display: flex;
+    margin-top: 3rem;
+}
+
+.toparea > .details > div #bid_amount {
+    width: 80%;
+    height: 4rem;
+    border: 1px solid #AAAAAA;
+    padding: 0.5em;
+    border-radius: 5px;
+    border-color: var(--ten);
+}
+
+.toparea > .details > div #bid_amount:read-write {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+}
+
+.toparea > .details > div #make_bid {
+    height: 4rem;
+    padding: 0 1.5rem;
+    background-color: var(--thirty);
+    color: var(--sixty);
+    border-radius: 5px;
+    font-family : inherit;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
