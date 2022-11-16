@@ -1,0 +1,83 @@
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items:center;
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+header > a {
+    text-decoration: none;
+}
+
+header > .logo {
+    margin-right: 2.5rem;
+}
+
+header > .logo > img {
+    height: 6rem;
+    width: auto;
+}
+
+header > .categories {
+    color: var(--thirty);
+}
+
+header > .categories > .cat-button {
+    align-items: center;
+    display: flex;
+    font-size: 1.65rem;
+}
+
+header > .categories > .cat-button > img {
+    margin-left: 0.3rem;
+    filter: invert(41%) sepia(80%) saturate(2180%) hue-rotate(3deg) brightness(105%) contrast(105%);
+}
+
+header > .categories > #categories {
+    display: none !important;
+}
+
+header > .search {
+    width: 33%;
+    height: 4rem;
+    border: 1px solid #AAAAAA;
+    padding: 0.5em;
+    border-radius: 5px;
+}
+
+header > .search:read-write {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+header > .faq, header > .log-in, header > .sign-up {
+    color: var(--thirty);
+    transition: all 0.2s linear 0s;
+}
+
+header > .log-in, header > .sell {
+    color: var(--ten);
+}
+
+header > .log-in:hover {
+    font-size: 1.7rem;
+}
+
+header > .sign-up {
+    color: var(--sixty);
+    background-color: var(--ten);
+    padding: 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+header > .log-in:hover, header > .sign-up:hover, header > .faq:hover {
+    font-size: 1.7rem;
+}
+
+header > .notifications, header > .user, header > .user > img {
+    height: 3rem;
+}

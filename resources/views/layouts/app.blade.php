@@ -8,11 +8,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="stylesheet" href="https://use.typekit.net/ivx1jos.css">
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link href="{{ asset('css/header.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/auction.css') }}" rel="stylesheet">
     <link href="{{ asset('css/milligram.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script type="text/javascript">
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
@@ -22,12 +25,26 @@
   </head>
   <body>
     <main>
-      <header>
-        <h1><a href="{{ url('/cards') }}">Thingy!</a></h1>
-        @if (Auth::check())
-        <a class="button" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
-        @endif
-      </header>
+        <header>
+          <a class="logo" href="{{ url('/') }}"><img src={{ asset('img/infinityauctions_logo.png') }} alt="InfinityAuctions logo"></a>
+          <div class="categories">
+              <div class="cat-button">
+                Categories<img src={{ asset('img/downarrow.svg')}}>
+              </div>
+              @include('partials.categories', ['categories' => $categories])
+          </div>
+          <input class="search" type="text" placeholder="Search..">
+          <a class="faq" href="{{ url('/faq') }}">FAQ</a>
+          
+          @if (Auth::check())
+              <a class="sell" href="{{ url('/sell') }}">Sell</a>
+              <img class= "notifications" src={{ asset('img/notificationbell.svg') }} alt="Notifications">
+              <a class="user" href="{{ url('/logout') }}"><img src={{ asset('img/usericon.svg') }} alt="User"></a>
+          @else
+              <a class="log-in" href="{{ url('/login') }}">Log In</a>
+              <a class="sign-up" href="{{ url('/signup') }}">Sign Up</a>
+          @endif
+        </header>
       <section id="content">
         @yield('content')
       </section>
