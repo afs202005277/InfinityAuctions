@@ -24,7 +24,7 @@ Route::get('cards', 'CardController@list');
 Route::get('auctions/{auction_id}', 'AuctionController@show');
 
 // API
-Route::put('api/cards', 'CardController@create');
+Route::post('api/auctions', 'BidController@store');
 Route::delete('api/cards/{card_id}', 'CardController@delete');
 Route::put('api/cards/{card_id}/', 'ItemController@create');
 Route::post('api/item/{id}', 'ItemController@update');

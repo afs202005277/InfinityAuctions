@@ -19,6 +19,7 @@ class MainPageController extends Controller
      */
     public function __invoke(Request $request)
     {
+        (new Auction())->refresh();
         $auctionController = new AuctionController();
         if (Auth::user() !== NULL)
             $selectedAuctions = $auctionController->selectedAuctions();
