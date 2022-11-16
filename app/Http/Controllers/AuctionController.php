@@ -104,4 +104,8 @@ class AuctionController extends Controller
         $categories = Category::all();
         return view('pages.search_page', compact('active', 'categories'));
     }
+
+    public function getAllBids($auction_id){
+        return Auction::find($auction_id)->bids()->get();
+    }
 }
