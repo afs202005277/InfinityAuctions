@@ -41,7 +41,7 @@
                 <form method="post" action="" autocomplete="off">
                     <div class="card-body">
                         @csrf
-                        @method('put')
+                        @method('post')
 
                         @include('alerts.success', ['key' => 'password_status'])
 
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-fill btn-primary">{{ __('Change password') }}</button>
+                        <button type="submit" class="btn">{{ __('Change password') }}</button>
                     </div>
                 </form>
             </div>
@@ -72,34 +72,17 @@
                 <div class="card-body">
                     <p class="card-text">
                         <div class="author">
-                            <div class="block block-one"></div>
-                            <div class="block block-two"></div>
-                            <div class="block block-three"></div>
-                            <div class="block block-four"></div>
-                            <a href="#">
-                                <img class="avatar" src="{{ asset('black') }}/img/emilyz.jpg" alt="">
-                                <h5 class="title">{{ auth()->user()->name }}</h5>
-                            </a>
+                            
+                                <img class="avatar" src="https://picsum.photos/200/300" alt="">
+                                <h4 class="title">{{ auth()->user()->name }}</h4>
+                            
                             <p class="description">
-                                {{ __('Ceo/Co-Founder') }}
+                                {{ auth()->user()->address }}
                             </p>
                         </div>
                     </p>
                     <div class="card-description">
                         {{ __('Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...') }}
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="button-container">
-                        <button class="btn btn-icon btn-round btn-facebook">
-                            <i class="fab fa-facebook"></i>
-                        </button>
-                        <button class="btn btn-icon btn-round btn-twitter">
-                            <i class="fab fa-twitter"></i>
-                        </button>
-                        <button class="btn btn-icon btn-round btn-google">
-                            <i class="fab fa-google-plus"></i>
-                        </button>
                     </div>
                 </div>
             </div>

@@ -95,7 +95,7 @@ class AuctionController extends Controller
 
     public function selectedAuctions()
     {
-        return Auth::user()->followingAuctions()->get();
+        return Auth::user()->followingAuctions()->limit(5)->get();
     }
 
     public function showSearchResults($query){
@@ -103,5 +103,9 @@ class AuctionController extends Controller
         $active = (new Auction())->runningAuctions();
         $categories = Category::all();
         return view('pages.search_page', compact('active', 'categories'));
+    }
+
+    public function getAllBids($auction_id){
+        return Auction::find($auction_id)->bids()->get();
     }
 }

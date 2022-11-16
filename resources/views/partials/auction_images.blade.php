@@ -1,7 +1,7 @@
 <div id="auction_images">
-    <div class="auction_image"> Item image </div>
-    <div class="auction_image"> Item image </div>
-    <div class="auction_image"> Item image </div>
-    <div class="auction_image"> Item image </div>
-    <div class="auction_image"> Item image </div>
+    <img src="{{ asset('img/auction_tmp.png') }}" alt="temp image" onclick="myFunction(this);">
+    <img src="{{ asset('img/auction_tmp.png') }}" alt="temp image" onclick="myFunction(this);">
+    <img src="{{ asset('img/auction_tmp.png') }}" alt="temp image" onclick="myFunction(this);">
+    <img src="{{ asset('img/auction_tmp.png') }}" alt="temp image" onclick="myFunction(this);">
+    <img src="{{ asset('img/auction_tmp.png') }}" alt="temp image" onclick="myFunction(this);">
 </div>
