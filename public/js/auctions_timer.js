@@ -2,14 +2,17 @@ let countDownDate = new Date(document.getElementById("final-date").textContent).
 
 function bidsReceivedHandler(){
     let bids = JSON.parse(this.responseText);
-    document.querySelector('#bids_list').innerHTML = "";
+    document.querySelector('#bid_list').innerHTML = "";
     let maxBid = bids[0];
-    for (let i=0;i<bids.length;i++){
-        if (maxBid.amount < bids[i].amount){
-
+    for (let bid in bids){
+        if (maxBid.amount < bid.amount){
+            maxBid = bid;
         }
-        document.querySelector('#bids_list').appendChild(createBid(bids[i]));
+        document.querySelector('#bid_list').appendChild(createBid(bid));
     }
+    document.querySelector('.bid-amount').textContent = maxBid.amount;
+    document.querySelector('.info-bid span').textContent = maxBid.name;
+    document.querySelector('.info-bid').textContent = " - " + maxBid.date;
 }
 
 let x = setInterval(function() {
