@@ -52,7 +52,7 @@
                 <a class="sign-up" href="{{ url('/register') }}">Sign Up</a>
             @endif
         </header>
-      
+
       <section id="content">
         @yield('content')
       </section>

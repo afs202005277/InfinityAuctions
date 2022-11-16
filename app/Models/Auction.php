@@ -31,9 +31,20 @@ class Auction extends Model
         return $values;
     }
 
+    
     public function refresh()
     {
         DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
+    }
+
+    public function searchResults($search)
+    {
+        $values = DB::select(DB::raw("SELECT * FROM auction 
+                WHERE to_tsvector('english', name || ' ' || description) @@ plainto_tsquery('english', :search);"), 
+                array('search' => $search,));
+
+        return $values;
+
     }
 
     public function newAuctions()
