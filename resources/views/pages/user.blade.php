@@ -77,13 +77,12 @@
                                 <h4 class="title">{{ auth()->user()->name }}</h4>
                             
                             <p class="description">
-                                {{ auth()->user()->address }}
+                                {{ auth()->user()->email }}
                             </p>
                         </div>
                     </p>
                     <div class="card-description">
-                        {{ __('Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...') }}
-                    </div>
+                        {{ auth()->user()->cellphone }}
                 </div>
             </div>
         </div>
