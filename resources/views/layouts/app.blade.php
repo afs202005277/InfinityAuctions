@@ -24,6 +24,14 @@
     <main>
       <header>
         <h1><a href="{{ url('/cards') }}">Thingy!</a></h1>
+        
+        <div class="search-box">
+          <form action="{{ url('/api/search') }}" method="GET" role="search">
+            <input class="search-text" type="text" placeholder="Search.." name="search" required>
+            <button class="search-button" type="submit" title="Search auctions">Search</button>
+          </form>
+        </div>
+
         @if (Auth::check())
         <a class="button" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
         @endif

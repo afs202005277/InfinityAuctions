@@ -31,6 +31,15 @@ class Auction extends Model
         return $values;
     }
 
+    public function searchResults($search)
+    {
+        $values = DB::select(DB::raw("SELECT * FROM auction 
+                WHERE to_tsvector('english', name || ' ' || description) @@ plainto_tsquery('english', :search);"), 
+                array('search' => $search,));
+
+        return $values;
+    }
+
     public function newAuctions()
     {
         $newA = DB::table('auction')
