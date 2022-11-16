@@ -2,8 +2,7 @@
     <header>
         <h4><a href="/auctions/{{ $auction->id }}">{{ $auction->name }}</a></h4>
     </header>
-    <p>
-        {{$auction->name}}
-        {{$auction->description}}
-    </p>
+    <p> {{$auction->name}} </p>
+    <img src="{{ asset('img/auction_tmp.png') }}" alt="temporary image of auction">
+    <p>{{$auction->description}}</p>
 </article>
