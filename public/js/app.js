@@ -75,10 +75,7 @@ function sendCreateBidRequest(event) {
     let amount = document.querySelector('#bid_amount').value;
     let user_id = document.querySelector('#user_id').value;
     let auction_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
-    console.log("|" + amount + "|");
-    console.log(auction_id);
-    console.log(window.location.href.lastIndexOf('/') + 1);
-    console.log(window.location.href.length);
+
     if (amount !== '')
         sendAjaxRequest('post', '/api/auctions/', {amount: amount, auction_id: auction_id, user_id: user_id}, bidAddedHandler);
 

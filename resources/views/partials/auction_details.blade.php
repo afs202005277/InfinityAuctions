@@ -8,9 +8,10 @@
         <input id="user_id" hidden value="{{Auth::id()}}">
         <label for="bid_amount"> Make bid: </label>
         <input type="number" id="bid_amount" name="amount">
+        <button id="make_bid">Make bid</button>
     </form>
 
-    <button id="make_bid">Make bid</button>
+
     <div id="bids_list">
         @each('partials.bid', $bids, 'bid', 'partials.no_items')
     </div>

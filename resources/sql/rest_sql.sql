@@ -155,7 +155,7 @@ BEGIN
     IF NOT EXISTS(
         SELECT *
         FROM users
-        WHERE id == NEW.id
+        WHERE users.id = NEW.user_id
           AND email IS NOT NULL
         ) THEN
         RAISE EXCEPTION 'User not found.';
@@ -188,7 +188,7 @@ BEGIN
                               setweight(to_tsvector('english', coalesce(NEW.description, '')), 'B'));
     END IF;
     IF TG_OP = 'UPDATE' THEN
-        IF (NEW.name <> OLD.title OR NEW.description <> OLD.description) THEN
+        IF (NEW.name <> OLD.name OR NEW.description <> OLD.description) THEN
             NEW.auction_tokens = (setweight(to_tsvector('english', coalesce(NEW.name, '')), 'A') ||
                                   setweight(to_tsvector('english', coalesce(NEW.description, '')), 'B'));
         END IF;

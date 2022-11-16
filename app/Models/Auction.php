@@ -31,6 +31,10 @@ class Auction extends Model
         return $values;
     }
 
+    public function refresh(){
+        DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
+    }
+
     public function newAuctions()
     {
         $newA = DB::table('auction')

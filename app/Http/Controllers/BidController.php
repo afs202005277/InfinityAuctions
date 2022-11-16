@@ -42,8 +42,11 @@ class BidController extends Controller
         $bid->amount = $request->input('amount');
         $bid->auction_id = $request->input('auction_id');
         $bid->user_id = $request->input('user_id');
+        $id = DB::table('bid')->max('id');
+        $bid->id = $id+1;
         $bid->save();
-        $bid->name = DB::table('users')->find($request->input('user_id'))->value('name');
+        $bid->name = DB::table('users')->find($bid->user_id)->name;
+        $bid->date=DB::table('bid')->find($id+1)->date;
 
         return $bid;
     }
