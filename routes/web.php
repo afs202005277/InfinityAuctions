@@ -41,3 +41,6 @@ Route::post('register', 'Auth\RegisterController@register');
 //User
 Route::get('user/{id}', 'UserController@show');
 Route::post('user/{id}', 'UserController@edit');
+
+//Users
+Route::get('users/{id}', 'UsersController@show');

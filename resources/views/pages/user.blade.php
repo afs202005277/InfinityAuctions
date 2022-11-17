@@ -29,7 +29,7 @@
                             </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-fill btn-primary">{{ __('Save') }}</button>
+                        <button type="submit" class="btn">{{ __('Save') }}</button>
                     </div>
                 </form>
             </div>
@@ -72,10 +72,8 @@
                 <div class="card-body">
                     <p class="card-text">
                         <div class="author">
-                            
                                 <img class="avatar" src="https://picsum.photos/200/300" alt="">
                                 <h4 class="title">{{ auth()->user()->name }}</h4>
-                            
                             <p class="description">
                                 {{ auth()->user()->email }}
                             </p>
