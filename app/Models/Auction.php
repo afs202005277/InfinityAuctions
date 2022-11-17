@@ -87,5 +87,4 @@ class Auction extends Model
             ->orderBy('amount', 'DESC')
             ->get();
     }
-
 }
