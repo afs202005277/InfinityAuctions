@@ -124,7 +124,7 @@ function cardDeletedHandler() {
 }
 
 function bidAddedHandler() {
-    if (this.status !== 200) {
+    if (this.status !== 201) {
         console.log("Error adding bid!");
     }
 }

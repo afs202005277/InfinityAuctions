@@ -13,9 +13,6 @@ function bidsReceivedHandler(){
             document.querySelector('#bids_list').appendChild(createBidInfo(bids[i]));
         }
     }
-    document.querySelector('.bid-amount').textContent = maxBid.amount;
-    document.querySelector('.info-bid span').textContent = maxBid.name;
-    document.querySelector('.info-bid').textContent = " - " + maxBid.date;
 }
 
 let x = setInterval(function() {
