@@ -37,3 +37,45 @@ body {
     margin-left: 3rem;
     margin-right: 3rem;
 }
+
+
+.auction_carousel {
+    display: flex;
+    width: 100%;
+    overflow: scroll;
+    padding: 0;
+}
+
+.auction_carousel > .auction {
+    width: 100%;
+    margin: 2rem;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
+                rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+    border-radius: 10px;
+}
+
+.auction_carousel > .auction > h4 {
+    height: 5rem;
+    text-align: justify;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.auction_carousel > .auction > h4 a {
+    color: var(--thirty);
+}
+
+.auction_carousel > .auction > img {
+    width: 35rem;
+}
+
+.auction_carousel > .auction > p {
+    text-align: justify;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.ma > h2 {
+    margin: 0;
+    margin-top: 3rem;
+}

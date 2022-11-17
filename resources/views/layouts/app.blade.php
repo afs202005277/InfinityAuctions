@@ -14,6 +14,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction.css') }}" rel="stylesheet">
     <link href="{{ asset('css/milligram.min.css') }}" rel="stylesheet">
     <script type="text/javascript">
@@ -48,6 +50,37 @@
       <section id="content">
         @yield('content')
       </section>
+      <footer>
+        <section class="left">
+          <ul class="links">
+            <h3>Links</h3>
+            <li><a href="{{ url('/about-us') }}">About Us</a></li>
+            <li><a href="{{ url('/faq') }}">FAQ</a></li>
+            <li><a href="{{ url('/services') }}">Services</a></li>
+            <li><a href="{{ url('/contact-us') }}">Contacts</a></li>
+          </ul>
+          <section class="socials">
+            <h3>Our Socials</h3>
+            <ul class="link">
+              <li><a href="https://instagram.com"><img src={{ asset("img/instagram.svg") }}></a></li>
+              <li><a href="https://facebook.com"><img src={{ asset("img/facebook.svg") }}></a></li>
+              <li><a href="https://twitter.com"><img src={{ asset("img/twitter.svg") }}></a></li>
+            </ul>
+          </section>
+        </section>
+        <section class="right">
+          <section class="sponsors">
+            <h3>Our Sponsors</h3>
+            <div class="images">
+              <img src={{ asset('img/auction_tmp.png') }}>
+              <img src={{ asset('img/auction_tmp.png') }}>
+              <img src={{ asset('img/auction_tmp.png') }}>
+              <img src={{ asset('img/auction_tmp.png') }}>
+            </div>
+          </section>
+        </section>
+      </footer>
     </main>
+    <p class="copyright">InfinityAuctions ©</p>
   </body>
 </html>
