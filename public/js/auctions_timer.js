@@ -2,13 +2,16 @@ let countDownDate = new Date(document.getElementById("final-date").textContent).
 
 function bidsReceivedHandler(){
     let bids = JSON.parse(this.responseText);
-    document.querySelector('#bids_list').innerHTML = "";
-    let maxBid = bids[0];
-    for (let i=0;i<bids.length;i++){
-        if (maxBid.amount < bids[i].amount){
+    if (bids.length !== 0){
+        console.log(bids);
+        document.querySelector('#bids_list').innerHTML = "";
+        document.querySelector('.bid-amount').innerHTML = createBidAmount(bids[0]).innerHTML;
+        document.querySelector('.info-bid').innerHTML = createBidInfo(bids[0]).innerHTML;
 
+        for (let i=1;i<bids.length;i++){
+            document.querySelector('#bids_list').appendChild(createBidAmount(bids[i]));
+            document.querySelector('#bids_list').appendChild(createBidInfo(bids[i]));
         }
-        document.querySelector('#bids_list').appendChild(createBid(bids[i]));
     }
 }
 

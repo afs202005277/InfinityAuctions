@@ -106,6 +106,6 @@ class AuctionController extends Controller
     }
 
     public function getAllBids($auction_id){
-        return Auction::find($auction_id)->bids()->get();
+        return (new Auction())->getAllbids($auction_id);
     }
 }

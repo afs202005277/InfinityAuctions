@@ -77,7 +77,11 @@ function sendCreateBidRequest(event) {
     let auction_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
 
     if (amount !== '')
-        sendAjaxRequest('post', '/api/auctions/', {amount: amount, auction_id: auction_id, user_id: user_id}, bidAddedHandler);
+        sendAjaxRequest('post', '/api/auctions/', {
+            amount: amount,
+            auction_id: auction_id,
+            user_id: user_id
+        }, bidAddedHandler);
 
     event.preventDefault();
 }
@@ -86,11 +90,11 @@ function itemUpdatedHandler() {
     let item = JSON.parse(this.responseText);
     let element = document.querySelector('li.item[data-id="' + item.id + '"]');
     let input = element.querySelector('input[type=checkbox]');
-    element.checked = item.done == "true";
+    element.checked = item.done === "true";
 }
 
 function itemAddedHandler() {
-    if (this.status != 200) window.location = '/';
+    if (this.status !== 200) window.location = '/';
     let item = JSON.parse(this.responseText);
 
     // Create the new item
@@ -106,38 +110,46 @@ function itemAddedHandler() {
 }
 
 function itemDeletedHandler() {
-    if (this.status != 200) window.location = '/';
+    if (this.status !== 200) window.location = '/';
     let item = JSON.parse(this.responseText);
     let element = document.querySelector('li.item[data-id="' + item.id + '"]');
     element.remove();
 }
 
 function cardDeletedHandler() {
-    if (this.status != 200) window.location = '/';
+    if (this.status !== 200) window.location = '/';
     let card = JSON.parse(this.responseText);
     let article = document.querySelector('article.card[data-id="' + card.id + '"]');
     article.remove();
 }
 
 function bidAddedHandler() {
-    let bid = JSON.parse(this.responseText);
-
-    // Create the new card
-    let new_bid = createBid(bid);
-
-    // Reset the new card input
-    document.querySelector('#bid_amount').value = "";
-
-    // Insert the new card
-    let bids_list = document.querySelector('#bids_list');
-    bids_list.insertBefore(new_bid, bids_list.firstChild);
+    if (this.status !== 200) {
+        console.log("Error adding bid!");
+    }
 }
 
-function createBid(bid) {
-    let new_bid = document.createElement('p');
-    new_bid.textContent = bid.name + " " + bid.amount + " " + bid.date;
+function parseDate(date){
+    let partsCalendar = date.split(' ')[0].split('-');
+    let partsTime = date.split(' ')[1].split(':');
+    return partsCalendar[2] + "-" + partsCalendar[1] + "-" + partsCalendar[0] + " " + partsTime[0] + ":" + partsTime[1];
+}
 
-    return new_bid;
+function createBidAmount(bid){
+    let new_bid_amount = document.createElement('p');
+    new_bid_amount.className = 'bid-amount';
+    let bid_float = parseFloat(bid.amount).toFixed(2);
+    new_bid_amount.innerHTML = `${bid_float}<span> €</span>`;
+
+    return new_bid_amount;
+}
+
+function createBidInfo(bid) {
+    let new_bid_info = document.createElement('p');
+    new_bid_info.className = 'info-bid';
+    new_bid_info.innerHTML = `<span>${bid.name}</span> - ${parseDate(bid.date)}`;
+
+    return new_bid_info;
 }
 
 function createItem(item) {

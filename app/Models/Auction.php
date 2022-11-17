@@ -31,7 +31,8 @@ class Auction extends Model
         return $values;
     }
 
-    public function refresh(){
+    public function refresh()
+    {
         DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
     }
 
@@ -75,6 +76,16 @@ class Auction extends Model
     public function reports()
     {
         return $this->hasMany(Report::class);
+    }
+
+    public function getAllBids($id)
+    {
+        return DB::table('users')
+            ->join('bid', 'users.id', '=', 'bid.user_id')
+            ->where('auction_id', '=', $id)
+            ->select('users.name', 'bid.*')
+            ->orderBy('amount', 'DESC')
+            ->get();
     }
 
 }
