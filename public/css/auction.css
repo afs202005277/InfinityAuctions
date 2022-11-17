@@ -238,6 +238,8 @@
 .below h3 {
     font-size: 2.3rem;
     color: var(--ten);
+    margin: 0;
+    margin-top: 3rem;
 }
 
 .below > .left > h3:first-of-type {
@@ -247,6 +249,13 @@
 .below > .left > h3:first-of-type > span {
     color: var(--ten);
     text-decoration: underline;
+}
+
+.below > .left > .report {
+    color: red;
+    text-decoration: underline;
+    font-size: 1.5rem;
+    margin: 0;
 }
 
 .below > .left > .link {

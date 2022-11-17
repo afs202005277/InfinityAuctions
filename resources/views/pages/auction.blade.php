@@ -31,6 +31,7 @@
     <div class="below">
         <section class="left">
             @include('partials.auction_end_details', ['details' => $name])
+            <a class="report" href="{{ url("#") }}">REPORT</a>
             <h3>Payment Options</h3>
             <p>Load up your credits with Paypal, MBWay, ShopPay, Apple Pay and Google Pay.</p>
             <h3>Share</h3>
