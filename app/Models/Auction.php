@@ -34,7 +34,8 @@ class Auction extends Model
     public function searchResults($search)
     {
         $values = DB::select(DB::raw("SELECT * FROM auction 
-                WHERE to_tsvector('english', name || ' ' || description) @@ plainto_tsquery('english', :search);"), 
+                WHERE auction_tokens @@ plainto_tsquery('english', :search)
+                ORDER BY ts_rank(auction_tokens, to_tsquery('english', :search)) DESC;"), 
                 array('search' => $search,));
 
         return $values;
