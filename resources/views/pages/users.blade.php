@@ -6,10 +6,13 @@
     <div class="info">
         <h1> Bio </h1>
         <div class= "bio">
+            @if (Auth::user()->id==$user->id)
+            <a class="edit" href="{{ url('/user/' . Auth::user()->id) }}"><img src={{ asset('img/edit-button-svgrepo-com.svg') }} alt="User" width="20rem"></a>
+            @endif
             <div>
                 <img class="avatar" src="https://picsum.photos/200/300" alt="">
             </div>
-            <div>
+            <div> 
                 <h4> {{$user->name}} </h4>
                 <p> {{$user->cellphone}} </p>
                 <p> {{$user->email}} </p>

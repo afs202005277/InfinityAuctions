@@ -15,7 +15,6 @@
                             @method('post')
 
                             @include('alerts.success')
-
                             <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                                 <label>{{ __('Name') }}</label>
                                 <input type="text" name="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name', auth()->user()->name) }}">
@@ -27,6 +26,26 @@
                                 <input type="email" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email address') }}" value="{{ old('email', auth()->user()->email) }}">
                                 @include('alerts.feedback', ['field' => 'email'])
                             </div>
+
+                            <div class="form-group{{ $errors->has('cellphone') ? ' has-danger' : '' }}">
+                                <label>{{ __('Cellphone') }}</label>
+                                <input type="text" name="cellphone" class="form-control{{ $errors->has('cellphone') ? ' is-invalid' : '' }}" placeholder="{{ __('Cellphone') }}" value="{{ old('cellphone', auth()->user()->cellphone) }}">
+                                @include('alerts.feedback', ['field' => 'cellphone'])
+                            </div>
+
+                            <div class="form-group{{ $errors->has('address') ? ' has-danger' : '' }}">
+                                <label>{{ __('Address') }}</label>
+                                <input type="text" name="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" placeholder="{{ __('Address') }}" value="{{ old('address', auth()->user()->address) }}">
+                                @include('alerts.feedback', ['field' => 'address'])
+                            </div>
+
+
+                            <div class="form-group{{ $errors->has('birth_date') ? ' has-danger' : '' }}">
+                                <label>{{ __('Birth Date') }}</label>
+                                <input type="date" name="birth_date" class="form-control{{ $errors->has('birth_date') ? ' is-invalid' : '' }}" placeholder="{{ __('Birth_date') }}" value="{{ old('birth_date', auth()->user()->birth_date) }}">
+                                @include('alerts.feedback', ['field' => 'address'])
+                            </div>
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn">{{ __('Save') }}</button>
@@ -81,7 +100,11 @@
                     </p>
                     <div class="card-description">
                         {{ auth()->user()->cellphone }}
-                </div>
+                        @unless( auth()->user()->cellphone != null)
+                            <h3> {{ auth()->user()->credits }} $$$ <h3>
+                        @endunless
+                    </div>
+
             </div>
         </div>
     </div>

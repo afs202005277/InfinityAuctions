@@ -39,7 +39,7 @@
             @if (Auth::check())
                 <a class="sell" href="{{ url('/sell') }}">Sell</a>
                 <img class= "notifications" src={{ asset('img/notificationbell.svg') }} alt="Notifications">
-                <a class="user" href="{{ url('/user/' . Auth::user()->id) }}"><img src={{ asset('img/usericon.svg') }} alt="User"></a>
+                <a class="user" href="{{ url('/users/' . Auth::user()->id) }}"><img src={{ asset('img/usericon.svg') }} alt="User"></a>
             @else
                 <a class="log-in" href="{{ url('/login') }}">Log In</a>
                 <a class="sign-up" href="{{ url('/signup') }}">Sign Up</a>
