@@ -283,7 +283,7 @@ with open("instructions.txt", "w") as instr:
         if (a.state != "To be started"):
             perc = 0.02
             for i in range(am_bids):
-                b = Bid(bid_id, a, 0.02)
+                b = Bid(bid_id, a, perc)
                 bid_id += 1
                 perc += 1/am_bids
 
