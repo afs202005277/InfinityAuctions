@@ -5,6 +5,10 @@
 
 .toparea > .images {
     width: 50%;
+    height: fit-content;
+    display: block;
+    position: sticky;
+    top: 3rem;
 }
 
 .toparea > .images > #auction_images {
@@ -14,6 +18,10 @@
 
 .toparea > .images > #auction_images > img {
     width: 24%;
+}
+
+.toparea > .images > #auction_images > img:hover {
+    cursor: pointer;
 }
 
 .toparea > .details {
@@ -80,17 +88,19 @@
 }
 
 .toparea > .details > div > form {
-    display: flex;
+    display: grid;
+    grid-template-columns: 10fr 1fr;
     margin-top: 3rem;
 }
 
 .toparea > .details > div #bid_amount {
-    width: 80%;
     height: 4rem;
     border: 1px solid #AAAAAA;
     padding: 0.5em;
     border-radius: 5px;
     border-color: var(--ten);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .toparea > .details > div #bid_amount:read-write {
@@ -101,10 +111,167 @@
 .toparea > .details > div #make_bid {
     height: 4rem;
     padding: 0 1.5rem;
-    background-color: var(--thirty);
+    background-color: var(--ten);
     color: var(--sixty);
     border-radius: 5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     font-family : inherit;
     font-size: 1.5rem;
     font-weight: 600;
+    border: none;
+    cursor: pointer;
+    align-self: center;
+}
+
+.toparea > .details > div > .price-suggestions {
+    display: flex;
+    margin-top: 2rem;
+    justify-content: space-between;
+}
+
+.toparea > .details > div > .price-suggestions > form {
+    width: 32%;
+}
+
+.toparea > .details > div > .price-suggestions > form > button {
+    width: 100%;
+    height: 5rem;
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--ten);
+    background-color: var(--sixty);
+    border: 1px solid var(--ten);
+    border-radius: 5px;
+}
+
+.toparea > .details > div > .price-suggestions > form > button:hover {
+    color: var(--sixty);
+    background-color: var(--ten);
+    cursor: pointer;
+}
+
+.toparea > .details > div > .buy-now {
+    display: block;
+    margin: 0;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.toparea > .details > div > .buy-now > button {
+    width: 100%;
+    height: 5rem;
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--sixty);
+    background-color: var(--thirty);
+    border: 1px solid var(--thirty);
+    border-radius: 5px;
+    margin: 0;
+}
+
+.toparea > .details > div > .buy-now > button:hover {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.confident {
+    display: flex;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.confident > img {
+    filter: invert(45%) sepia(94%) saturate(1713%) hue-rotate(86deg) brightness(103%) contrast(117%);
+    height: 2.3rem;
+}
+
+.confident > p {
+    margin: 0;
+    margin-left: 1rem;
+    font-weight: 600;
+    height: 2.3rem;
+}
+
+.bid-history {
+    margin: 0;
+    margin-top: 5rem;
+    font-size: 2rem;
+    color: var(--ten);
+}
+
+.bids > #make_bid {
+    display: flex;
+    flex: 1 0 25%;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 30rem;
+    overflow: scroll;
+    margin-top: 2rem;
+}
+
+.bids > #make_bid > .bid-amount {
+    width: 10%;
+    margin: 0;
+    margin-right: 3rem;
+    font-weight: 600;
+}
+
+.bids > #make_bid > .info-bid {
+    width: 80%;
+    margin: 0;
+}
+
+.bids > #make_bid > .info-bid > span {
+    text-decoration: underline;
+}
+
+.below {
+    display: flex;
+    justify-content: space-between;
+    text-align: justify;
+    margin-top: 5rem;
+}
+
+.below > .left, .below > .right {
+    width: 47%;
+}
+
+.below h3 {
+    font-size: 2.3rem;
+    color: var(--ten);
+    margin: 0;
+    margin-top: 3rem;
+}
+
+.below > .left > h3:first-of-type {
+    color: var(--thirty);
+}
+
+.below > .left > h3:first-of-type > span {
+    color: var(--ten);
+    text-decoration: underline;
+}
+
+.below > .left > .report {
+    color: red;
+    text-decoration: underline;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.below > .left > .link {
+    padding: 0;
+    margin: 0;
+}
+
+.below > .left > .link > li {
+    display: inline;
+    list-style: none;
+    margin-right: 1rem;
+}
+
+.below > .left > .link > li img {
+    height: 3.5rem;
+    filter: invert(25%) sepia(0%) saturate(1123%) hue-rotate(256deg) brightness(94%) contrast(91%);
 }

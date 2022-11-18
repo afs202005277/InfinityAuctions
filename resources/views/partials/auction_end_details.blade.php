@@ -1,3 +1,2 @@
-<div>
-    <h3>{{$name}}</h3>
-</div>
+<h3>Sold by <span>{{$name}}</span></h3>
+
