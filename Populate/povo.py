@@ -151,7 +151,7 @@ class Bid:
         day, month, year = date_add(auction.start_day, auction.start_month, auction.start_year, int(auction.time_amount*percent))
         self.date = year + "-" + ("0" + month if len(month) == 1 else month) + "-" + ("0" + day if len(day) == 1 else day)
 
-        self.amount = int(auctions['SALE PRICE'][auction.id]*percent)
+        self.amount = auctions['SALE PRICE'][auction.id]*percent
 
         self.user_id = random.randint(1, user_id-1)
 
@@ -265,7 +265,7 @@ with open("instructions.txt", "w") as instr:
         u = User(user_id)
         user_id += 1
 
-        instr.write("insert into general_user(id, name, gender, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.rate) + ", " + str(u.credits) + ", ARRAY " + print_list(u.wishlist) + "::text[], " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
+        instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.rate) + ", " + str(u.credits) + ", ARRAY " + print_list(u.wishlist) + "::text[], " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
 
     instr.write("\n")
 
@@ -281,13 +281,13 @@ with open("instructions.txt", "w") as instr:
 
     for a in acs:
         if (a.state != "To be started"):
-            perc = 0.02
+            perc = 1/am_bids
             for i in range(am_bids):
                 b = Bid(bid_id, a, perc)
                 bid_id += 1
                 perc += 1/am_bids
 
-                instr.write("insert into bid(id, date, amount, user_id, auction_id) values(" + str(b.id) + ", '" + b.date + "', " + str(b.amount) + ", " + str(b.user_id) + ", " + str(b.auction_id) + ");\n")
+                instr.write("insert into bid(id, date, amount, user_id, auction_id) values(" + str(b.id) + ", '" + b.date + "', " + "{:.2f}".format(b.amount) + ", " + str(b.user_id) + ", " + str(b.auction_id) + ");\n")
     
     instr.write("\n")
 
