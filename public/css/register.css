@@ -1,0 +1,57 @@
+.register {
+    margin: 10rem auto;
+    width: 36rem;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
+                rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+    border-radius: 7px;
+}
+
+.register > h3 {
+    font-size: 3rem;
+}
+
+.register > label {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.register > input {
+    border: none;
+    border-bottom: 1px solid var(--thirty);
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.register > input:read-write {
+    font-family: inherit;
+}
+
+.register > button {
+    margin-top: 3rem;
+    padding: 1rem;
+    background-color: var(--ten);
+    border: none;
+    font-family: inherit;
+    color: var(--sixty);
+    font-weight: 600;
+    border-radius: 7px;
+    cursor: pointer;
+    border: 1px solid var(--ten);
+}
+
+.register > button:hover {
+    background-color: var(--sixty);
+    color: var(--ten);
+}
+
+.register > p {
+    margin: 0;
+    margin-top: 3rem;
+}
+
+.register > a {
+    color: var(--ten);
+}

@@ -16,6 +16,8 @@
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/register.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction.css') }}" rel="stylesheet">
     <link href="{{ asset('css/milligram.min.css') }}" rel="stylesheet">
     <script type="text/javascript">
@@ -44,7 +46,7 @@
               <a class="user" href="{{ url('/logout') }}"><img src={{ asset('img/usericon.svg') }} alt="User"></a>
           @else
               <a class="log-in" href="{{ url('/login') }}">Log In</a>
-              <a class="sign-up" href="{{ url('/signup') }}">Sign Up</a>
+              <a class="sign-up" href="{{ url('/register') }}">Sign Up</a>
           @endif
         </header>
       <section id="content">
