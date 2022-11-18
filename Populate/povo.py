@@ -6,6 +6,7 @@ from datetime import date
 from random import randrange
 from datetime import timedelta
 from datetime import datetime
+import math
 
 def random_date(start, end):
     """
@@ -148,8 +149,11 @@ class Bid:
 
         self.id = bid_id
 
-        day, month, year = date_add(auction.start_day, auction.start_month, auction.start_year, int(auction.time_amount*percent))
+        day, month, year = date_add(auction.start_day, auction.start_month, auction.start_year, math.floor(auction.time_amount*percent))
         self.date = year + "-" + ("0" + month if len(month) == 1 else month) + "-" + ("0" + day if len(day) == 1 else day)
+
+        if (self.date > auction.end_date or self.date < auction.start_date):
+            print("ERROR - ", self.id)
 
         self.amount = auctions['SALE PRICE'][auction.id]*percent
 
@@ -275,7 +279,7 @@ with open("instructions.txt", "w") as instr:
         acs.append(a)
         auction_id += 1
 
-        instr.write("insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(" + str(a.id) + ", '" + a.name + "', '" + a.description + "', " + str(a.base_price) + ", '" + a.start_date + "', '" + a.end_date + "', " + (str(a.buy_now) if a.buy_now != -1 else "NULL") + ", '" + a.state + "', " + str(a.user_id) + ");\n")
+        instr.write("insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(" + str(a.id) + ", '" + a.name + "', '" + "".join(["'" + l if l == "'" else l for l in a.description]) + "', " + str(a.base_price) + ", '" + a.start_date + "', '" + a.end_date + "', " + (str(a.buy_now) if a.buy_now != -1 else "NULL") + ", '" + a.state + "', " + str(a.user_id) + ");\n")
 
     instr.write("\n")
 
@@ -284,10 +288,11 @@ with open("instructions.txt", "w") as instr:
             perc = 1/am_bids
             for i in range(am_bids):
                 b = Bid(bid_id, a, perc)
-                bid_id += 1
-                perc += 1/am_bids
+                if (b.date > "2022-11-18"):
+                    bid_id += 1
+                    perc += 1/am_bids
 
-                instr.write("insert into bid(id, date, amount, user_id, auction_id) values(" + str(b.id) + ", '" + b.date + "', " + "{:.2f}".format(b.amount) + ", " + str(b.user_id) + ", " + str(b.auction_id) + ");\n")
+                    instr.write("insert into bid(id, date, amount, user_id, auction_id) values(" + str(b.id) + ", '" + b.date + "', " + "{:.2f}".format(b.amount) + ", " + str(b.user_id) + ", " + str(b.auction_id) + ");\n")
     
     instr.write("\n")
 
