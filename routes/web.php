@@ -11,11 +11,13 @@
 |
 */
 // Home
-Route::get('/', 'Auth\LoginController@home');
+Route::get('/', MainPageController::class);
+
+Route::get('search', SearchPageController::class);
 
 // Cards
 Route::get('cards', 'CardController@list');
-Route::get('cards/{id}', 'CardController@show');
+Route::get('auctions/{auction_id}', 'AuctionController@show');
 
 // API
 Route::put('api/cards', 'CardController@create');

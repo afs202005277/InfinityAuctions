@@ -30,10 +30,31 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    /**
-     * The cards this user owns.
-     */
-     public function cards() {
-      return $this->hasMany('App\Models\Card');
+    public function bids(){
+        return $this->hasMany(Bid::class);
+    }
+
+    public function followingAuctions(){
+        return $this->belongsToMany(Auction::class, 'following');
+    }
+
+    public function ownedAuctions(){
+        return $this->hasMany(Auction::Class, 'auction_owner_id');
+    }
+
+    public function reportsMade(){
+        return $this->hasMany(Report::class);
+    }
+
+    public function notifications(){
+        return $this->hasMany(Notification::class);
+    }
+
+    public function wasReported(){
+        return $this->hasMany(Report::class);
+    }
+
+    public function reportsHandled(){
+        return $this->hasMany(Report::class);
     }
 }

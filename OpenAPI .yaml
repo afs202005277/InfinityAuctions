@@ -1,0 +1,469 @@
+openapi: 3.0.0
+
+info:
+ version: '1.0'
+ title: 'LBAW Infinity Auction Web API'
+ description: 'Web Resources Specification (A7) for Infinity Auction'
+
+servers:
+- url: http://lbaw2271.lbaw.fe.up.pt
+ description: Production server
+
+externalDocs:
+ description: Find more info here.
+ url: https://web.fe.up.pt/~ssn/wiki/teach/lbaw/medialib/a07
+
+tags:
+ - name: 'M01: Registration and authentication'
+ - name: 'M02: Static pages'
+ - name: 'M03: Platform administration'
+ - name: 'M04: Users'
+ - name: 'M05: Auctions'
+ - name: 'M05: Auctions'
+ - name: 'M06: Reports'
+ - name: 'M07: Reviews & Wishlists'
+ 
+
+paths:
+ /login:
+   get:
+     operationId: R101
+     summary: 'R101: Login Form'
+     description: 'Provide login form. Access: PUB'
+     tags:
+       - 'M01: Registration and authentication'
+     responses:
+       '200':
+         description: 'Ok. Show Log-in UI'
+   post:
+     operationId: R102
+     summary: 'R102: Login Action'
+     description: 'Processes the login form submission. Access: PUB'
+     tags:
+       - 'M01: Registration and authentication'
+
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: object
+             properties:
+               email:          # <!--- form field name
+                 type: string
+               password:    # <!--- form field name
+                 type: string
+             required:
+                  - email
+                  - password
+
+     responses:
+       '302':
+         description: 'Redirect after processing the login credentials.'
+         headers:
+           Location:
+             schema:
+               type: string
+             examples:
+               302Success:
+                 description: 'Successful authentication. Redirect to user profile.'
+                 value: '/users/{id}'
+               302Error:
+                 description: 'Failed authentication. Redirect to login form.'
+                 value: '/login'
+
+ /logout:
+
+   post:
+     operationId: R103
+     summary: 'R103: Logout Action'
+     description: 'Logout the current authenticated user. Access: USR, ADM'
+     tags:
+       - 'M01: Registration and authentication'
+     responses:
+       '302':
+         description: 'Redirect after processing logout.'
+         headers:
+           Location:
+             schema:
+               type: string
+             examples:
+               302Success:
+                 description: 'Successful logout. Redirect to login form.'
+                 value: '/login'
+
+ /register:
+   get:
+     operationId: R104
+     summary: 'R104: Register Form'
+     description: 'Provide new user registration form. Access: PUB'
+     tags:
+       - 'M01: Registration and authentication'
+     responses:
+       '200':
+         description: 'Ok. Show Sign-Up UI'
+
+   post:
+     operationId: R105
+     summary: 'R105: Register Action'
+     description: 'Processes the new user registration form submission. Access: PUB'
+     tags:
+       - 'M01: Registration and authentication'
+
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: object
+             properties:
+               name:
+                 type: string
+               email:
+                 type: string
+               picture:
+                 type: string
+                 format: binary
+             required:
+                  - email
+                  - password
+
+     responses:
+       '302':
+         description: 'Redirect after processing the new user information.'
+         headers:
+           Location:
+             schema:
+               type: string
+             examples:
+               302Success:
+                 description: 'Successful authentication. Redirect to user profile.'
+                 value: '/users/{id}'
+               302Failure:
+                 description: 'Failed authentication. Redirect to login form.'
+                 value: '/login'
+
+
+  /about:
+    get:
+      operationId: R201
+      summary: 'R201: About page'
+      description: 'About Page containing info about our webpage. Access: PUB'
+      tags:
+        - 'M02: Static pages'
+      responses:
+        '200':
+          description: 'Ok. Show about us UI'
+  /services:
+    get:
+      operationId: R202
+      summary: 'R202: Services page'
+      description: 'Services Page containing info about the services we provide. Access: PUB'
+      tags:
+        - 'M02: Static pages'
+      responses:
+        '200':
+          description: 'Ok. Show Services Page UI'
+  /faq:
+    get:
+      operationId: R203
+      summary: 'R203: About page'
+      description: 'FAQ page containing the most frequently asked questions. Access: PUB'
+      tags:
+        - 'M02: Static pages'
+      responses:
+        '200':
+          description: 'Ok. FAQ UI'
+  /contacts:
+    get:
+      operationId: R204
+      summary: 'R203: Contacts page'
+      description: 'Contacts page containing the our contacts, address and social media. Access: PUB'
+      tags:
+        - 'M02: Static pages'
+      responses:
+        '200':
+          description: 'Ok. Show contacts page UI'
+    
+  
+ /auction/{id}:
+   post:
+     operationId: R301
+     summary: 'R301: Edit Auction'
+     description: 'Allows the admin to change info of a certain auction, ranging from the enddate of the auction to the media of said auction. Access: ADM'
+     tags:
+       - 'M03: Platform administration'
+
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: object
+             properties:
+               name:
+                 type: string
+               description:
+                 type: string
+               basePrice:
+                 type: integer
+               startDate:
+                 type: string
+               endDate: 
+                 type: string
+               buyNow:
+                 type: integer
+               state:
+                 type: string
+
+     responses:
+       '302':
+         description: 'Redirect after processing the data change.'
+         headers:
+           Location:
+             schema:
+               type: string
+             examples:
+               302Success:
+                 description: 'Successful edit. Redirect to all auctions page.'
+                 value: '/auctions'
+               302Failure:
+                 description: 'Failed edit. Redirect to the same page to attempt a new change.'
+                 value: '/auction/{id}'
+
+  delete:
+     operationId: R302
+     summary: 'R302: Delete Auction'
+     description: 'Allows the admin to delete an auction. Access: ADM'
+     tags:
+       - 'M03: Platform administration'
+
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: object
+             properties:
+               password:
+                type: string
+             required:
+                  - password
+
+     responses:
+       '302':
+         description: 'Redirect after deleting.'
+         headers:
+           Location:
+             schema:
+               type: string
+             examples:
+               302Success:
+                 description: 'Successful deletion. Redirect to all auctions page.'
+                 value: '/auctions'
+               302Failure:
+                 description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
+                 value: '/auction/{id}'
+
+/users/{id}:
+   post:
+     operationId: R303
+     summary: 'R303: Manage User'
+     description: 'Allows the admin to change info of the user. Access: ADM'
+     tags:
+       - 'M03: Platform administration'
+
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: object
+             properties:
+               name:
+                 type: string
+               gender:
+                 type: string
+               cellphone:
+                 type: integer
+               email:
+                 type: string
+               birth_date: 
+                 type: string
+               address:
+                 type: string
+               rate:
+                 type: integer
+               credits:
+                 type: integer
+               wishlist:
+                 type: string
+              
+               
+
+     responses:
+       '302':
+         description: 'Redirect after processing the data change.'
+         headers:
+           Location:
+             schema:
+               type: string
+             examples:
+               302Success:
+                 description: 'Successful edit. Redirect to all users page.'
+                 value: '/users'
+               302Failure:
+                 description: 'Failed edit. Redirect to the same page to attempt a new change.'
+                 value: 'users/{id}'
+
+  delete:
+     operationId: R304
+     summary: 'R304: Delete Auction'
+     description: 'Allows the admin to delete a user. Access: ADM'
+     tags:
+       - 'M03: Platform administration'
+
+     requestBody:
+       required: true
+       content:
+         application/x-www-form-urlencoded:
+           schema:
+             type: object
+             properties:
+               password:
+                type: string
+             required:
+                  - password
+
+     responses:
+       '302':
+         description: 'Redirect after deleting.'
+         headers:
+           Location:
+             schema:
+               type: string
+             examples:
+               302Success:
+                 description: 'Successful deletion. Redirect to all users page.'
+                 value: '/users'
+               302Failure:
+                 description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
+                 value: '/users/{id}'
+
+ /reports:
+   get:
+     operationId: R305
+     summary: 'R305: Get reports'
+     description: 'See all the reports. Access: ADM'
+     tags:
+       - 'M03: Platform administration'
+     responses:
+       '200':
+         description: 'Ok. Show all reports UI'
+
+ /users/{id}:
+   get:
+     operationId: R401
+     summary: 'R401: View user profile'
+     description: 'Show the individual user profile. Access: USR'
+     tags:
+       - 'M04: Users'
+
+     parameters:
+       - in: path
+         name: id
+         schema:
+           type: integer
+         required: true
+
+     responses:
+       '200':
+         description: 'Ok. Show User Profile UI'
+
+ /auctions:
+   get:
+     operationId: R501
+     summary: 'R501: Register Form'
+     description: 'Provide new user registration form. Access: PUB'
+     tags:
+       - 'M05: Platform administration'
+     responses:
+       '200':
+         description: 'Ok. Show Sign-Up UI'
+
+ /api/auctions:
+   get:
+     operationId: R501
+     summary: 'R501: Search Auctions API'
+     description: 'Searches for Auctions and returns the results as JSON. Access: PUB.'
+
+     tags:
+       - 'M05: Auctions'
+
+     parameters:
+       - in: query
+         name: query
+         description: String to use for full-text search
+         schema:
+           type: string
+         required: false
+       - in: query
+         name: item
+         description: Category of the Auctions
+         schema:
+           type: string
+         required: false
+       - in: query
+         name: loaned
+         description: Boolean with the loaned flag value
+         schema:
+           type: boolean
+         required: false
+       - in: query
+         name: owner
+         description: Boolean with the owner flag value
+         schema:
+           type: boolean
+         required: false
+       - in: query
+         name: classification
+         description: Integer corresponding to the work classification
+         schema:
+           type: integer
+         required: false
+
+     responses:
+       '200':
+         description: Success
+         content:
+           application/json:
+             schema:
+               type: array
+               items:
+                 type: object
+                 properties:
+                   id:
+                     type: string
+                   title:
+                     type: string
+                   obs:
+                     type: string
+                   year:
+                     type: string
+                   owner:
+                     type: string
+                   type:
+                     type: string
+               example:
+                 - id: 1
+                   title: Rihanna - Unapologetic
+                   obs: Good pop music album.
+                   year: 2012
+                   owner: Joana Lima
+                   type: MP3
+                 - id: 15
+                   title: Mr. Bean
+                   obs: The best comedy movie.
+                   year: 1995
+                   owner: Manuel Teixeira
+                   type: DVD
