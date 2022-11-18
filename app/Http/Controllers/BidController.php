@@ -37,7 +37,7 @@ class BidController extends Controller
     public function store(Request $request)
     {
         $bid = new Bid();
-        // $this->authorize('create', $card);
+        $this->authorize('create', $bid);
 
         $bid->amount = $request->input('amount');
         $bid->auction_id = $request->input('auction_id');
@@ -69,18 +69,6 @@ class BidController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Bid $bid)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Bid  $bid
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Bid $bid)
     {
         //
     }
