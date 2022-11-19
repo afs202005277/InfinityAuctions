@@ -18,9 +18,14 @@
             
             @if(Auth::user()!=null)
                 @if(Auth::user()->id==$user->id)
-                <a class="edit" href="{{ url('/user/' . Auth::user()->id) }}">
-                    <button> Edit Profile</button>    
-                </a>
+                <div>
+                    <a class="edit" href="{{ url('/user/' . Auth::user()->id) }}">
+                        <button> Edit Profile </button>    
+                    </a>
+                    <a class="edit" href="{{ url('/logout') }}">
+                        <button> Logout </button>    
+                    </a>
+                </div>
                 @endif
             @endif
 
