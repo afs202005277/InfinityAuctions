@@ -95,6 +95,8 @@ class AuctionController extends Controller
 
     public function selectedAuctions()
     {
+        if (Auth::user()===NULL)
+            return NULL;
         return Auth::user()->followingAuctions()->limit(5)->get();
     }
 

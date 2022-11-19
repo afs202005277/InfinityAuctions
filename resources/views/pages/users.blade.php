@@ -16,31 +16,33 @@
                 <p> {{$user->cellphone}} | {{$user->email}}</p>
             </div>
             
-            @if (Auth::user()->id==$user->id)
-            <a class="edit" href="{{ url('/user/' . Auth::user()->id) }}">
-                <button> Edit Profile</button>    
-            </a>
+            @if(Auth::user()!=null)
+                @if(Auth::user()->id==$user->id)
+                <a class="edit" href="{{ url('/user/' . Auth::user()->id) }}">
+                    <button> Edit Profile</button>    
+                </a>
+                @endif
+            @endif
+
+            @if(Auth::user()!=null)
+                @if (Auth::user()->id!=$user->id)
+                <a class="report_btn" href="#">
+                    <button> Report </button>    
+                </a>
+                @endif
             @endif
         </div>
     </div>
-    <div class="info_bar">
-        <h5 id="info_bar_1"> Owned Autions </h5>
-        <h5 id="info_bar_2"> Activity </h5>
-        <h5 id="info_bar_3"> Bids Placed </h5>
-        <h5 id="info_bar_4"> Reports </h5>
-    <div>
-    <div class="info_content">
-        <div class="info_content_1">
-            <p>Hello World 1</p>
-        </div>
-        <div class="info_content_2">
-            <p>Hello World 2</p>
-        </div>
-        <div class="info_content_3">
-            <p>Hello World 3</p>
-        </div>
-        <div class="info_content_4">
-            <p>Hello World 4</p>
-        </div>
+    
+    <h4 id="info_bar_1"> Owned Auctions </h4>
+    
+    <div class="auctions_owned">
+        @if($user->ownedAuctions!=null)
+            @foreach ($user->ownedAuctions as $auction) 
+                @include('partials.auctions_owned', compact('auction'))
+            @endforeach
+        @else
+            <p> This user doesn't own any auctions </p>
+        @endif
     </div>
 @endsection
