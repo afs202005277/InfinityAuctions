@@ -34,15 +34,12 @@
         </div>
     </div>
     
-    <h4 id="info_bar_1"> Owned Auctions </h4>
+    <h4> Owned Auctions </h4>
     <hr/>
-    <div class="auctions_owned">
-        @if($user->ownedAuctions!=null)
-            @foreach ($user->ownedAuctions as $auction) 
-                @include('partials.auctions_owned', compact('auction'))
-            @endforeach
-        @else
-            <p> This user doesn't own any auctions </p>
-        @endif
+    <div class="auctions_owned">    
+        @foreach ($user->ownedAuctions as $auction) 
+            @include('partials.auctions_owned', compact('auction'))
+        @endforeach
+       
     </div>
 @endsection

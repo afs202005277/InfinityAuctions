@@ -3,13 +3,44 @@
 @section('title', 'User Page')
 
 @section('content')
+<div class="info">
+        
+        <div class= "bio">
+            <div>
+                <img src="{{ asset('img/user1.png') }}" alt="">
+            </div>
+        </div>
+        <div class="bio2">
+            <div> 
+                <h4> {{$user->name}} </h4>
+                <p> {{$user->cellphone}} | {{$user->email}}</p>
+            </div>
+        </div>
+    </div>
     <div class="row">
+        <h4 class="info_bar_1"> Change Data </h4>
+        <h4 class="info_bar_1"> Owned Auctions </h4>
+        <h4 class="info_bar_1"> Bids Placed </h4>
+        <h4 class="info_bar_1"> Bidding Auction </h4>
+        <h4 class="info_bar_1"> Following </h4>
+    </div>
+    <hr/>
+    <!-- <div class="auctions_owned">
+        @if($user->ownedAuctions!=null)
+            @foreach ($user->ownedAuctions as $auction) 
+                @include('partials.auctions_owned', compact('auction'))
+            @endforeach
+        @endif
+    </div> -->
+    
+    
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <h5 class="title">{{ __('Edit Profile') }}</h5>
                 </div>
                 <form method="post" action="" autocomplete="off">
+                    
                     <div class="card-body">
                             @csrf
                             @method('post')
@@ -86,26 +117,6 @@
                 </form>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card card-user">
-                <div class="card-body">
-                    <p class="card-text">
-                        <div class="author">
-                                <img class="avatar" src="https://picsum.photos/200/300" alt="">
-                                <h4 class="title">{{ auth()->user()->name }}</h4>
-                            <p class="description">
-                                {{ auth()->user()->email }}
-                            </p>
-                        </div>
-                    </p>
-                    <div class="card-description">
-                        {{ auth()->user()->cellphone }}
-                        @unless( auth()->user()->cellphone != null)
-                            <h3> {{ auth()->user()->credits }} $$$ <h3>
-                        @endunless
-                    </div>
-
-            </div>
-        </div>
-    </div>
+        
+   
 @endsection

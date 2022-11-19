@@ -25,6 +25,9 @@
 
 .row {
   display: flex;
+  margin-left: 2em;
+  margin-right: 2em;
+  justify-content: space-between;
 }
 
 .col-md-8 {
@@ -70,4 +73,8 @@
   border-radius: 0.6em;
   color: #ffffff;
   font-weight: 800;
+}
+
+.info_bar_1 {
+  cursor: pointer;
 }
