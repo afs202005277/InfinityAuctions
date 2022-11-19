@@ -10,7 +10,6 @@
         <div class="sizeAuction">
             <h3> <strong> {{$auction->description}} </strong> </h3>
         </div>
-        
             <a href="{{ url('/auction/' . $auction->id) }}">Bid</a>
         </div>
     </div>

@@ -35,7 +35,7 @@
     </div>
     
     <h4 id="info_bar_1"> Owned Auctions </h4>
-    
+    <hr/>
     <div class="auctions_owned">
         @if($user->ownedAuctions!=null)
             @foreach ($user->ownedAuctions as $auction) 
