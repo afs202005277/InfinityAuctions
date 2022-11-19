@@ -42,7 +42,7 @@
             </div>
             <input class="search" type="text" placeholder="Search..">
             <a class="faq" href="{{ url('/faq') }}">FAQ</a>
-
+            <a class="faq" href="{{ url('/users') }}">Users</a>
             @if (Auth::check())
                 <a class="sell" href="{{ url('/sell') }}">Sell</a>
                 <img class= "notifications" src={{ asset('img/notificationbell.svg') }} alt="Notifications">
