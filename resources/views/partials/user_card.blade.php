@@ -3,25 +3,17 @@
     <div class="container">
         <div class="card">
             <div class="imgBx">
-            <img src="{{ asset('img/user1.jpg') }}">
-            <!-- <img src="https://assets.codepen.io/4164355/shoes.png"> -->
+                <img src="{{ asset('img/user1.png') }}">
             </div>
             <div class="contentBx">
-            <h2>{{$user->name}}</h2>
+                <h2>{{$user->name}}</h2>
             <div class="size">
-                <h3>Size :</h3>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
+                <h3> <strong> {{$user -> rate}} </strong> </h3>
             </div>
             <div class="color">
-                <h3>Color :</h3>
-                <span></span>
-                <span></span>
-                <span></span>
+                <h3>{{$user -> cellphone}}</h3> 
             </div>
-            <a href="#">Know More</a>
+                <a href="{{ url('/users/' . $user->id) }}">Know More</a>
             </div>
         </div>
     </div>
