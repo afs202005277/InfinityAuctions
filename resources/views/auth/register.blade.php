@@ -13,11 +13,48 @@
       </span>
     @endif
 
+    <label for="gender">Gender</label>
+    <select name="gender" id="gender" required>
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+        <option value="NB">Non Binary</option>
+        <option value="O">Other</option>
+    </select>
+    @if ($errors->has('gender'))
+        <span class="error">
+          {{ $errors->first('gender') }}
+      </span>
+    @endif
+
+    <label for="cellphone">Mobile Phone number</label>
+    <input id="cellphone" placeholder="Type your mobile phone number" type="tel" name="cellphone" value="{{ old('cellphone') }}" required autofocus>
+    @if ($errors->has('cellphone'))
+        <span class="error">
+          {{ $errors->first('cellphone') }}
+      </span>
+    @endif
+
     <label for="email">E-Mail Address</label>
     <input id="email" placeholder="Type your email" type="email" name="email" value="{{ old('email') }}" required>
     @if ($errors->has('email'))
       <span class="error">
           {{ $errors->first('email') }}
+      </span>
+    @endif
+
+    <label for="birth_date">Birth date</label>
+    <input id="birth_date" placeholder="Insert your date of birth" type="date" name="birth_date" value="{{ old('birth_date') }}" required>
+    @if ($errors->has('birth_date'))
+        <span class="error">
+          {{ $errors->first('birth_date') }}
+      </span>
+    @endif
+
+    <label for="address">Address</label>
+    <input id="address" placeholder="Type your address" type="text" name="address" value="{{ old('address') }}" required>
+    @if ($errors->has('address'))
+        <span class="error">
+          {{ $errors->first('address') }}
       </span>
     @endif
 
