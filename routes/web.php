@@ -52,4 +52,6 @@ Route::get('manage/', 'ManageController@show');
 
 // Auctions
 Route::post('sell', 'AuctionController@sell');
-Route::post('auction/cancel/{id}', 'AuctionController@cancel');
+Route::post('auctions/cancel/{id}', 'AuctionController@cancel');
+Route::get('auctions/edit/{id}', 'AuctionController@edit');
+

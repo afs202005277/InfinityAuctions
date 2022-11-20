@@ -55,8 +55,6 @@
 #info_bar_1, #info_bar_2, #info_bar_3, #info_bar_4, #info_bar_5{
   cursor: pointer;
 }
-#change_data {
-}
 
 #bidding_auctions{
   display: inline-grid;

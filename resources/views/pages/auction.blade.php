@@ -55,9 +55,12 @@
         </section>
         @if(Auth::user()!==NULL)
             @if(Auth::user()->is_admin)
-                <form action="{{ url('/auction/cancel/' . $auction_id ) }}" method="POST" role="auction_delete">
+                <form action="{{ url('/auctions/cancel/' . $auction_id ) }}" method="POST" role="auction_delete">
                     <button class="cancel_btn"> Cancel </button> 
                 </form>
+                <a href="{{ url('/auctions/edit/' . $auction_id ) }}">
+                    <button class="edit_auction_btn"> Edit Auction </button>    
+                </a>
             @endif
         @endif
     </div>

@@ -27,6 +27,7 @@
     <link href="{{ asset('css/search_users.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction_card.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin_panel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/auction_edit.css') }}" rel="stylesheet">
     <script type="text/javascript" src={{ asset('js/app.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/faq.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/user_profile.js') }} defer></script>

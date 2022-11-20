@@ -65,9 +65,10 @@ class AuctionController extends Controller
      * @param \App\Models\Auction $auction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Auction $auction)
+    public function edit($id)
     {
-        //
+        $auction = Auction::find($id);
+        return view('pages.auction_edit', compact('auction'));
     }
 
     /**

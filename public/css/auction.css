@@ -284,4 +284,16 @@
     border-radius: 0.5em;
     color:aliceblue;
     cursor: pointer;
+    margin: 1em;
+}
+
+.edit_auction_btn {
+    background-color: rgb(172, 172, 172);
+    width: 10em;
+    padding: 0.3em;
+    border: none;
+    border-radius: 0.5em;
+    color: #fff;
+    cursor: pointer;
+    margin: 1em;
 }
