@@ -41,10 +41,13 @@
     
     <h4> Owned Auctions </h4>
     <hr/>
-    <div class="auctions_owned">    
-        @foreach ($user->ownedAuctions as $auction) 
-            @include('partials.auctions_owned', compact('auction'))
-        @endforeach
-       
+    <div class="auctions_owned"> 
+        @if(!$user->ownedAuctions()->get()->isEmpty())   
+            @foreach ($user->ownedAuctions as $auction) 
+                @include('partials.auctions_owned', compact('auction'))
+            @endforeach
+        @else
+            <p> This user doesn't own any Auctions </p>
+        @endif
     </div>
 @endsection

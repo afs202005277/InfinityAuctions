@@ -15,3 +15,7 @@ h2, .ma {
 #categories > h4 > a {
     color: var(--ten);
 }
+
+a {
+   text-decoration: none;
+}

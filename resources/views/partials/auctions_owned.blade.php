@@ -10,7 +10,7 @@
         <div class="sizeAuction">
             <h3> End Date: <strong> {{$auction->end_date}} </strong> </h3>
         </div>
-            <a href="{{ url('/auction/' . $auction->id) }}">Bid</a>
+            <a href="{{ url('/auctions/' . $auction->id) }}">Bid</a>
         </div>
     </div>
 </div>
