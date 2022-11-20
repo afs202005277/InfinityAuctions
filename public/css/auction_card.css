@@ -5,6 +5,16 @@
   font-family: 'Poppins', sans-serif;
 }
 
+
+#auctions_owned{
+  display: inline-grid;
+  align-self: center;
+  justify-items: center;
+  grid-template-columns: auto auto;
+  min-height: 100vh;
+  display: none;
+}
+
 .auctions_owned{
   display: inline-grid;
   align-self: center;
