@@ -5,8 +5,9 @@
 @section('content')
 
     <script type="text/javascript" src={{ asset('js/auctions_images.js') }} defer></script>
-    <script type="text/javascript" src={{ asset('js/auctions_timer.js') }} defer></script>
-
+    @if ($details->state == "Running")
+        <script type="text/javascript" src={{ asset('js/auctions_timer.js') }} defer></script>
+    @endif
 
     <div class="toparea">
         <section class="images">
