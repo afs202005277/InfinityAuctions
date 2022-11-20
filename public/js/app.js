@@ -19,6 +19,11 @@ function addEventListeners() {
         deleter.addEventListener('click', sendDeleteCardRequest);
     });
 
+    let filterCheckers = document.querySelectorAll('#search-filter input[type=checkbox]');
+    [].forEach.call(filterCheckers, function(filterChecker) {
+        filterChecker.addEventListener('change', modifyFiltersRequest);
+    });
+    
     let auctionCreator = document.querySelector('#make_bid');
     if (auctionCreator != null)
         auctionCreator.addEventListener('click', sendCreateBidRequest);
@@ -84,6 +89,20 @@ function sendCreateBidRequest(event) {
         }, bidAddedHandler);
 
     event.preventDefault();
+}
+
+function modifyFiltersRequest() {
+  let oldUrlParams = new URLSearchParams(window.location.search);
+  
+  let newUrlParams = new URLSearchParams();
+  newUrlParams.append('search', oldUrlParams.get('search'));
+
+  let checked = document.querySelectorAll('#search-filter input[type=checkbox]:checked');
+  for (let i = 0; i < checked.length; i++) {
+    newUrlParams.append(checked[i].getAttribute("name") + '[' + i + ']', checked[i].getAttribute("value"));
+  }
+
+  window.location.href = window.location.pathname + '?' + newUrlParams;
 }
 
 function itemUpdatedHandler() {

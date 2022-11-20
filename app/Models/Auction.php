@@ -30,19 +30,33 @@ class Auction extends Model
                     ORDER BY rate DESC LIMIT 10;'));
         return $values;
     }
-
     
     public function refresh()
     {
         DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
     }
 
-    public function searchResults($search)
+    public function searchResults($search, $filters)
     {
-        $values = DB::select(DB::raw("SELECT * FROM auction
-                WHERE auction_tokens @@ plainto_tsquery('english', :search)
-                ORDER BY ts_rank(auction_tokens, plainto_tsquery('english', :search)) DESC;"),
-                array('search' => $search,));
+        $query = DB::table('auction')
+                ->select('auction.*', 'category.name as categoryName')
+                ->join('auction_category', 'id', '=', 'auction_id')
+                ->join('category', 'category_id', '=', 'category.id')
+                ->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
+                
+                if( count($filters) )
+                {
+                    $query->whereIn('category.id', $filters);
+                }
+                
+                $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);
+
+        //$values = DB::select(DB::raw("SELECT * FROM auction
+        //       WHERE auction_tokens @@ plainto_tsquery('english', :search)
+        //       ORDER BY ts_rank(auction_tokens, plainto_tsquery('english', :search)) DESC;"),
+        //       array('search' => $search,));
+
+        $values = $query->get();
 
         return $values;
 
