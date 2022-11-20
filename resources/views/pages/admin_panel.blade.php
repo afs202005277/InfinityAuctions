@@ -3,17 +3,72 @@
 @section('title', 'About Page')
 
 @section('content')
-    <div id="about_us_info">
-        <p> This website was developed by students of Informatics Engineering course at FEUP in the context of the
-            Laboratório de Bases de Dados e Aplicações Web course unit. </p>
-        <p> The goal of this project is to create an Online Auction website that allows users to sell any item they want
-            and
-            bid on the currently active auctions. </p>
-        <p> Furthermore, we also have the reports functionality that is critical to make sure users don't try to
-            sell/buy
-            illegal items using our platform. </p>
-        <img class="logo img-fluid" src="{{ asset('img/infinity_auctions.png') }}" width="400" height="400"
-             alt="Infinity Auctions logo">
+<div class="info">
+    <div class= "stats">
+        <div>
+            <div class="top_row_autions">
+                <div id="user_icon">
+                    <img src={{ asset('img/user.png')}}>
+                </div>
+                <div>
+                    <h4> User </h4>
+                    <h3> 342,150 </h3>
+                </div>
+            </div>
+            <div class="bottom_row_autions">
+                <img src={{ asset('img/downarrow.svg')}}>
+                <p> 38% </p>
+                <p> Since last month </p>
+            </div>
+        </div>
+        <div>
+            <div class="top_row_autions">
+                <div id="bid_icon">
+                    <img src={{ asset('img/bid.png')}}>
+                </div>
+                <div>
+                    <h4> Bid </h4>
+                    <h3> 459,67 </h3>
+                </div>
+            </div>
+            <div class="bottom_row_autions">
+                <img src={{ asset('img/downarrow.svg')}}>
+                <p> 18% </p>
+                <p> Since last month </p>
+            </div>
+        </div>
+        <div>
+             <div class="top_row_autions">
+                <div id="auction_icon">
+                    <img src={{ asset('img/auction.png')}}>
+                </div>
+                <div>
+                    <h4> Auction </h4>
+                    <h3> 568 </h3>
+                </div>
+            </div>
+            <div class="bottom_row_autions">
+                <img src={{ asset('img/downarrow.svg')}}>
+                <p> 8% </p>
+                <p> Since last month </p>
+            </div>
+        </div>
+        <div>
+             <div class="top_row_autions">
+                <div id="auction_icon">
+                    <img src={{ asset('img/auction.png')}}>
+                </div>
+                <div>
+                    <h4> Auction </h4>
+                    <h3> 568 </h3>
+                </div>
+            </div>
+            <div class="bottom_row_autions">
+                <img src={{ asset('img/downarrow.svg')}}>
+                <p> 8% </p>
+                <p> Since last month </p>
+            </div>
+        </div>
     </div>
-    <i><b>Bidding the future and Selling the past.</b></i>
+</div>
 @endsection
