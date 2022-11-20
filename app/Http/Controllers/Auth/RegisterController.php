@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Rules\IsValidAddress;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Validation\Rule;
@@ -54,7 +55,7 @@ class RegisterController extends Controller
             'cellphone' => 'required|numeric|digits:9|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'birth_date' => 'required|date|before:-18 years',
-            'address' => 'required|unique:users|regex:/([- ,\/0-9a-zA-Z]+)/',
+            'address' => ['required', 'unique:users', new IsValidAddress],
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
