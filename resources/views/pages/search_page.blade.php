@@ -3,6 +3,7 @@
 @section('title', 'Search Page')
 
 @section('content')
-    @include('partials.active_auctions', ['active' => $active])
-    @include('partials.categories', ['categories' => $categories])
+    <p>You searched for "{{$search}}"</p>
+    @include('partials.search_filter', ['filters' => $filters, 'categories' => $categories])
+    @include('partials.search_results', ['auctions' => $auctions])
 @endsection

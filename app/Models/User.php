@@ -43,7 +43,7 @@ class User extends Authenticatable
     }
 
     public function reportsMade(){
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'reporter');
     }
 
     public function notifications(){
@@ -51,11 +51,11 @@ class User extends Authenticatable
     }
 
     public function wasReported(){
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'reported_user');
     }
 
     public function reportsHandled(){
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'admin_id');
     }
 
     public function isBanned(){

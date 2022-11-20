@@ -40,7 +40,12 @@
                 </div>
                 @include('partials.categories', ['categories' => $categories])
             </div>
-            <input class="search" type="text" placeholder="Search..">
+            <div class="search">
+              <form action="{{ url('/api/search') }}" method="GET" role="search">
+                <input class="search-text" type="text" placeholder="Search.." name="search" required>
+                <button class="search-button" type="submit" title="Search auctions">search</button>
+              </form>
+            </div>
             <a class="faq" href="{{ url('/faq') }}">FAQ</a>
             <a class="faq" href="{{ url('/users') }}">Users</a>
             @if (Auth::check())
@@ -52,7 +57,7 @@
                 <a class="sign-up" href="{{ url('/register') }}">Sign Up</a>
             @endif
         </header>
-      
+
       <section id="content">
         @yield('content')
       </section>
