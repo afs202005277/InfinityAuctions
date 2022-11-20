@@ -9,39 +9,25 @@ use Illuminate\Support\Facades\DB;
 class BidController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
         $bid = new Bid();
         $this->authorize('create', $bid);
+        $validated = $request->validate([
+            'amount' => 'required|numeric',
+            'auction_id' => 'required|integer',
+            'user_id' => 'required|integer'
+        ]);
 
-        $bid->amount = $request->input('amount');
-        $bid->auction_id = $request->input('auction_id');
-        $bid->user_id = $request->input('user_id');
+        $bid->amount = $validated['amount'];
+        $bid->auction_id = $validated['auction_id'];
+        $bid->user_id = $validated['user_id'];
         $id = DB::table('bid')->max('id');
         $bid->id = $id+1;
         $bid->save();

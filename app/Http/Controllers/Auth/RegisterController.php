@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Rules\IsValidAddress;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -48,8 +50,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|alpha|max:30',
+            'gender' => ['required', Rule::in(['M', 'F', 'NB', 'O'])],
+            'cellphone' => 'required|numeric|digits:9|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
+            'birth_date' => 'required|date|before:-18 years',
+            'address' => ['required', 'unique:users', new IsValidAddress],
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -63,9 +69,18 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
+            'id' => User::max('id') + 1,
             'name' => $data['name'],
+            'gender' => $data['gender'],
+            'cellphone' => $data['cellphone'],
             'email' => $data['email'],
+            'birth_date' => $data['birth_date'],
+            'address' => $data['address'],
             'password' => bcrypt($data['password']),
+            'rate' => NULL,
+            'credits' => 0,
+            'wishlist' => NULL,
+            'is_admin' => FALSE,
         ]);
     }
 }
