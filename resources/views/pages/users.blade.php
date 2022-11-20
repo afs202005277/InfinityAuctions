@@ -25,8 +25,14 @@
                     <a class="edit" href="{{ url('/logout') }}">
                         <button> Logout </button>    
                     </a>
+                    @if(Auth::user()->is_admin)
+                        <a class="manage_btn" href="{{ url('/manage') }}">
+                            <button> Admin Panel </button>    
+                        </a>
+                    @endif
                 </div>
                 @endif
+
             @endif
 
             @if(Auth::user()!=null)

@@ -38,12 +38,22 @@
     justify-content: center;
     justify-items: center;
     align-content: center;
-    background-color: #ffad66;
     border-radius: 1em;
     padding: 0.5em 1.5em;
     border: none;
-    color:rgba(255, 255, 255);
+    
     font-weight: 800;
+}
+
+.manage_btn button {
+    color:rgb(35, 35, 35);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
+    background-color: var(--sixty);
+}
+
+.edit button{
+    color:rgba(255, 255, 255);
+    background-color: var(--ten);
 }
 
 .bio2 button:hover {

@@ -45,5 +45,9 @@ Route::post('user/{id}', 'UserController@edit');
 //Users
 Route::get('users', 'UsersController@index');
 Route::get('users/{id}', 'UsersController@show');
+
+//Admin Panel
+Route::get('manage/', 'ManageController@show');
+
 // Auctions
 Route::post('sell', 'AuctionController@sell');
