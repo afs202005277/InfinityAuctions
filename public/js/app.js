@@ -19,6 +19,11 @@ function addEventListeners() {
     deleter.addEventListener('click', sendDeleteCardRequest);
   });
 
+  let filterCheckers = document.querySelectorAll('#search-filter input[type=checkbox]');
+  [].forEach.call(filterCheckers, function(filterChecker) {
+    filterChecker.addEventListener('change', modifyFiltersRequest);
+  });
+
   let cardCreator = document.querySelector('article.card form.new_card');
   if (cardCreator != null)
     cardCreator.addEventListener('submit', sendCreateCardRequest);
@@ -78,6 +83,20 @@ function sendCreateCardRequest(event) {
     sendAjaxRequest('put', '/api/cards/', {name: name}, cardAddedHandler);
 
   event.preventDefault();
+}
+
+function modifyFiltersRequest() {
+  let oldUrlParams = new URLSearchParams(window.location.search);
+  
+  let newUrlParams = new URLSearchParams();
+  newUrlParams.append('search', oldUrlParams.get('search'));
+
+  let checked = document.querySelectorAll('#search-filter input[type=checkbox]:checked');
+  for (let i = 0; i < checked.length; i++) {
+    newUrlParams.append(checked[i].getAttribute("name") + '[' + i + ']', checked[i].getAttribute("value"));
+  }
+
+  window.location.href = window.location.pathname + '?' + newUrlParams;
 }
 
 function itemUpdatedHandler() {
