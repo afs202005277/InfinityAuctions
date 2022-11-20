@@ -41,15 +41,18 @@ class Auction extends Model
         $query = DB::table('auction')
                 ->select('auction.*', 'category.name as categoryName')
                 ->join('auction_category', 'id', '=', 'auction_id')
-                ->join('category', 'category_id', '=', 'category.id')
-                ->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
+                ->join('category', 'category_id', '=', 'category.id');
                 
-                if( count($filters) )
-                {
-                    $query->whereIn('category.id', $filters);
-                }
-                
-                $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);
+        if( count($filters) )
+        {
+            $query->whereIn('category.id', $filters);
+        }
+        
+        if( isset($search) )
+        {
+            $query->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
+            $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);
+        }
 
         //$values = DB::select(DB::raw("SELECT * FROM auction
         //       WHERE auction_tokens @@ plainto_tsquery('english', :search)
@@ -59,7 +62,6 @@ class Auction extends Model
         $values = $query->get();
 
         return $values;
-
     }
 
     public function newAuctions()

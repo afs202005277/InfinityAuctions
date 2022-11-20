@@ -95,7 +95,9 @@ function modifyFiltersRequest() {
   let oldUrlParams = new URLSearchParams(window.location.search);
   
   let newUrlParams = new URLSearchParams();
-  newUrlParams.append('search', oldUrlParams.get('search'));
+  if ( oldUrlParams.has('search') ) {
+    newUrlParams.append('search', oldUrlParams.get('search'));
+  }
 
   let checked = document.querySelectorAll('#search-filter input[type=checkbox]:checked');
   for (let i = 0; i < checked.length; i++) {

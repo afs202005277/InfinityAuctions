@@ -35,10 +35,10 @@
         <header>
             <a class="logo" href="{{ url('/') }}"><img src={{ asset('img/infinityauctions_logo.png') }} alt="InfinityAuctions logo"></a>
             <div class="categories">
-                <div class="cat-button">
-                  Categories<img src={{ asset('img/downarrow.svg')}}>
-                </div>
-                @include('partials.categories', ['categories' => $categories])
+              <div class="cat-button">
+                Categories<img src={{ asset('img/downarrow.svg')}}>
+              </div>
+              @include('partials.categories', ['categories' => $categories])
             </div>
             <div class="search">
               <form action="{{ url('/api/search') }}" method="GET" role="search">
