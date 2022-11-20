@@ -88,9 +88,11 @@ class AuctionController extends Controller
      * @param \App\Models\Auction $auction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Auction $auction)
+    public function cancel($id)
     {
-        //
+        return DB::table('auction')
+            ->where('id', $id)
+            ->set('state', 'Cancelled');
     }
 
     public function selectedAuctions()

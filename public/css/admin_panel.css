@@ -3,9 +3,11 @@
     display: grid;
     grid-template-columns: auto auto;
     align-items: center;
-    padding: 3em;
     justify-items: center;
     border-radius: 2em;
+    padding-top: 3em;
+    padding-left: 6em;
+    padding-right: 6em;
     padding-bottom: 4em;
     background-image: linear-gradient(to right, var(--ten) 0%, #f8d8c4 100%);
 }
@@ -17,6 +19,7 @@
     padding: 1em;
     margin-top: 2em;
     border-radius: 1em;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 3px 3px, rgba(9, 30, 66, 0.13) 0px 3px 10px 1px;
 }   
 
 #user_icon {

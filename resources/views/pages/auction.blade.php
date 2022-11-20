@@ -53,6 +53,13 @@
             <h4>Customs Information</h4>
             <p>Any other costs or charges such as customs or import duties, customs clearance and handling may also apply during the shipment of your lot and will be charged to you by the involved party at a later stage if applicable.</p>
         </section>
+        @if(Auth::user()!==NULL)
+            @if(Auth::user()->is_admin)
+                <form action="{{ url('/auction/cancel') }}" method="POST" role="auction_delete">
+                    <button class="cancel_btn"> Cancel </button> 
+                </form>
+            @endif
+        @endif
     </div>
     @include('partials.more_from_seller', ['auctions' => $auctions])
     @include('partials.most_active', ['most_active' => $mostActive])

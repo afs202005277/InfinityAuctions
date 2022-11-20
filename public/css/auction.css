@@ -275,3 +275,13 @@
     height: 3.5rem;
     filter: invert(25%) sepia(0%) saturate(1123%) hue-rotate(256deg) brightness(94%) contrast(91%);
 }
+
+.cancel_btn {
+    background-color: red;
+    width: 10em;
+    padding: 0.3em;
+    border: none;
+    border-radius: 0.5em;
+    color:aliceblue;
+    cursor: pointer;
+}
