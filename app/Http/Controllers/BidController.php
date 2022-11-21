@@ -36,37 +36,4 @@ class BidController extends Controller
 
         return $bid;
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Bid  $bid
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Bid $bid)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Bid  $bid
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Bid $bid)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Bid  $bid
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Bid $bid)
-    {
-        //
-    }
 }

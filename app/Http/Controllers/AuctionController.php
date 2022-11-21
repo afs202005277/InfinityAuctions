@@ -76,6 +76,8 @@ class AuctionController extends Controller
     {
         $auction = new Auction();
 
+        $this->authorize('create', $auction);
+
         $postData = $request->only('images');
         $file = $postData['images'];
 
@@ -131,6 +133,7 @@ class AuctionController extends Controller
     public function edit($id)
     {
         $auction = Auction::find($id);
+
         return view('pages.auction_edit', compact('auction'));
     }
 
@@ -143,7 +146,7 @@ class AuctionController extends Controller
      */
     public function update(Request $request, Auction $auction)
     {
-        //
+        $this->authorize('update', $auction);
     }
 
     /**
@@ -154,6 +157,9 @@ class AuctionController extends Controller
      */
     public function cancel($id)
     {
+        $auction = Auction::find($id);
+        $this->authorize('delete', $auction);
+
         return DB::table('auction')
             ->where('id', $id)
             ->set('state', 'Cancelled');
@@ -163,14 +169,7 @@ class AuctionController extends Controller
     {
         if (Auth::user()===NULL)
             return NULL;
-        return Auth::user()->followingAuctions()->limit(5)->get();
-    }
-
-    public function showSearchResults($query){
-//        DB::table('auction')->whereFullText('auction_tokens', 'ford bike');
-        $active = (new Auction())->runningAuctions();
-        $categories = Category::all();
-        return view('pages.search_page', compact('active', 'categories'));
+        return Auth::user()->followingAuctions()->get();
     }
 
     public function getAllBids($auction_id){
