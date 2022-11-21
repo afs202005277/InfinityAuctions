@@ -121,7 +121,7 @@ class AuctionController extends Controller
 
              return redirect('auctions/' . $id);
          } catch (AuthorizationException $exception){
-             return redirect()->back(status: 403)->withErrors("You don't have permissions to create an auction!");
+             return redirect('sell')->withErrors("You don't have permissions to create an auction!");
          }
     }
 
@@ -166,11 +166,12 @@ class AuctionController extends Controller
         try{
             $this->authorize('delete', $auction);
 
-            return DB::table('auction')
-                ->where('id', $id)
-                ->set('state', 'Cancelled');
+            $auction->state = 'Cancelled';
+
+            $auction->save();
+            return redirect('/');
         } catch(AuthorizationException $exception){
-            return response("You don't have permissions to cancel this auction! ", 403);
+            return redirect('auctions/'.$id)->withErrors("You don't have permissions to cancel this auction! ");
         }
     }
 

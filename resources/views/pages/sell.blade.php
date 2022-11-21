@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @if($errors->any())
+        <h4 class="error">{{$errors->first()}}</h4>
+    @endif
 
     @if (!Auth::user())
         <p class="not-auth">Please <a href="{{ route('login') }}">login</a> to proceed.</p>

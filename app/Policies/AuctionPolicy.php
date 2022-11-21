@@ -32,7 +32,7 @@ class AuctionPolicy
      */
     public function update(User $user, Auction $auction)
     {
-        return Auth::check() && $user->id == $auction->owner()->get() && $auction->state != 'Canceled' && $auction->state != 'Ended';
+        return Auth::check() && $user->id == $auction->owner()->value('id') && $auction->state != 'Canceled' && $auction->state != 'Ended';
     }
 
     /**
@@ -44,6 +44,6 @@ class AuctionPolicy
      */
     public function delete(User $user, Auction $auction)
     {
-        return Auth::check() && ($user->id == $auction->owner()->get() || $user->is_admin);
+        return Auth::check() && ($user->id == $auction->owner()->value('id') || $user->is_admin);
     }
 }
