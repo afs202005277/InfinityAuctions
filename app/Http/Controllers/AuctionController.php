@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use App\Models\Image;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -56,7 +57,15 @@ class AuctionController extends Controller
         $auctions = $owner->ownedAuctions()->where('auction.id', '<>', $auction_id)->get();
         $bids = $details->bids()->orderBy('amount')->get();
         $mostActive = (new Auction())->mostActive();
-        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive'));
+        $images = $details->images()->get('path');
+
+        if ($images->isEmpty()){
+            $default = Image::find(0)->path;
+            $images[0] = ['path' => $default];
+            $images[1] = ['path' => $default];
+            $images[2] = ['path' => $default];
+        }
+        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images'));
     }
 
     /**
@@ -110,16 +119,15 @@ class AuctionController extends Controller
              $id = DB::table('auction')->max('id');
              $auction->id = $id+1;
 
-             foreach($request->file('images') as $key => $image)
-             {
-                 $destinationPath = public_path() . '/AuctionImages/';
-                 $filename = "AUCTION_" . $auction->id . "_" . $key . ".png";
-                 $image->move($destinationPath, $filename);
-             }
-
              $auction->save();
 
-             return redirect('auctions/' . $id);
+             $imageController = new ImageController();
+             foreach($request->file('images') as $key => $image)
+             {
+                 $imageController->store($image, 'AuctionImages/', $auction->id);
+             }
+
+             return redirect('auctions/' . $auction->id);
          } catch (AuthorizationException $exception){
              return redirect('sell')->withErrors("You don't have permissions to create an auction!");
          }

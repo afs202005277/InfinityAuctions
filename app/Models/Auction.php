@@ -30,7 +30,7 @@ class Auction extends Model
                     ORDER BY rate DESC LIMIT 10;'));
         return $values;
     }
-    
+
     public function refresh()
     {
         DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
@@ -42,12 +42,12 @@ class Auction extends Model
                 ->select('auction.*', 'category.name as categoryName')
                 ->join('auction_category', 'id', '=', 'auction_id')
                 ->join('category', 'category_id', '=', 'category.id');
-                
+
         if( count($filters) )
         {
             $query->whereIn('category.id', $filters);
         }
-        
+
         if( isset($search) )
         {
             $query->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
@@ -114,5 +114,9 @@ class Auction extends Model
             ->select('users.name', 'bid.*')
             ->orderBy('amount', 'DESC')
             ->get();
+    }
+
+    public function images(){
+        return $this->hasMany(Image::class, 'auction_id');
     }
 }
