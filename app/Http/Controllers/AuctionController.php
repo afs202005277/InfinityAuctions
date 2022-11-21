@@ -135,7 +135,13 @@ class AuctionController extends Controller
     {
         $auction = Auction::find($id);
 
-        return view('pages.auction_edit', compact('auction'));
+        return view('pages.sell')
+            ->with('title', $auction->name)
+            ->with('desc', $auction->description)
+            ->with('baseprice', $auction->base_price)
+            ->with('startdate', $auction->start_date)
+            ->with('enddate', $auction->end_date)
+            ->with('buynow', $auction->buy_now);
     }
 
     /**

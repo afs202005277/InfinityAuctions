@@ -12,7 +12,7 @@
 */
 // Home
 Route::get('/', MainPageController::class);
-Route::get('/faqs', function () { return view('pages.faq'); });
+Route::get('/faq', function () { return view('pages.faq'); });
 Route::get('/about', function () { return view('pages.about'); });
 Route::get('/contacts', function () { return view('pages.contacts'); });
 Route::get('/services', function () { return view('pages.services'); });
