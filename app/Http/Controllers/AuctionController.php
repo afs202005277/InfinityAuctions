@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
-use App\Models\Category;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
-use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -76,59 +74,62 @@ class AuctionController extends Controller
     {
         $auction = new Auction();
 
-        $this->authorize('create', $auction);
+         try{
+             $this->authorize('create', $auction);
+             $postData = $request->only('images');
+             $file = $postData['images'];
 
-        $postData = $request->only('images');
-        $file = $postData['images'];
+             $fileArray = array('image' => $file);
 
-        $fileArray = array('image' => $file);
+             // Tell the validator that this file should be an image
+             $rules = array(
+                 'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
+             );
 
-        // Tell the validator that this file should be an image
-        $rules = array(
-            'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
-        );
+             // Now pass the input and rules into the validator
+             $validator = Validator::make($fileArray, $rules);
 
-        // Now pass the input and rules into the validator
-        $validator = Validator::make($fileArray, $rules);
+             $validated = $request->validate([
+                 'title' => 'required|min:1|max:255',
+                 'desc' => 'required|min:1|max:255',
+                 'baseprice' => 'required|numeric|gt:0',
+                 'startdate' => 'required|date|after:now',
+                 'enddate' => 'required|date|after:startdate',
+                 'buynow' => 'nullable|numeric|gt:baseprice',
+             ]);
 
-        $validated = $request->validate([
-            'title' => 'required|min:1|max:255',
-            'desc' => 'required|min:1|max:255',
-            'baseprice' => 'required|numeric|gt:0',
-            'startdate' => 'required|date|after:now',
-            'enddate' => 'required|date|after:startdate',
-            'buynow' => 'nullable|numeric|gt:baseprice',
-        ]);
+             $auction->name = $validated['title'];
+             $auction->description = $validated['desc'];
+             $auction->base_price = $validated['baseprice'];
+             $auction->start_date = $validated['startdate'];
+             $auction->end_date = $validated['enddate'];
+             $auction->buy_now = $validated['buynow'];
+             $auction->state = "To be started";
+             $auction->auction_owner_id = Auth::user()->id;
 
-        $auction->name = $validated['title'];
-        $auction->description = $validated['desc'];
-        $auction->base_price = $validated['baseprice'];
-        $auction->start_date = $validated['startdate'];
-        $auction->end_date = $validated['enddate'];
-        $auction->buy_now = $validated['buynow'];
-        $auction->state = "To be started";
-        $auction->auction_owner_id = Auth::user()->id;
+             $id = DB::table('auction')->max('id');
+             $auction->id = $id+1;
 
-        $id = DB::table('auction')->max('id');
-        $auction->id = $id+1;
+             foreach($request->file('images') as $key => $image)
+             {
+                 $destinationPath = public_path() . '/AuctionImages/';
+                 $filename = "AUCTION_" . $auction->id . "_" . $key . ".png";
+                 $image->move($destinationPath, $filename);
+             }
 
-        foreach($request->file('images') as $key => $image)
-        {
-            $destinationPath = public_path() . '/AuctionImages/';
-            $filename = "AUCTION_" . $auction->id . "_" . $key . ".png";
-            $image->move($destinationPath, $filename);
-        }
+             $auction->save();
 
-        $auction->save();
-
-        return redirect('auctions/' . $id);
+             return redirect('auctions/' . $id);
+         } catch (AuthorizationException $exception){
+             return redirect()->back(status: 403)->withErrors("You don't have permissions to create an auction!");
+         }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\Auction $auction
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -142,11 +143,15 @@ class AuctionController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Auction $auction
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Auction $auction)
     {
-        $this->authorize('update', $auction);
+        try{
+            $this->authorize('update', $auction);
+        } catch (AuthorizationException $exception){
+            return redirect()->back(status: 403)->withErrors("You don't have permissions to edit this auction!");
+        }
     }
 
     /**
@@ -158,11 +163,15 @@ class AuctionController extends Controller
     public function cancel($id)
     {
         $auction = Auction::find($id);
-        $this->authorize('delete', $auction);
+        try{
+            $this->authorize('delete', $auction);
 
-        return DB::table('auction')
-            ->where('id', $id)
-            ->set('state', 'Cancelled');
+            return DB::table('auction')
+                ->where('id', $id)
+                ->set('state', 'Cancelled');
+        } catch(AuthorizationException $exception){
+            return response("You don't have permissions to cancel this auction! ", 403);
+        }
     }
 
     public function selectedAuctions()
