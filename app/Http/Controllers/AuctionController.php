@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
-<<<<<<< HEAD
 use App\Models\Category;
-=======
 use App\Models\Image;
->>>>>>> 6abbe09420abc657ec88299022463fcb4385a527
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -118,7 +115,6 @@ class AuctionController extends Controller
 
              $auction->save();
 
-<<<<<<< HEAD
              foreach (Category::all() as $key => $category) {
                 if ($request->has($category->name)) {
                     Auction::find($id+1)->categories()->attach($key+1);
@@ -126,7 +122,6 @@ class AuctionController extends Controller
              }
 
              return redirect('auctions/' . $id+1);
-=======
              $imageController = new ImageController();
              foreach($request->file('images') as $key => $image)
              {
@@ -134,7 +129,6 @@ class AuctionController extends Controller
              }
 
              return redirect('auctions/' . $auction->id);
->>>>>>> 6abbe09420abc657ec88299022463fcb4385a527
          } catch (AuthorizationException $exception){
              return redirect('sell')->withErrors("You don't have permissions to create an auction!");
          }
