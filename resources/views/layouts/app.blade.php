@@ -19,6 +19,7 @@
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
     <link href="{{ asset('css/register.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sell.css') }}" rel="stylesheet">
     <link href="{{ asset('css/milligram.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/faq.css') }}" rel="stylesheet">
@@ -51,7 +52,7 @@
             <a class="faq" href="{{ url('/faq') }}">FAQ</a>
             <a class="faq" href="{{ url('/users') }}">Users</a>
             @if (Auth::check())
-                <a class="sell" href="{{ url('/sell') }}">Sell</a>
+                <a class="sell-button" href="{{ url('/sell') }}">Sell</a>
                 <img class= "notifications" src={{ asset('img/notificationbell.svg') }} alt="Notifications">
                 <a class="user" href="{{ url('/users/' . Auth::user()->id) }}"><img src={{ asset('img/usericon.svg') }} alt="User"></a>
             @else

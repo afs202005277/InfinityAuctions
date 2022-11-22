@@ -73,7 +73,7 @@ header > .faq, header > .log-in, header > .sign-up {
     transition: all 0.2s linear 0s;
 }
 
-header > .log-in, header > .sell {
+header > .log-in, header > .sell-button {
     color: var(--ten);
 }
 
