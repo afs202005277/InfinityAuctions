@@ -74,7 +74,7 @@ class ImageController extends Controller
     public function delete(Request $request, $id)
     {
         $image = Image::find($id);
-        //$this->authorize('delete', $image);
+        $this->authorize('delete', $image);
         $image->delete();
         return $image;
     }

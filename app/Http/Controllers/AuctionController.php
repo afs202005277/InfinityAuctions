@@ -43,18 +43,6 @@ class AuctionController extends Controller
         //
     }
 
-    public function handleImages($records){
-        $res = array();
-        foreach ($records as $record){
-            if (isset($res[$record->id])){
-                $res[$record->id] += $record->path;
-            } else{
-                $res[$record->id] = $record->path;
-            }
-        }
-        return $res;
-    }
-
     /**
      * Display the specified resource.
      *
@@ -168,7 +156,7 @@ class AuctionController extends Controller
     {
         try{
             $auction = Auction::find($id);
-            // $this->authorize('update', $auction);
+            $this->authorize('update', $auction);
             $validated = $request->validate([
                 'title' => 'required|min:1|max:255',
                 'desc' => 'required|min:1|max:255',
@@ -186,8 +174,15 @@ class AuctionController extends Controller
             $auction->buy_now = $validated['buynow'];
 
             $auction->save();
+
+            $imageController = new ImageController();
+            foreach($request->file('images') as $image)
+            {
+                $imageController->store($image, 'AuctionImages/', $auction->id);
+            }
+            return redirect('auctions/' . $auction->id);
         } catch (AuthorizationException $exception){
-            return redirect()->back(status: 403)->withErrors("You don't have permissions to edit this auction!");
+            return redirect()->back()->withErrors("You don't have permissions to edit this auction!");
         }
     }
 

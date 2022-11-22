@@ -1,7 +1,18 @@
+function showImage(){
+    let images = document.querySelectorAll('.auctionImage img:first-child');
+    for (let image of images){
+        image.parentElement.style.display = "";
+    }
+}
+
 function imageRemovedHandler(){
-    //location.reload();
-    if (!(this.status >= 200 && this.status < 300))
-         alert("Error deleting image!");
+    if (!(this.status >= 200 && this.status < 300)){
+        showImage();
+        if (this.status === 500)
+            alert("You don't have permissions to delete this image!");
+        else
+            alert("Error deleting image!");
+    }
 }
 
 function imageDeleteListen(){

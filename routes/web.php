@@ -55,6 +55,6 @@ Route::get('manage/', 'ManageController@show');
 Route::post('sell', 'AuctionController@sell');
 Route::post('auctions/cancel/{id}', 'AuctionController@cancel');
 Route::get('auctions/edit/{id}', 'AuctionController@edit');
-Route::patch('auctions/edit/{id}', 'AuctionController@update')->name('editAuction');
+Route::post('auctions/edit/{id}', 'AuctionController@update')->name('editAuction');
 Route::get('sell', 'AuctionController@showSellForm')->name('sell');
 Route::post('sell', 'AuctionController@sell');
