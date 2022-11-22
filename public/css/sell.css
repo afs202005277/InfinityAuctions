@@ -1,4 +1,4 @@
-.login {
+.sell {
     margin: 10rem auto;
     width: 36rem;
     display: flex;
@@ -9,27 +9,27 @@
     border-radius: 7px;
 }
 
-.login > h3 {
+.sell > h3 {
     font-size: 3rem;
 }
 
-.login > label {
+.sell > label {
     font-weight: 600;
     font-size: 1.3rem;
 }
 
-.login > input {
+.sell > input {
     border: none;
     border-bottom: 1px solid var(--thirty);
     padding: 0.5rem;
     margin-bottom: 2rem;
 }
 
-.login > input:read-write {
+.sell > input:read-write {
     font-family: inherit;
 }
 
-.login > button {
+.sell > button {
     margin-top: 3rem;
     padding: 1rem;
     background-color: var(--ten);
@@ -42,16 +42,16 @@
     cursor: pointer;
 }
 
-.login > button:hover {
+.sell > button:hover {
     background-color: var(--sixty);
     color: var(--ten);
 }
 
-.login > p {
+.sell > p {
     margin: 0;
     margin-top: 3rem;
 }
 
-.login > a {
+.sell > a {
     color: var(--ten);
 }
