@@ -96,12 +96,10 @@ class AuctionController extends Controller
 
              $fileArray = array('image' => $file);
 
-             // Tell the validator that this file should be an image
              $rules = array(
                  'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
              );
 
-             // Now pass the input and rules into the validator
              $validator = Validator::make($fileArray, $rules);
 
              $validated = $request->validate([
@@ -166,10 +164,28 @@ class AuctionController extends Controller
      * @param \App\Models\Auction $auction
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Auction $auction)
+    public function update(Request $request, $id)
     {
         try{
-            $this->authorize('update', $auction);
+            $auction = Auction::find($id);
+            // $this->authorize('update', $auction);
+            $validated = $request->validate([
+                'title' => 'required|min:1|max:255',
+                'desc' => 'required|min:1|max:255',
+                'baseprice' => 'required|numeric|gt:0',
+                'startdate' => 'required|date|after:now',
+                'enddate' => 'required|date|after:startdate',
+                'buynow' => 'nullable|numeric|gt:baseprice',
+            ]);
+
+            $auction->name = $validated['title'];
+            $auction->description = $validated['desc'];
+            $auction->base_price = $validated['baseprice'];
+            $auction->start_date = $validated['startdate'];
+            $auction->end_date = $validated['enddate'];
+            $auction->buy_now = $validated['buynow'];
+
+            $auction->save();
         } catch (AuthorizationException $exception){
             return redirect()->back(status: 403)->withErrors("You don't have permissions to edit this auction!");
         }

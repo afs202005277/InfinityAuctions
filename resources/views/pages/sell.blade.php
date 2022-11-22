@@ -68,6 +68,14 @@
                 {{ $errors->first('images') }}
                 </span>
                 @endif
+            @else
+                <label for="images">Add images</label>
+                <input id="images" name="images[]" type="file" multiple>
+                @if ($errors->has('images'))
+                    <span class="error">
+                {{ $errors->first('images') }}
+                </span>
+                @endif
             @endif
 
             <label for="baseprice">Base Price</label>
