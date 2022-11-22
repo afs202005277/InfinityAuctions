@@ -155,7 +155,8 @@ class AuctionController extends Controller
             ->with('baseprice', $auction->base_price)
             ->with('startdate', $auction->start_date)
             ->with('enddate', $auction->end_date)
-            ->with('buynow', $auction->buy_now);
+            ->with('buynow', $auction->buy_now)
+            ->with('auction_id', $auction->id);
     }
 
     /**

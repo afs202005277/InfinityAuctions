@@ -66,13 +66,16 @@ class ImageController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deletes an individual item.
      *
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return Response
      */
-    public function destroy(Image $image)
+    public function delete(Request $request, $id)
     {
-        //
+        $image = Image::find($id);
+        //$this->authorize('delete', $image);
+        $image->delete();
+        return $image;
     }
 }

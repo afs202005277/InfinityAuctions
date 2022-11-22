@@ -31,6 +31,7 @@ Route::put('api/cards/{card_id}/', 'ItemController@create');
 Route::post('api/item/{id}', 'ItemController@update');
 Route::delete('api/item/{id}', 'ItemController@delete');
 Route::get('api/search', 'SearchController@search');
+Route::delete('api/image/{id}', 'ImageController@delete');
 
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -54,5 +55,6 @@ Route::get('manage/', 'ManageController@show');
 Route::post('sell', 'AuctionController@sell');
 Route::post('auctions/cancel/{id}', 'AuctionController@cancel');
 Route::get('auctions/edit/{id}', 'AuctionController@edit');
+Route::patch('auctions/edit/{id}', 'AuctionController@update')->name('editAuction');
 Route::get('sell', 'AuctionController@showSellForm')->name('sell');
 Route::post('sell', 'AuctionController@sell');
