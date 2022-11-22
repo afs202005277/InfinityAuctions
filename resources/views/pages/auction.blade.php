@@ -12,9 +12,9 @@
     <div class="toparea">
         <section class="images">
             <div class="container">
-                <img id="expandedImg" style="width:100%">
+                <img id="expandedImg" style="width:100%" alt="expanded auction image">
             </div>
-            @include('partials.auction_images', ['auction_id' => $auction_id])
+            @include('partials.auction_images', ['images' => $images])
         </section>
         <div class="details">
             <p id="timer"></p>

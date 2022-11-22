@@ -65,6 +65,10 @@ class User extends Authenticatable
         return $this->hasMany(Report::class, 'admin_id');
     }
 
+    public function profileImage(){
+        return $this->belongsTo(Image::class, 'profile_image');
+    }
+
     public function isBanned()
     {
         $reports = $this->wasReported()->get();

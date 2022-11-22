@@ -1,9 +1,13 @@
 <div class="containerAuction">
     <div class="cardAuction">
         <div class="imgBxAuction">
-            <img class="card_auction_img1" src="{{ asset('img/auction_tmp.png') }}">
-            <img class="card_auction_img2" src="{{ asset('img/auction_tmp.png') }}">
-            <img class="card_auction_img3" src="{{ asset('img/auction_tmp.png') }}">
+            @php($images = App\Models\Auction::find($auction->id)->images()->get())
+            @foreach($images as $image)
+                <img class="card_auction_img{{$loop->index + 1}}" src="{{ asset($image->path) }}">
+                @if($loop->index === 3)
+                    @break
+                @endif
+            @endforeach
         </div>
         <div class="contentBxAuction">
             <h2>{{$auction->name}}</h2>

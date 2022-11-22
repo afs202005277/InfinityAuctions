@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+<<<<<<< HEAD
 use App\Models\Category;
+=======
+use App\Models\Image;
+>>>>>>> 6abbe09420abc657ec88299022463fcb4385a527
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -57,7 +61,9 @@ class AuctionController extends Controller
         $auctions = $owner->ownedAuctions()->where('auction.id', '<>', $auction_id)->get();
         $bids = $details->bids()->orderBy('amount')->get();
         $mostActive = (new Auction())->mostActive();
-        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive'));
+        $images = $details->images()->get('path');
+
+        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images'));
     }
 
     /**
@@ -83,12 +89,10 @@ class AuctionController extends Controller
 
              $fileArray = array('image' => $file);
 
-             // Tell the validator that this file should be an image
              $rules = array(
                  'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
              );
 
-             // Now pass the input and rules into the validator
              $validator = Validator::make($fileArray, $rules);
 
              $validated = $request->validate([
@@ -112,15 +116,9 @@ class AuctionController extends Controller
              $id = DB::table('auction')->max('id');
              $auction->id = $id+1;
 
-             foreach($request->file('images') as $key => $image)
-             {
-                 $destinationPath = public_path() . '/AuctionImages/';
-                 $filename = "AUCTION_" . $auction->id . "_" . $key . ".png";
-                 $image->move($destinationPath, $filename);
-             }
-
              $auction->save();
 
+<<<<<<< HEAD
              foreach (Category::all() as $key => $category) {
                 if ($request->has($category->name)) {
                     Auction::find($id+1)->categories()->attach($key+1);
@@ -128,6 +126,15 @@ class AuctionController extends Controller
              }
 
              return redirect('auctions/' . $id+1);
+=======
+             $imageController = new ImageController();
+             foreach($request->file('images') as $key => $image)
+             {
+                 $imageController->store($image, 'AuctionImages/', $auction->id);
+             }
+
+             return redirect('auctions/' . $auction->id);
+>>>>>>> 6abbe09420abc657ec88299022463fcb4385a527
          } catch (AuthorizationException $exception){
              return redirect('sell')->withErrors("You don't have permissions to create an auction!");
          }
@@ -143,7 +150,14 @@ class AuctionController extends Controller
     {
         $auction = Auction::find($id);
 
-        return view('pages.auction_edit', compact('auction'));
+        return view('pages.sell')
+            ->with('title', $auction->name)
+            ->with('desc', $auction->description)
+            ->with('baseprice', $auction->base_price)
+            ->with('startdate', $auction->start_date)
+            ->with('enddate', $auction->end_date)
+            ->with('buynow', $auction->buy_now)
+            ->with('auction_id', $auction->id);
     }
 
     /**
@@ -153,12 +167,37 @@ class AuctionController extends Controller
      * @param \App\Models\Auction $auction
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Auction $auction)
+    public function update(Request $request, $id)
     {
         try{
+            $auction = Auction::find($id);
             $this->authorize('update', $auction);
+            $validated = $request->validate([
+                'title' => 'required|min:1|max:255',
+                'desc' => 'required|min:1|max:255',
+                'baseprice' => 'required|numeric|gt:0',
+                'startdate' => 'required|date|after:now',
+                'enddate' => 'required|date|after:startdate',
+                'buynow' => 'nullable|numeric|gt:baseprice',
+            ]);
+
+            $auction->name = $validated['title'];
+            $auction->description = $validated['desc'];
+            $auction->base_price = $validated['baseprice'];
+            $auction->start_date = $validated['startdate'];
+            $auction->end_date = $validated['enddate'];
+            $auction->buy_now = $validated['buynow'];
+
+            $auction->save();
+
+            $imageController = new ImageController();
+            foreach($request->file('images') as $image)
+            {
+                $imageController->store($image, 'AuctionImages/', $auction->id);
+            }
+            return redirect('auctions/' . $auction->id);
         } catch (AuthorizationException $exception){
-            return redirect()->back(status: 403)->withErrors("You don't have permissions to edit this auction!");
+            return redirect()->back()->withErrors("You don't have permissions to edit this auction!");
         }
     }
 

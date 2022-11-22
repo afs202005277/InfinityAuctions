@@ -1,6 +1,6 @@
 cur_image = document.getElementById("auction_images").firstElementChild
 
-function myFunction(imgs) {
+function focusImage(imgs) {
     cur_image.style.display = "block";
     // Get the expanded image
     var expandImg = document.getElementById("expandedImg");
@@ -12,4 +12,4 @@ function myFunction(imgs) {
     cur_image.style.display = "none";
 }
 
-myFunction(cur_image)
+focusImage(cur_image)

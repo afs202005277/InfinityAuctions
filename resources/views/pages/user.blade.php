@@ -4,14 +4,14 @@
 
 @section('content')
 <div class="info">
-        
+
         <div class= "bio">
             <div>
                 <img src="{{ asset('img/user1.png') }}" alt="">
             </div>
         </div>
         <div class="bio2">
-            <div> 
+            <div>
                 <h4> {{$user->name}} </h4>
                 <p> {{$user->cellphone}} | {{$user->email}}</p>
             </div>
@@ -33,18 +33,18 @@
     <!-- Owned Auctions -->
     <div id="auctions_owned">
         @if(!$user->ownedAuctions()->get()->isEmpty())
-            @foreach ($user->ownedAuctions as $auction) 
-                @include('partials.auctions_owned', compact('auction'))
+            @foreach ($user->ownedAuctions as $auction)
+                @include('partials.auction', compact('auction'))
             @endforeach
         @else
             <p> This user doesn't own any Auction ! </p>
         @endif
-    </div> 
-     
+    </div>
+
     <!-- Bids Placed -->
     <div id="bids_placed">
         @if(!$user->ownedAuctions()->get()->isEmpty())
-            @foreach ($user->bids as $bid) 
+            @foreach ($user->bids as $bid)
                 @include('partials.placed_bids', compact('bid'))
             @endforeach
         @else
@@ -55,22 +55,22 @@
     <!-- Bidding Auction -->
     <div id="bidding_auctions">
         @if(!$user->ownedAuctions()->get()->isEmpty())
-            @foreach ($user->bids as $bid) 
+            @foreach ($user->bids as $bid)
                 @include('partials.placed_bids', compact('bid'))
             @endforeach
         @else
             <p> This user hasn't placed any bids ! </p>
         @endif
     </div>
-    
+
     <div id="following_auction">
         @if(!$user->ownedAuctions()->get()->isEmpty())
-            @foreach ($user->bids as $bid) 
+            @foreach ($user->bids as $bid)
                 @include('partials.placed_bids', compact('bid'))
             @endforeach
         @else
             <p> This user doesn't follow any Auction ! </p>
         @endif
-    </p>
-   
+    </div>
+
 @endsection
