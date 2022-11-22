@@ -80,7 +80,7 @@
         <hr class="hr-line" />
         <div class="faq-eight">
             <h3 class="faq-page">
-                Hos do users register?
+                How do users register?
             </h3>
             <div class="faq-body">
                 <p>

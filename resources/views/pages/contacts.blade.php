@@ -32,12 +32,11 @@
             <input name="Name" type="text" placeholder="Name"><br>
             <input name="Email" type="email" placeholder="Email"><br>
             <textarea name="Message" placeholder="Message" class="message" rows="5"></textarea><br>
-            <button type="submit">
+            <button type="submit" disabled>
                 Send Message
                 <img src="{{ asset('img/send-icon.svg') }}" alt="send icon">
             </button>
         </form>
     </section>
 </section>
-
 @endsection

@@ -120,8 +120,6 @@ class AuctionController extends Controller
                     Auction::find($id+1)->categories()->attach($key+1);
                 }
              }
-
-             return redirect('auctions/' . $id+1);
              $imageController = new ImageController();
              foreach($request->file('images') as $key => $image)
              {
@@ -151,7 +149,8 @@ class AuctionController extends Controller
             ->with('startdate', $auction->start_date)
             ->with('enddate', $auction->end_date)
             ->with('buynow', $auction->buy_now)
-            ->with('auction_id', $auction->id);
+            ->with('auction_id', $auction->id)
+            ->with('categories', Category::all());
     }
 
     /**

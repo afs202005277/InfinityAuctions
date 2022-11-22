@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @if($errors->any())
-        <h4 class="error">{{$errors->first()}}</h4>
-    @endif
 
     @php
         $to_use = array();
