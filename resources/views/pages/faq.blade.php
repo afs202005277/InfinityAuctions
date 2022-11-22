@@ -6,107 +6,107 @@
     <h2 class="faq-heading">FAQ'S</h2>
     <section class="faq-container">
         <div class="faq-one">
-            <h3 class="faq-page">Received someone else's order</h3>
+            <h3 class="faq-page">What are the benefits of Infinity Auctions?</h3>
             <div class="faq-body">
                 <p>
-                    If you received someone else's order and the wrong items were delivered, but you had the value of your order debited, let us know. We will analyze the situation and do the necessary adjustements. Make sure you include the missing/incorrect items and the value debited from each.
+                    Put simply, our service will enable you to reach buyers irrespective of their geographic or personal limitations.
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-two">
-            <h3 class="faq-page">I made a mistake in my order</h3>
+            <h3 class="faq-page">Will online auctions help me achieve higher sale prices?</h3>
             <div class="faq-body">
                 <p>
-                    If, due to a mistake, you wish to change the details of your order, contact the restaurant directly where you ordered from, making sure to mention your name and details of your current order. The restaurant will do whatever is possible to satisfy your request.
+                    In almost every case, online auctions result in higher prices. And the reason is simle; more bidders, more bids!
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-three">
             <h3 class="faq-page">
-                Restaurant never got my order
+                What industries can benefit most from online auction technology?
             </h3>
             <div class="faq-body">
                 <p>
-                    If you never received your order, but it's value was debited, let us know. We will look into what happened and do the necessary adjustments.
+                    Infinity Auctions adds value to the following industries: - Collectables, Automotive, Plant and machinery, Livestock, Marine, etc;
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-four">
             <h3 class="faq-page">
-                My order took longer than expected
+                Do live online auctions replace traditional auctions?
             </h3>
             <div class="faq-body">
                 <p>
-                    The restaurants do their best to keep up on their deadlines. Unfortunately, external factors, such as rush hours can cause delays.
+                    Online auctions do not replace traditional auctions. They enhance them.
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-five">
             <h3 class="faq-page">
-                I can't login into my account
+                Do online bidders experience a technical delay?
             </h3>
             <div class="faq-body">
                 <p>
-                    If you can't login into your account is because you forgot your password. Get in contact with us using the same email as your account and we will help you reset it.
+                    We believe that delays must be kept to an absolute minimum - which is why we've spent so many years testing and refining our infrastructure technology.
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-six">
             <h3 class="faq-page">
-                How does LTW Eats work?
+                Is there a cost to online bidders?
             </h3>
             <div class="faq-body">
                 <p>
-                    The website LTW Eats connects you to local restaurants, so that you can have your favourite meals ready to take home by the time you reach the restaurant.
+                    Bidders don't have any cost to bid.
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-seven">
             <h3 class="faq-page">
-                How to order from LTW Eats?
+                Is there any cost to the auctioneer?
             </h3>
             <div class="faq-body">
                 <p>
-                    Find and select the merchant you'd like to order from, add items to your cart, confirm delivery details, and check out when you're ready.
+                    Unfortunately, yes. We take a 5% commission of the top bid to cover our expenses.
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-eight">
             <h3 class="faq-page">
-                How can I submit a complaint?
+                Hos do users register?
             </h3>
             <div class="faq-body">
                 <p>
-                    We apologize that our service didn't meet up to your standards. Please contact us to formally file your complaint.
+                    Users can sign up to our platform through the easy to find Sign up button on our header.
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-nine">
             <h3 class="faq-page">
-                How do I update the information on my account?
+                How do I login to my account?
             </h3>
             <div class="faq-body">
                 <p>
-                    By clicking on your username on the top right corner, you can update your: name, email, username and password.
+                    On the header there is a Login button that will take you to a login form.
                 </p>
             </div>
         </div>
         <hr class="hr-line" />
         <div class="faq-ten">
             <h3 class="faq-page">
-                How do I pay for my order?
+                What can I sell?
             </h3>
             <div class="faq-body">
                 <p>
-                    Orders are paid at the restaurant on pickup.
+                    You can sell anything that fits into our categories. If we find an item innapropriate we will remove it and give you a strike. If such action repeats, you will have your account banned.
                 </p>
             </div>
         </div>

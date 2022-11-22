@@ -23,6 +23,7 @@
     <link href="{{ asset('css/milligram.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/faq.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/contacts.css') }}" rel="stylesheet">
     <link href="{{ asset('css/user.css') }}" rel="stylesheet">
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <link href="{{ asset('css/search_users.css') }}" rel="stylesheet">

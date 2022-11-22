@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use App\Models\Category;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -67,7 +68,8 @@ class AuctionController extends Controller
      */
     public function showSellForm()
     {
-        return view('pages.sell');
+        $categories = Category::all();
+        return view('pages.sell', compact('categories'));
     }
 
     public function sell(Request $request)
@@ -119,7 +121,13 @@ class AuctionController extends Controller
 
              $auction->save();
 
-             return redirect('auctions/' . $id);
+             foreach (Category::all() as $key => $category) {
+                if ($request->has($category->name)) {
+                    Auction::find($id+1)->categories()->attach($key+1);
+                }
+             }
+
+             return redirect('auctions/' . $id+1);
          } catch (AuthorizationException $exception){
              return redirect('sell')->withErrors("You don't have permissions to create an auction!");
          }

@@ -69,6 +69,14 @@
             </span>
             @endif
 
+            <div class="categories">
+            <legend>Categories</legend>
+            @foreach ($categories as $category)
+                <input type="checkbox" id="{{$category->name}}" name="{{$category->name}}">
+                <label for="{{$category->name}}">{{$category->name}}</label><br>
+            @endforeach
+            </div>
+
             <button type="submit">SUBMIT</button>
 
         </form>

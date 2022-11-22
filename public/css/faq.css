@@ -1,5 +1,5 @@
 .faq-heading{
-    border-bottom: #777;
+    border-bottom: var(--thirty);
     padding: 20px 60px;
     text-align:center;
 }
@@ -17,7 +17,7 @@
 }
 
 .faq-page {
-    color: #444;
+    color: var(--thirty);
     cursor: pointer;
     padding: 1em;
     max-width: 70%;
@@ -48,7 +48,7 @@
 .faq-page:after {
     content: '\02795';
     font-size: 13px;
-    color: #777;
+    color: var(--ten);
     float: right;
     margin-left: 5px;
 }

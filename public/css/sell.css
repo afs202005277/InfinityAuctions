@@ -13,7 +13,7 @@
     font-size: 3rem;
 }
 
-.sell > label {
+.sell > label, .sell > legend {
     font-weight: 600;
     font-size: 1.3rem;
 }
