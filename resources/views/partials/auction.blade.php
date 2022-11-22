@@ -1,8 +1,9 @@
 <div class="containerAuction">
     <div class="cardAuction">
         <div class="imgBxAuction">
-            @foreach($auction->path as $image)
-                <img class="card_auction_img{{$loop->index + 1}}" src="{{ asset($image) }}">
+            @php($images = App\Models\Auction::find($auction->id)->images()->get())
+            @foreach($images as $image)
+                <img class="card_auction_img{{$loop->index + 1}}" src="{{ asset($image->path) }}">
                 @if($loop->index === 3)
                     @break
                 @endif
@@ -16,5 +17,4 @@
             <a href="{{ url('/auctions/' . $auction->id) }}">Bid</a>
         </div>
     </div>
-    <p> {{var_dump($auction)}} </p>
 </div>

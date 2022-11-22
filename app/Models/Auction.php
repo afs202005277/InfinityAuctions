@@ -21,12 +21,12 @@ class Auction extends Model
 
     public function mostActive()
     {
-        $values = DB::select(DB::raw('SELECT duration_table.*, amount.amount_bids, amount_bids::decimal / to_seconds(duration)::decimal as "rate", image.path as "path"
+        $values = DB::select(DB::raw('SELECT duration_table.*, amount.amount_bids, amount_bids::decimal / to_seconds(duration)::decimal as "rate"
                     FROM (SELECT *, auction.end_date - auction.start_date AS "duration"
                           FROM auction
                           ORDER BY auction.id) AS "duration_table",
-                         (SELECT auction_id, count(*) AS "amount_bids" FROM bid GROUP BY auction_id ORDER BY auction_id) AS "amount", image
-                    WHERE image.auction_id = duration_table.id AND amount.auction_id = duration_table.id AND duration_table.state = \'Running\'
+                         (SELECT auction_id, count(*) AS "amount_bids" FROM bid GROUP BY auction_id ORDER BY auction_id) AS "amount"
+                    WHERE amount.auction_id = duration_table.id AND duration_table.state = \'Running\'
                     ORDER BY rate DESC;'));
         return $values;
     }
@@ -39,10 +39,9 @@ class Auction extends Model
     public function searchResults($search, $filters)
     {
         $query = DB::table('auction')
-                ->select('auction.*', 'category.name as categoryName', 'image.*')
+                ->select('auction.*', 'category.name as categoryName')
                 ->join('auction_category', 'id', '=', 'auction_id')
-                ->join('category', 'category_id', '=', 'category.id')
-                ->join('image', 'image.auction_id', '=', 'auction.id');
+                ->join('category', 'category_id', '=', 'category.id');
         if( count($filters) )
         {
             $query->whereIn('category.id', $filters);
@@ -67,8 +66,7 @@ class Auction extends Model
     public function newAuctions()
     {
         $newA = DB::table('auction')
-            ->select('auction.*', 'image.*')
-            ->join('image', 'image.auction_id', '=', 'auction.id')
+            ->select('auction.*')
             ->where('state', 'Running')
             ->orderBy('start_date', 'DESC');
         return $newA->get();
@@ -77,7 +75,6 @@ class Auction extends Model
     public function runningAuctions()
     {
         return DB::table('auction')
-            ->join('image', 'image.auction_id', '=', 'auction.id')
             ->where('state', 'Running')
             ->get();
     }

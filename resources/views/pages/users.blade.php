@@ -4,30 +4,30 @@
 
 @section('content')
     <div class="info">
-        
+
         <div class= "bio">
             <div>
                 <img src="{{ asset('img/user1.png') }}" alt="">
             </div>
         </div>
         <div class="bio2">
-            <div> 
+            <div>
                 <h4> {{$user->name}} </h4>
                 <p> {{$user->cellphone}} | {{$user->email}}</p>
             </div>
-            
+
             @if(Auth::user()!=null)
                 @if(Auth::user()->id==$user->id)
                 <div>
                     <a class="edit" href="{{ url('/user/' . Auth::user()->id) }}">
-                        <button> Edit Profile </button>    
+                        <button> Edit Profile </button>
                     </a>
                     <a class="edit" href="{{ url('/logout') }}">
-                        <button> Logout </button>    
+                        <button> Logout </button>
                     </a>
                     @if(Auth::user()->is_admin)
                         <a class="manage_btn" href="{{ url('/manage') }}">
-                            <button> Admin Panel </button>    
+                            <button> Admin Panel </button>
                         </a>
                     @endif
                 </div>
@@ -38,19 +38,19 @@
             @if(Auth::user()!=null)
                 @if (Auth::user()->id!=$user->id)
                 <a class="report_btn" href="#">
-                    <button> Report </button>    
+                    <button> Report </button>
                 </a>
                 @endif
             @endif
         </div>
     </div>
-    
+
     <h4> Owned Auctions </h4>
     <hr/>
-    <div class="auctions_owned"> 
-        @if(!$user->ownedAuctions()->get()->isEmpty())   
-            @foreach ($user->ownedAuctions as $auction) 
-                @include('partials.auctions_owned', compact('auction'))
+    <div class="auctions_owned">
+        @if(!$user->ownedAuctions()->get()->isEmpty())
+            @foreach ($user->ownedAuctions as $auction)
+                @include('partials.auction', compact('auction'))
             @endforeach
         @else
             <p> This user doesn't own any Auctions </p>
