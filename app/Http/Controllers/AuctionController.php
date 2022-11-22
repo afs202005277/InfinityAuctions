@@ -43,6 +43,18 @@ class AuctionController extends Controller
         //
     }
 
+    public function handleImages($records){
+        $res = array();
+        foreach ($records as $record){
+            if (isset($res[$record->id])){
+                $res[$record->id] += $record->path;
+            } else{
+                $res[$record->id] = $record->path;
+            }
+        }
+        return $res;
+    }
+
     /**
      * Display the specified resource.
      *
@@ -57,14 +69,9 @@ class AuctionController extends Controller
         $auctions = $owner->ownedAuctions()->where('auction.id', '<>', $auction_id)->get();
         $bids = $details->bids()->orderBy('amount')->get();
         $mostActive = (new Auction())->mostActive();
+        $imagesMostActive = $this->handleImages($mostActive);
         $images = $details->images()->get('path');
 
-        if ($images->isEmpty()){
-            $default = Image::find(0)->path;
-            $images[0] = ['path' => $default];
-            $images[1] = ['path' => $default];
-            $images[2] = ['path' => $default];
-        }
         return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images'));
     }
 
