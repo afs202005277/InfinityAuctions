@@ -19,7 +19,8 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Auction' => 'App\Policies\AuctionPolicy',
         'App\Models\Category' => 'App\Policies\CategoryPolicy',
         'App\Models\Report_Option' => 'App\Policies\Report_OptionPolicy',
-        'App\Models\Report' => 'App\Policies\ReportPolicy'
+        'App\Models\Report' => 'App\Policies\ReportPolicy',
+        'App\Models\Image' => 'App\Policies\ImagePolicy'
     ];
 
     /**

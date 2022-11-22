@@ -27,10 +27,10 @@ class Auction extends Model
                           ORDER BY auction.id) AS "duration_table",
                          (SELECT auction_id, count(*) AS "amount_bids" FROM bid GROUP BY auction_id ORDER BY auction_id) AS "amount"
                     WHERE amount.auction_id = duration_table.id AND duration_table.state = \'Running\'
-                    ORDER BY rate DESC LIMIT 10;'));
+                    ORDER BY rate DESC;'));
         return $values;
     }
-    
+
     public function refresh()
     {
         DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
@@ -42,12 +42,11 @@ class Auction extends Model
                 ->select('auction.*', 'category.name as categoryName')
                 ->join('auction_category', 'id', '=', 'auction_id')
                 ->join('category', 'category_id', '=', 'category.id');
-                
         if( count($filters) )
         {
             $query->whereIn('category.id', $filters);
         }
-        
+
         if( isset($search) )
         {
             $query->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
@@ -67,9 +66,9 @@ class Auction extends Model
     public function newAuctions()
     {
         $newA = DB::table('auction')
+            ->select('auction.*')
             ->where('state', 'Running')
-            ->orderBy('start_date', 'DESC')
-            ->limit(10);
+            ->orderBy('start_date', 'DESC');
         return $newA->get();
     }
 
@@ -77,7 +76,6 @@ class Auction extends Model
     {
         return DB::table('auction')
             ->where('state', 'Running')
-            ->limit(10)
             ->get();
     }
 
@@ -114,5 +112,9 @@ class Auction extends Model
             ->select('users.name', 'bid.*')
             ->orderBy('amount', 'DESC')
             ->get();
+    }
+
+    public function images(){
+        return $this->hasMany(Image::class, 'auction_id');
     }
 }

@@ -21,7 +21,6 @@
     <link href="{{ asset('css/auction.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sell.css') }}" rel="stylesheet">
     <link href="{{ asset('css/milligram.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/faq.css') }}" rel="stylesheet">
     <link href="{{ asset('css/user.css') }}" rel="stylesheet">
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
@@ -29,9 +28,11 @@
     <link href="{{ asset('css/auction_card.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin_panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction_edit.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/tmp.css') }}" rel="stylesheet">
     <script type="text/javascript" src={{ asset('js/app.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/faq.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/user_profile.js') }} defer></script>
+    <script type="text/javascript" src={{ asset('js/edit_auction.js') }} defer></script>
   </head>
   <body>
     <main>
