@@ -80,60 +80,60 @@ class AuctionController extends Controller
     {
         $auction = new Auction();
 
-         try{
-             $this->authorize('create', $auction);
-             $postData = $request->only('images');
-             $file = $postData['images'];
+        try {
+            $this->authorize('create', $auction);
+            $postData = $request->only('images');
+            $file = $postData['images'];
 
-             $fileArray = array('image' => $file);
+            $fileArray = array('image' => $file);
 
-             $rules = array(
-                 'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
-             );
+            $rules = array(
+                'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
+            );
 
-             $validator = Validator::make($fileArray, $rules);
+            $validator = Validator::make($fileArray, $rules);
 
-             $validated = $request->validate([
-                 'title' => 'required|min:1|max:255',
-                 'desc' => 'required|min:1|max:255',
-                 'images' => 'required|array|min:3',
-                 'baseprice' => 'required|numeric|gt:0',
-                 'startdate' => 'required|date|after:now',
-                 'enddate' => 'required|date|after:startdate',
-                 'buynow' => 'nullable|numeric|gt:baseprice',
-             ]);
+            $validated = $request->validate([
+                'title' => 'required|min:1|max:255',
+                'desc' => 'required|min:1|max:255',
+                'images' => 'required|array|min:3',
+                'baseprice' => 'required|numeric|gt:0',
+                'startdate' => 'required|date|after:now',
+                'enddate' => 'required|date|after:startdate',
+                'buynow' => 'nullable|numeric|gt:baseprice',
+            ]);
 
-             $auction->name = $validated['title'];
-             $auction->description = $validated['desc'];
-             $auction->base_price = $validated['baseprice'];
-             $auction->start_date = $validated['startdate'];
-             $auction->end_date = $validated['enddate'];
-             $auction->buy_now = $validated['buynow'];
-             $auction->state = "To be started";
-             $auction->auction_owner_id = Auth::user()->id;
+            $auction->name = $validated['title'];
+            $auction->description = $validated['desc'];
+            $auction->base_price = $validated['baseprice'];
+            $auction->start_date = $validated['startdate'];
+            $auction->end_date = $validated['enddate'];
+            $auction->buy_now = $validated['buynow'];
+            $auction->state = "To be started";
+            $auction->auction_owner_id = Auth::user()->id;
 
-             $id = DB::table('auction')->max('id');
-             $auction->id = $id+1;
+            $id = DB::table('auction')->max('id');
+            $auction->id = $id + 1;
 
-             $auction->save();
+            $auction->save();
 
-             foreach (Category::all() as $key => $category) {
+            foreach (Category::all() as $key => $category) {
                 if ($request->has($category->name)) {
-                    Auction::find($id+1)->categories()->attach($key+1);
+                    Auction::find($id + 1)->categories()->attach($key + 1);
                 }
-             }
-             $imageController = new ImageController();
-             foreach($request->file('images') as $key => $image)
-             {
-                 $imageController->store($image, 'AuctionImages/', $auction->id);
-             }
+            }
 
-             return redirect('auctions/' . $auction->id);
-         } catch (AuthorizationException $exception){
-             return redirect('sell')->withErrors("You don't have permissions to create an auction!");
-         }catch (QueryException $sqlExcept){
-             return redirect()->back()->withErrors("Invalid database parameters!");
-         }
+            $imageController = new ImageController();
+            foreach ($request->file('images') as $key => $image) {
+                $imageController->store($image, 'AuctionImages/', $auction->id);
+            }
+
+            return redirect('auctions/' . $auction->id);
+        } catch (AuthorizationException $exception) {
+            return redirect('sell')->withErrors("You don't have permissions to create an auction!");
+        } catch (QueryException $sqlExcept) {
+            return redirect()->back()->withErrors("Invalid database parameters!");
+        }
     }
 
     /**
@@ -154,7 +154,8 @@ class AuctionController extends Controller
             ->with('enddate', $auction->end_date)
             ->with('buynow', $auction->buy_now)
             ->with('auction_id', $auction->id)
-            ->with('categories', Category::all());
+            ->with('categories', Category::all())
+            ->with('categoriesChosen', $auction->categories()->get());
     }
 
     /**
@@ -166,7 +167,7 @@ class AuctionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
+        try {
             $auction = Auction::find($id);
             $this->authorize('update', $auction);
             $validated = $request->validate([
@@ -187,13 +188,24 @@ class AuctionController extends Controller
 
             $auction->save();
 
-            $imageController = new ImageController();
-            foreach($request->file('images') as $image)
-            {
-                $imageController->store($image, 'AuctionImages/', $auction->id);
+            $ids = array();
+            foreach (Category::all() as $key => $category) {
+                if ($request->has($category->name)) {
+                    $ids[] = $category->id;
+                }
             }
+            if (count($ids) > 0)
+                $auction->categories()->sync($ids);
+
+            $imageController = new ImageController();
+            if ($request->file('images') !== null){
+                foreach ($request->file('images') as $image) {
+                    $imageController->store($image, 'AuctionImages/', $auction->id);
+                }
+            }
+
             return redirect('auctions/' . $auction->id);
-        } catch (AuthorizationException $exception){
+        } catch (AuthorizationException $exception) {
             return redirect()->back()->withErrors("You don't have permissions to edit this auction!");
         }
     }
@@ -207,26 +219,27 @@ class AuctionController extends Controller
     public function cancel($id)
     {
         $auction = Auction::find($id);
-        try{
+        try {
             $this->authorize('delete', $auction);
 
             $auction->state = 'Cancelled';
 
             $auction->save();
             return redirect('/');
-        } catch(AuthorizationException $exception){
-            return redirect('auctions/'.$id)->withErrors("You don't have permissions to cancel this auction! ");
+        } catch (AuthorizationException $exception) {
+            return redirect('auctions/' . $id)->withErrors("You don't have permissions to cancel this auction! ");
         }
     }
 
     public function selectedAuctions()
     {
-        if (Auth::user()===NULL)
+        if (Auth::user() === NULL)
             return NULL;
         return Auth::user()->followingAuctions()->get();
     }
 
-    public function getAllBids($auction_id){
+    public function getAllBids($auction_id)
+    {
         return (new Auction())->getAllbids($auction_id);
     }
 }

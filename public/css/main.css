@@ -19,3 +19,9 @@ h2, .ma {
 a {
    text-decoration: none;
 }
+
+.error{
+    color: red;
+    font-weight: bold;
+    font-size: smaller;
+}

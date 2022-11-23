@@ -112,11 +112,26 @@
             @endif
 
             <div class="categories">
-            <legend>Categories</legend>
-            @foreach ($categories as $category)
-                <input type="checkbox" id="{{$category->name}}" name="{{$category->name}}">
-                <label for="{{$category->name}}">{{$category->name}}</label><br>
-            @endforeach
+                <legend>Categories</legend>
+                @foreach ($categories as $category)
+                    @php $id = str_replace(' ', '', $category->name);
+                    @endphp
+                    @if($editMode)
+                        @php
+                            $checked = "";
+                            foreach ($categoriesChosen as $categoryChosen){
+                                if ($categoryChosen->name === $category->name){
+                                    $checked="checked";
+                                    break;
+                                }
+                            }
+                        @endphp
+                        <input type="checkbox" id="{{$id}}" name="{{$category->name}}" {{$checked}}>
+                    @else
+                        <input type="checkbox" id="{{$id}}" name="{{$category->name}}">
+                    @endif
+                    <label for="{{$id}}">{{$category->name}}</label><br>
+                @endforeach
             </div>
 
             <button type="submit">SUBMIT</button>
