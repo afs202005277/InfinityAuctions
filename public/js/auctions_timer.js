@@ -1,17 +1,34 @@
 let countDownDate = new Date(document.getElementById("final-date").textContent).getTime();
 
+function updateButtons(bid){
+    let buttons = document.querySelectorAll('.price-suggestions form button');
+    buttons[0].textContent = ((parseFloat(bid.amount) * 1.10).toFixed(2)).toString() + '€';
+    buttons[1].textContent = ((parseFloat(bid.amount) * 1.25).toFixed(2)).toString() + '€';
+    buttons[2].textContent = ((parseFloat(bid.amount) * 1.50).toFixed(2)).toString() + '€';
+}
+
 function bidsReceivedHandler(){
     let bids = JSON.parse(this.responseText);
     if (bids.length !== 0){
-        console.log(bids);
         document.querySelector('#bids_list').innerHTML = "";
         document.querySelector('.bid-amount').innerHTML = createBidAmount(bids[0]).innerHTML;
         document.querySelector('.info-bid').innerHTML = createBidInfo(bids[0]).innerHTML;
+        updateButtons(bids[0]);
 
         for (let i=1;i<bids.length;i++){
             document.querySelector('#bids_list').appendChild(createBidAmount(bids[i]));
             document.querySelector('#bids_list').appendChild(createBidInfo(bids[i]));
         }
+    }
+}
+
+function buttonsSuggestionsListener(){
+    let buttons = document.querySelectorAll('.price-suggestions form button');
+    for (let button of buttons){
+        button.addEventListener('click', function (event){
+            event.preventDefault();
+            document.querySelector('#bid_amount').value = button.textContent.substring(0, button.textContent.lastIndexOf('€'));
+        })
     }
 }
 
@@ -37,3 +54,5 @@ let x = setInterval(function() {
     let auction_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
     sendAjaxRequest('get', '/api/auctions/getAllBids/' + auction_id, {}, bidsReceivedHandler);
 }, 1000);
+
+buttonsSuggestionsListener();

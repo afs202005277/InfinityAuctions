@@ -23,7 +23,7 @@ function addEventListeners() {
     [].forEach.call(filterCheckers, function(filterChecker) {
         filterChecker.addEventListener('change', modifyFiltersRequest);
     });
-    
+
     let auctionCreator = document.querySelector('#make_bid');
     if (auctionCreator != null)
         auctionCreator.addEventListener('click', sendCreateBidRequest);
@@ -87,13 +87,13 @@ function sendCreateBidRequest(event) {
             auction_id: auction_id,
             user_id: user_id
         }, bidAddedHandler);
-
+    document.querySelector('#bid_amount').value = "";
     event.preventDefault();
 }
 
 function modifyFiltersRequest() {
   let oldUrlParams = new URLSearchParams(window.location.search);
-  
+
   let newUrlParams = new URLSearchParams();
   if ( oldUrlParams.has('search') ) {
     newUrlParams.append('search', oldUrlParams.get('search'));

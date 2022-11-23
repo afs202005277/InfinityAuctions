@@ -9,6 +9,21 @@
         <script type="text/javascript" src={{ asset('js/auctions_timer.js') }} defer></script>
     @endif
 
+    <div id="auction_managing_options" style="float: right">
+        @if(Auth::user()!==NULL)
+            @if(Auth::user()->is_admin || $details->auction_owner_id === Auth::user()->id)
+                <form action="{{ url('/auctions/cancel/' . $auction_id ) }}" method="POST" role="auction_delete">
+                    {{ csrf_field() }}
+                    <button class="cancel_btn"> Cancel </button>
+                </form>
+                <a href="{{ url('/auctions/edit/' . $auction_id ) }}">
+                    <button class="edit_auction_btn"> Edit Auction </button>
+                </a>
+            @endif
+        @endif
+    </div>
+
+
     <div class="toparea">
         <section class="images">
             <div class="container">
@@ -54,17 +69,6 @@
             <h4>Customs Information</h4>
             <p>Any other costs or charges such as customs or import duties, customs clearance and handling may also apply during the shipment of your lot and will be charged to you by the involved party at a later stage if applicable.</p>
         </section>
-        @if(Auth::user()!==NULL)
-            @if(Auth::user()->is_admin)
-                <form action="{{ url('/auctions/cancel/' . $auction_id ) }}" method="POST" role="auction_delete">
-                    {{ csrf_field() }}
-                    <button class="cancel_btn"> Cancel </button>
-                </form>
-                <a href="{{ url('/auctions/edit/' . $auction_id ) }}">
-                    <button class="edit_auction_btn"> Edit Auction </button>
-                </a>
-            @endif
-        @endif
     </div>
     @include('partials.more_from_seller', ['auctions' => $auctions])
     @include('partials.most_active', ['most_active' => $mostActive])
