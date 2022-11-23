@@ -3,7 +3,7 @@
             <div class="card-header">
                 <h5 class="title">{{ __('Edit Profile') }}</h5>
             </div>
-            <form method="post" action="" autocomplete="off">
+            <form method="post" action="{{ url('/user/' . $user->id ) }}" autocomplete="off">
                 
                 <div class="card-body">
                         @csrf
