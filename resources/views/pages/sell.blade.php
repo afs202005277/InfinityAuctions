@@ -138,6 +138,7 @@
         </form>
 
         @if($editMode)
+            <h3>Remove Images</h3>
             <div id="currentImages">
                 @php($images = App\Models\Auction::find($auction_id)->images()->get())
                 @foreach($images as $image)
