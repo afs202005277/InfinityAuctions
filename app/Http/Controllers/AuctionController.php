@@ -6,6 +6,7 @@ use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -95,6 +96,7 @@ class AuctionController extends Controller
              $validated = $request->validate([
                  'title' => 'required|min:1|max:255',
                  'desc' => 'required|min:1|max:255',
+                 'images' => 'required|array|min:3',
                  'baseprice' => 'required|numeric|gt:0',
                  'startdate' => 'required|date|after:now',
                  'enddate' => 'required|date|after:startdate',
@@ -129,6 +131,8 @@ class AuctionController extends Controller
              return redirect('auctions/' . $auction->id);
          } catch (AuthorizationException $exception){
              return redirect('sell')->withErrors("You don't have permissions to create an auction!");
+         }catch (QueryException $sqlExcept){
+             return redirect()->back()->withErrors("Invalid database parameters!");
          }
     }
 

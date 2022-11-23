@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\AuctionController;
@@ -14,8 +17,8 @@ class MainPageController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|Factory|View
      */
     public function __invoke(Request $request)
     {

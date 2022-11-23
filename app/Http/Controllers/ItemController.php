@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Card;
 
+use http\Client\Response;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -48,8 +50,9 @@ class ItemController extends Controller
     /**
      * Deletes an individual item.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
+     * @throws AuthorizationException
      */
     public function delete(Request $request, $id)
     {
