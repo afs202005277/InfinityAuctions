@@ -15,7 +15,7 @@ externalDocs:
 
 tags:
  - name: 'M01: Registration and authentication'
- - name: 'M02: Static pages'
+ - name: 'M02: Home page and Static pages'
  - name: 'M03: Platform administration'
  - name: 'M04: Users'
  - name: 'M05: Auctions'
@@ -28,17 +28,17 @@ paths:
   /login:
     get:
       operationId: R101
-      summary: 'R101: Login Form'
-      description: 'Provide login form. Access: PUB'
+      summary: 'R101: Login Form.'
+      description: 'Provide login form UI. Access: PUB.'
       tags:
         - 'M01: Registration and authentication'
       responses:
         '200':
-          description: 'Ok. Show Log-in UI'
+          description: 'Ok. Show Log-in UI.'
     post:
       operationId: R102
-      summary: 'R102: Login Action'
-      description: 'Processes the login form submission. Access: PUB'
+      summary: 'R102: Login Action.'
+      description: 'Processes the login form submission. Access: PUB.'
       tags:
         - 'M01: Registration and authentication'
 
@@ -66,18 +66,17 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful authentication. Redirect to user profile.'
-                  value: '/users/{id}'
+                  description: 'Successful authentication. Redirect to Home page.'
+                  value: '/'
                 302Error:
                   description: 'Failed authentication. Redirect to login form.'
                   value: '/login'
 
   /logout:
-
     post:
       operationId: R103
-      summary: 'R103: Logout Action'
-      description: 'Logout the current authenticated user. Access: USR, ADM'
+      summary: 'R103: Logout Action.'
+      description: 'Logout the current authenticated user. Access: USR, ADM.'
       tags:
         - 'M01: Registration and authentication'
       responses:
@@ -89,14 +88,17 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful logout. Redirect to login form.'
-                  value: '/login'
+                  description: 'Successful logout. Redirect to Home page.'
+                  value: '/'
+                302Error:
+                  description: 'Failed to logout. Redirect to Home page.'
+                  value: '/'
 
   /register:
     get:
       operationId: R104
-      summary: 'R104: Register Form'
-      description: 'Provide new user registration form. Access: PUB'
+      summary: 'R104: Register Form.'
+      description: 'Provide new user registration form UI. Access: PUB.'
       tags:
         - 'M01: Registration and authentication'
       responses:
@@ -105,8 +107,8 @@ paths:
 
     post:
       operationId: R105
-      summary: 'R105: Register Action'
-      description: 'Processes the new user registration form submission. Access: PUB'
+      summary: 'R105: Register Action.'
+      description: 'Processes the new user registration form submission. Access: PUB.'
       tags:
         - 'M01: Registration and authentication'
 
@@ -119,71 +121,103 @@ paths:
               properties:
                 name:
                   type: string
+                gender:
+                  type: string
+                  enum: ['M', 'F', 'NB', 'O']
+                phone:
+                  type: string
                 email:
                   type: string
-                picture:
+                  format: email
+                birthdate:
                   type: string
-                  format: binary
+                  format: date
+                address:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                confirm_password:
+                  type: string
+                  format: password
               required:
+                    - name
+                    - gender
+                    - phone
                     - email
+                    - birthdate
+                    - address
                     - password
+                    - confirm_password
 
       responses:
         '302':
-          description: 'Redirect after processing the new user information.'
+          description: 'Redirect after processing new user information.'
           headers:
             Location:
               schema:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful authentication. Redirect to user profile.'
-                  value: '/users/{id}'
+                  description: 'Successful Registration. Redirect to user profile.'
+                  value: '/'
                 302Failure:
-                  description: 'Failed authentication. Redirect to login form.'
-                  value: '/login'
+                  description: 'Failed Registration. Redirect to Register Form.'
+                  value: '/register'
 
+  /:
+    get:
+      operationId: R201
+      summary: 'R201: Home page.'
+      description: 'The Home page is the center of navigation of the web app. Access: PUB.'
+      tags:
+        - 'M02: Home page and Static pages'
+      responses:
+        '200':
+          description: 'Ok. Show Home Page UI.'
+  
   /about:
-      get:
-        operationId: R201
-        summary: 'R201: About page'
-        description: 'About Page containing info about our webpage. Access: PUB'
-        tags:
-          - 'M02: Static pages'
-        responses:
-          '200':
-            description: 'Ok. Show about us UI'
+    get:
+      operationId: R202
+      summary: 'R202: About page.'
+      description: 'About Page containing info about our webpage. Access: PUB.'
+      tags:
+        - 'M02: Home page and Static pages'
+      responses:
+        '200':
+          description: 'Ok. Show about us UI.'
 
   /services:
-      get:
-        operationId: R202
-        summary: 'R202: Services page'
-        description: 'Services Page containing info about the services we provide. Access: PUB'
-        tags:
-          - 'M02: Static pages'
-        responses:
-          '200':
-            description: 'Ok. Show Services Page UI'
+    get:
+      operationId: R203
+      summary: 'R203: Services page.'
+      description: 'Services Page containing info about the services we provide. Access: PUB.'
+      tags:
+        - 'M02: Home page and Static pages'
+      responses:
+        '200':
+          description: 'Ok. Show Services Page UI.'
   /faq:
-      get:
-        operationId: R203
-        summary: 'R203: About page'
-        description: 'FAQ page containing the most frequently asked questions. Access: PUB'
-        tags:
-          - 'M02: Static pages'
-        responses:
-          '200':
-            description: 'Ok. FAQ UI'
+    get:
+      operationId: R204
+      summary: 'R204: FAQ page.'
+      description: 'FAQ page containing the most frequently asked questions. Access: PUB.'
+      tags:
+        - 'M02: Home page and Static pages'
+      responses:
+        '200':
+          description: 'Ok. Show FAQ UI.'
+  
   /contacts:
-      get:
-        operationId: R204
-        summary: 'R203: Contacts page'
-        description: 'Contacts page containing the our contacts, address and social media. Access: PUB'
-        tags:
-          - 'M02: Static pages'
-        responses:
-          '200':
-            description: 'Ok. Show contacts page UI'
+    get:
+      operationId: R205
+      summary: 'R205: Contacts page.'
+      description: 'This webPage provides the contacts and social media of the webApp creators. Access: PUB.'
+      tags:
+        - 'M02: Home page and Static pages'
+      responses:
+        '200':
+          description: 'Ok. Show contacts page UI.'
 
   /manage/auction/{id}:
       post:
@@ -670,7 +704,7 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successfully deleted account. Redirect to main page.'
+                  description: 'Successfully deleted account. Redirect to Home page.'
                   value: '/'
                 302Failure:
                   description: 'Failed to delete account. Redirect to the account settings page.'
@@ -849,24 +883,24 @@ paths:
         '200':
           description: 'Ok. Show auction page'
   
-  /auctions/create:
+  /sell:
     get:
       operationId: R502
-      summary: 'R502: Create auction page'
-      description: 'Fetch auction creation form. Access: USR'
+      summary: 'R502: Create Auction page.'
+      description: 'Fetch Create Auction Form. Access: USR.'
       tags:
         - 'M05: Auctions'
 
       responses:
         '200':
-          description: 'Ok. Show creation page'
+          description: 'Ok. Show Create Auction Form UI.'
         '401':
-          description: 'Error user is not logged in'
+          description: 'Error user is not logged in.'
     
     post:
       operationId: R503
-      summary: 'R503: Auction creation form'
-      description: 'Processes form in order to create the auction. Access: USR'
+      summary: 'R503: Create Auction action.'
+      description: 'Processes the creation form submission. Access: USR.'
       tags:
         - 'M05: Auctions'
 
@@ -877,30 +911,59 @@ paths:
             schema:
               type: object
               properties:
-                name:
+                title:
                   type: string
                 description:
                   type: string
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
                 base_price:
                   type: integer
                 start_date:
                   type: string
-                  format: date
+                  format: date-time
                 end_date:
                   type: string
-                  format: date
+                  format: date-time
                 buy_now:
                   type: integer
-                auction_state:
-                  type: string
-                  enum: ['Running', 'To be started']
+                  nullable: true
+                categories:
+                  type: array
+                  items:
+                    type: boolean
+                # Panini:
+                #   type: boolean
+                # Banknotes:
+                #   type: boolean
+                # Fine Art:
+                #   type: boolean
+                # Oil:
+                #   type: boolean
+                # Wine:
+                #   type: boolean
+                # ComicBooks:
+                #   type: boolean
+                # Fashion:
+                #   type: boolean
+                # Watches:
+                #   type: boolean
+                # Coins:
+                #   type: boolean
+                # Stamps:
+                #   type: boolean
               required:
-                - name
+                - title
                 - description
+                - images
                 - base_price
                 - start_date
                 - end_date
-                - auction_state
+                - buy_now
+                - categories
 
       responses:
         '302':
@@ -915,7 +978,7 @@ paths:
                   value: '/auction/{id}'
                 302Failure:
                   description: 'Failed to create auction. Redirect create auction page.'
-                  value: '/auction/create'
+                  value: '/sell'
         '401':
           description: 'Error user is not logged in'
   
@@ -924,7 +987,6 @@ paths:
       operationId: R504
       summary: 'R504: Edit auction page'
       description: 'Fetch form to edit the auction. Access: OWN'
-      
       tags:
         - 'M05: Auctions'
       
@@ -1048,21 +1110,14 @@ paths:
         '401':
           description: 'Error user is not logged in'
 
-  /auctions/{id}/bid:
+  /api/auctions:
     post:
       operationId: R507
-      summary: 'R507 Bid on auction'
-      description: 'User bids on the auction. Access: USR'
+      summary: 'R507 Bid on auction.'
+      description: 'User bids on the auction. Access: BDR.'
 
       tags:
         - 'M05: Auctions'
-
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
 
       requestBody:
         required: true
@@ -1073,15 +1128,17 @@ paths:
               properties:
                 user_id:
                   type: integer
+                  minimum: 1
                 value:
                   type: integer
-                date:
-                  type: string
-                  format: date
+                  minimum: 1
+                auction_id:
+                  type: integer
+                  minimum: 1
               required:
                 - user_id
                 - value
-                - date
+                - auction_id
       
       responses:
         '302':
@@ -1095,7 +1152,111 @@ paths:
                   description: 'Successfull bid. Redirect to auction page.'
                   value: '/auction/{id}'
                 302Failure:
-                  description: 'Failed to make a bid. Redirect edit auction page.'
+                  description: 'Failed to make a bid. Redirect to auction page.'
                   value: '/auction/{id}'
         '401':
           description: 'Error user is not logged in'
+  
+  /api/search:
+    get:
+      operationId: R508
+      summary: 'R508: Search auctions.'
+      description: 'This resource implements a search engine used to find specific auctions. User can search by text and filter the results based on the auction category. If no parameters get passed, returns all auctions. Access: PUB.'
+
+      tags:
+        - 'M05: Auctions'
+
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+          examples:
+            searchQuery:
+              description: 'Full text search of an item that matches computer dell.'
+              value: 'computer dell' # ?search=computer+dell
+        - in: query
+          name: category
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+          examples:
+            oneFilter:
+              description: 'Getting the results of one category.'
+              value: [1]   # ?category%5B0%5D=1
+            multipleFilters:
+              description: 'Getting results matching many categories id.'
+              value: [1, 5, 7]   # ?category%5B0%5D=1&category%5B1%5D=5&category%5B2%5D=7
+
+      responses:
+        '200':
+          description: 'Successfully fetched data.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    base_price:
+                      type: integer
+                    start_date:
+                      type: string
+                      format: date-time
+                    end_date:
+                      type: string
+                      format: date-time
+                    buy_now:
+                      type: integer
+                      nullable: true
+                    state:
+                      type: string
+                      enum: ['Cancelled', 'Running', 'To be started', 'Ended']
+                    auction_owner_id:
+                      type: integer
+                    category:
+                      type: string
+                  required:
+                    - id
+                    - name
+                    - description
+                    - base_price
+                    - start_date
+                    - end_date
+                    - state
+                    - buy_now
+                    - auction_owner_id
+                    - category
+                example:
+                  - id: 22
+                    name: Adidas shirt
+                    description: Adidas shirt. Good state.
+                    base_price: 20
+                    start_date: '2021-07-11 00:00:00+00'
+                    end_date: '2021-10-01 00:00:00+00'
+                    state: 'Ended'
+                    buy_now: 300
+                    auction_owner_id: 4
+                    category: 'Fashion'
+                  - id: 45
+                    name: World cup Football
+                    description: Adidas Football. Good state.
+                    base_price: 100
+                    start_date: '2021-07-11 00:00:00+00'
+                    end_date: '2021-10-01 00:00:00+00'
+                    buy_now: null
+                    state: 'Running'
+                    auction_owner_id: 9
+                    category: 'Relic'
+            
+
+      
