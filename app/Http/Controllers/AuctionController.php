@@ -190,7 +190,8 @@ class AuctionController extends Controller
 
             $ids = array();
             foreach (Category::all() as $key => $category) {
-                if ($request->has($category->name)) {
+                $cat = str_replace(' ', '', $category->name);
+                if ($request->has($cat)) {
                     $ids[] = $category->id;
                 }
             }
@@ -204,7 +205,7 @@ class AuctionController extends Controller
                 }
             }
 
-            return redirect('auctions/' . $auction->id);
+            // return redirect('auctions/' . $auction->id);
         } catch (AuthorizationException $exception) {
             return redirect()->back()->withErrors("You don't have permissions to edit this auction!");
         }
