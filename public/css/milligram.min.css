@@ -79,3 +79,20 @@ body {
     margin: 0;
     margin-top: 3rem;
 }
+
+#you-searched-for {
+    display: inline-block;
+}
+
+#del-search-button {
+    background: none;
+    border: none;
+    display: inline-block;
+    margin-left: 1.5rem;
+    cursor: pointer;
+}
+
+#del-search-button > img {
+    width: 1.6rem;
+    filter: invert(42%) sepia(17%) saturate(6693%) hue-rotate(4deg) brightness(108%) contrast(102%);
+}

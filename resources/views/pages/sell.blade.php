@@ -126,9 +126,9 @@
                                 }
                             }
                         @endphp
-                        <input type="checkbox" id="{{$id}}" name="{{$category->name}}" {{$checked}}>
+                        <input type="checkbox" id="{{$id}}" name="{{$id}}" {{$checked}}>
                     @else
-                        <input type="checkbox" id="{{$id}}" name="{{$category->name}}">
+                        <input type="checkbox" id="{{$id}}" name="{{$id}}">
                     @endif
                     <label for="{{$id}}">{{$category->name}}</label><br>
                 @endforeach
@@ -138,6 +138,7 @@
         </form>
 
         @if($editMode)
+            <h3>Remove Images</h3>
             <div id="currentImages">
                 @php($images = App\Models\Auction::find($auction_id)->images()->get())
                 @foreach($images as $image)

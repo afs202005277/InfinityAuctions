@@ -55,3 +55,24 @@
 .sell > a {
     color: var(--ten);
 }
+
+#currentImages {
+    display: flex;
+    justify-content: space-between;
+}
+
+#currentImages > .auctionImage {
+    width: 25%;
+}
+
+#currentImages > .auctionImage > img:first-child {
+    width: 2.3rem;
+    position: absolute;
+    background-color: var(--sixty);
+}
+
+#currentImages > .auctionImage > img:last-child {
+    width: 100%;
+    position: relative;
+    z-index: -1;
+}

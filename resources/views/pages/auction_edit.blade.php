@@ -5,6 +5,7 @@
 @section('content')
 <div class="info">
         
+
         <div class= "auction_edit_container">
             <div>
                 <img id="auction_edit_img1" src="{{ asset('img/auction_tmp.png') }}" alt="">
