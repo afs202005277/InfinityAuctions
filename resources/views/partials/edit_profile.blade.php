@@ -38,7 +38,7 @@
                         <div class="form-group{{ $errors->has('birth_date') ? ' has-danger' : '' }}">
                             <label>{{ __('Birth Date') }}</label>
                             <input type="date" name="birth_date" class="form-control{{ $errors->has('birth_date') ? ' is-invalid' : '' }}" placeholder="{{ __('Birth_date') }}" value="{{ old('birth_date', auth()->user()->birth_date) }}">
-                            @include('alerts.feedback', ['field' => 'address'])
+                            @include('alerts.feedback', ['field' => 'birth_date'])
                         </div>
 
                 </div>
@@ -52,7 +52,7 @@
             <div class="card-header">
                 <h5 class="title">{{ __('Password') }}</h5>
             </div>
-            <form method="post" action="" autocomplete="off">
+            <form method="post" action="{{url('user/'. $user->id)}}" autocomplete="off">
                 <div class="card-body">
                     @csrf
                     @method('post')

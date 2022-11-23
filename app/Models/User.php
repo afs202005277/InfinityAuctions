@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -43,6 +44,16 @@ class User extends Authenticatable
     public function ownedAuctions()
     {
         return $this->hasMany(Auction::Class, 'auction_owner_id');
+    }
+    
+    public function biddingAuctions($user_id)
+    {
+        return DB::table('bid')
+        ->join('auction', 'bid.auction_id', '=', 'auction.id')
+        ->where('bid.user_id', '=', $user_id)
+        ->select('auction.*')
+        ->distinct()
+        ->get();
     }
 
     public function reportsMade()

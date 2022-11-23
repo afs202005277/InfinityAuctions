@@ -56,10 +56,10 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        $user = User::find($id);
-        return $user;
+    public function edit(Request $request)
+    {   
+
+        
     }
 
     /**
@@ -69,9 +69,33 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        try{
+            $user = User::find($id);
+            $this->authorize('update', $user);
+            $validated = $request->validate([
+                'name' => 'required|min:1|max:255',
+                'gender' => 'required|min:1',
+                'cellphone' => 'required|min:1',
+                'email' => 'required|min:1',
+                'birth_date' => 'required|min:1',
+                'address' => 'required|min:1',
+            ]);
+
+            $user->name = $validated['name'];
+            $user->gender = $validated['gender'];
+            $user->cellphone = $validated['cellphone'];
+            $user->email = $validated['email'];
+            $user->birth_date = $validated['birth_date'];
+            $user->address = $validated['address'];
+
+            $user->save();
+
+            return redirect('user/' . $user->id);
+        } catch (AuthorizationException $exception){
+            return redirect()->back()->withErrors("You don't have permissions to edit this user!");
+        }
     }
 
     /**

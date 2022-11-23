@@ -43,10 +43,8 @@
 
     <!-- Bids Placed -->
     <div id="bids_placed">
-        @if(!$user->ownedAuctions()->get()->isEmpty())
-            @foreach ($user->bids as $bid)
-                @include('partials.placed_bids', compact('bid'))
-            @endforeach
+        @if(!$user->bids()->get()->isEmpty())
+            @include('partials.auction_bids', ['bids' => $user->bids])
         @else
             <p> This user hasn't placed any bids! </p>
         @endif
@@ -54,19 +52,20 @@
 
     <!-- Bidding Auction -->
     <div id="bidding_auctions">
-        @if(!$user->ownedAuctions()->get()->isEmpty())
-            @foreach ($user->bids as $bid)
-                @include('partials.placed_bids', compact('bid'))
+        @if(!$user->biddingAuctions($user->id)->isEmpty())
+            @foreach ($user->biddingAuctions($user->id) as $auction)
+                @include('partials.auction', compact('auction'))
             @endforeach
         @else
             <p> This user hasn't placed any bids ! </p>
         @endif
     </div>
 
-    <div id="following_auction">
-        @if(!$user->ownedAuctions()->get()->isEmpty())
-            @foreach ($user->bids as $bid)
-                @include('partials.placed_bids', compact('bid'))
+    <!-- Following Auction -->
+    <div id="following_auctions">
+        @if(!$user->followingAuctions()->get()->isEmpty())
+            @foreach ($user->followingAuctions as $auction)
+                @include('partials.auction', compact('auction'))
             @endforeach
         @else
             <p> This user doesn't follow any Auction ! </p>

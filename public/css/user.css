@@ -56,17 +56,17 @@
   cursor: pointer;
 }
 
-#bidding_auctions{
-  display: inline-grid;
+#bidding_auctions {
+  width: 100%;
+  display: grid;
   align-self: center;
   justify-items: center;
   grid-template-columns: auto auto;
-  min-height: 100vh;
   display: none;
 }
 
-#following_auction {
-  display: inline-grid;
+#following_auctions {
+  display: grid;
   align-self: center;
   justify-items: center;
   grid-template-columns: auto auto;
@@ -76,4 +76,8 @@
 
 #bids_placed {
   display: none;
+}
+
+#info_bar_1 {
+  text-decoration: underline;
 }

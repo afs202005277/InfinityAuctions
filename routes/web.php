@@ -43,7 +43,7 @@ Route::post('register', 'Auth\RegisterController@register');
 
 //User
 Route::get('user/{id}', 'UserController@show');
-Route::post('user/{id}', 'UserController@edit');
+Route::post('user/{id}', 'UserController@update')->name('editUser');
 
 //Users
 Route::get('users', 'UsersController@index');
