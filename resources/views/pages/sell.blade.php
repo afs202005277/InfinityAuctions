@@ -126,9 +126,9 @@
                                 }
                             }
                         @endphp
-                        <input type="checkbox" id="{{$id}}" name="{{$category->name}}" {{$checked}}>
+                        <input type="checkbox" id="{{$id}}" name="{{$id}}" {{$checked}}>
                     @else
-                        <input type="checkbox" id="{{$id}}" name="{{$category->name}}">
+                        <input type="checkbox" id="{{$id}}" name="{{$id}}">
                     @endif
                     <label for="{{$id}}">{{$category->name}}</label><br>
                 @endforeach
