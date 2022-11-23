@@ -10,8 +10,8 @@ servers:
    description: Production server
 
 externalDocs:
- description: Find more info here.
- url: https://web.fe.up.pt/~ssn/wiki/teach/lbaw/medialib/a07
+  description: Find more info here.
+  url: https://web.fe.up.pt/~ssn/wiki/teach/lbaw/medialib/a07
 
 tags:
  - name: 'M01: Registration and authentication'
@@ -25,6 +25,7 @@ tags:
  
 
 paths:
+  # M01: Registration and authentication
   /login:
     get:
       operationId: R101
@@ -103,7 +104,7 @@ paths:
         - 'M01: Registration and authentication'
       responses:
         '200':
-          description: 'Ok. Show Sign-Up UI'
+          description: 'Ok. Show Sign-Up UI.'
 
     post:
       operationId: R105
@@ -165,6 +166,7 @@ paths:
                   description: 'Failed Registration. Redirect to Register Form.'
                   value: '/register'
 
+  # M02: Home page and Static pages
   /:
     get:
       operationId: R201
@@ -219,385 +221,56 @@ paths:
         '200':
           description: 'Ok. Show contacts page UI.'
 
-  /manage/auction/{id}:
-      post:
-        parameters:
-            - in: path
-              name: id
-              schema:
-                type: integer
-              required: true
-              description: Numeric ID of the auction to get
-        operationId: R301
-        summary: 'R301: Edit Auction'
-        description: 'Allows the admin to change info of a certain auction, ranging from the enddate of the auction to the media of said auction. Access: ADM'
-        tags:
-        - 'M03: Platform administration'
-
-        requestBody:
-          required: true
-          content:
-            application/x-www-form-urlencoded:
-              schema:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  description:
-                    type: string
-                  basePrice:
-                    type: integer
-                  startDate:
-                    type: string
-                  endDate: 
-                    type: string
-                  buyNow:
-                    type: integer
-                  state:
-                    type: string
-
-        responses:
-          '302':
-            description: 'Redirect after processing the data change.'
-            headers:
-              Location:
-                schema:
-                  type: string
-                examples:
-                  302Success:
-                    description: 'Successful edit. Redirect to all auctions page.'
-                    value: '/auctions'
-                  302Failure:
-                    description: 'Failed edit. Redirect to the same page to attempt a new change.'
-                    value: '/auction/{id}'
-      delete:
-        parameters:
-            - in: path
-              name: id
-              schema:
-                type: integer
-              required: true
-              description: Numeric ID of the auction to get'
-        operationId: R302
-        summary: 'R302: Delete Auction'
-        description: 'Allows the admin to delete an auction. Access: ADM'
-        tags:
-          - 'M03: Platform administration'
-
-        requestBody:
-          required: true
-          content:
-            application/x-www-form-urlencoded:
-              schema:
-                type: object
-                properties:
-                  password:
-                    type: string
-                required:
-                      - password
-
-        responses:
-          '302':
-            description: 'Redirect after deleting.'
-            headers:
-              Location:
-                schema:
-                  type: string
-                examples:
-                  302Success:
-                    description: 'Successful deletion. Redirect to all auctions page.'
-                    value: '/auctions'
-                  302Failure:
-                    description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
-                    value: '/auction/{id}'
-
-  /manage/users/{id}:
-    post:
-      parameters:
-            - in: path
-              name: id
-              schema:
-                type: integer
-              required: true
-              description: Numeric ID of the user to get
-      operationId: R303
-      summary: 'R303: Manage User'
-      description: 'Allows the admin to change info of the user. Access: ADM'
-      tags:
-        - 'M03: Platform administration'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                gender:
-                  type: string
-                cellphone:
-                  type: integer
-                email:
-                  type: string
-                birth_date: 
-                  type: string
-                address:
-                  type: string
-                rate:
-                  type: integer
-                credits:
-                  type: integer
-                wishlist:
-                  type: string
-                
-                
-
-      responses:
-        '302':
-          description: 'Redirect after processing the data change.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful edit. Redirect to all users page.'
-                  value: '/users'
-                302Failure:
-                  description: 'Failed edit. Redirect to the same page to attempt a new change.'
-                  value: 'users/{id}'
-    delete:
-      parameters:
-            - in: path
-              name: id
-              schema:
-                type: integer
-              required: true
-              description: Numeric ID of the auction to get
-      operationId: R304
-      summary: 'R304: Delete Auction'
-      description: 'Allows the admin to delete a user. Access: ADM'
-      tags:
-        - 'M03: Platform administration'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                password:
-                  type: string
-              required:
-                    - password
-
-      responses:
-        '302':
-          description: 'Redirect after deleting.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful deletion. Redirect to all users page.'
-                  value: '/users'
-                302Failure:
-                  description: 'Failed deletion. Redirect to the same page to attempt a new deletion.'
-                  value: '/users/{id}'
-
-  /manage/reports:
+  # M03: Platform administration
+  /manage:
     get:
-      operationId: R305
-      summary: 'R305: Get reports'
-      description: 'See all the reports. Access: ADM'
-      tags:
-        - 'M03: Platform administration'
-      responses:
-        '200':
-          description: 'Ok. Show all reports UI'
-        '400':
-          description: 'Something went wrong. Please try again'
-
-  /manage/categories:
-    get:
-      operationId: R306
-      summary: 'R306: Get categories'
-      description: 'See all the categories. Access: ADM'
-      tags:
-        - 'M03: Platform administration'
-      responses:
-        '200':
-          description: 'Ok. Show all categories'
-        '400':
-          description: 'Something went wrong. Please try again'
-    post:
-      operationId: R307
-      summary: 'R307: Edit Auction Categories'
-      description: 'Allows the admin to change categories of auctions. Access: ADM'
+      operationId: R301
+      summary: 'R301: Admin Panel.'
+      description: "Show admin control panel. Access: ADM. NOTE: All the methods the admin uses to cancel or edit auctions are already indicated in M05: Auctions. Due to the reporting module(M06: Reports) not having top priority, we did not include it in the prototype, thus limiting the administrator's ability to manage the platform which depends on reports. Therefore, this module is not as developed as the others."
       tags:
         - 'M03: Platform administration'
 
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: array
-              items:
-                type: string       
       responses:
         '200':
-          description: 'Ok. Categories edited'
-        '400':
-          description: 'Something went wrong. Please try again'
-    delete:
-      operationId: R308
-      summary: 'R308: Delete Auction'
-      description: 'Allows the admin to delete a user. Access: ADM'
-      tags:
-        - 'M03: Platform administration'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                password:
-                  type: string
-              required:
-                    - password
-      responses:
-        '200':
-          description: 'Ok. Category deleted'
-        '400':
-          description: 'Something went wrong. Please try again'
-    
-  /report/{id}:
-    get:
-      parameters:
-          - in: path
-            name: id
-            schema:
-              type: integer
-            required: true
-            description: Numeric ID of the report to post to
-      operationId: R601
-      summary: 'R601: Get Reports'
-      description: 'Receive reports for admmin to handle. Access: ADM'
-      tags:
-        - 'M06: Reports'
-      responses:
-        '200':
-          description: 'Ok.  Reports received'
-        '400':
-          description: 'Something went wrong. Please try again'
-    
-    post:
-      parameters:
-          - in: path
-            name: id
-            schema:
-              type: integer
-            required: true
-            description: Numeric ID of the report to post to
-      operationId: R602
-      summary: 'R602: Edit User'
-      description: 'Allows the admin to change info of a certain report inluding the penalty for the reported_user.'
-      tags:
-        - 'M06: Reports'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-                date:
-                  type: string
-                penalty:
-                  type: integer
-                reported_user:
-                  type: integer
-                reporter: 
-                  type: integer
-                auction_reported:
-                  type: integer
-                admin_id:
-                  type: integer
-
-      responses:
-        '200':
-          description: 'Ok. Reports edited'
-        '400':
-          description: 'Something went wrong. Please try again'
-    delete:
-      operationId: R303
-      summary: 'R304: Delete Auction'
-      description: 'Allows the admin to delete a report. Access: ADM'
-      tags:
-        - 'M06: Reports'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                password:
-                  type: string
-              required:
-                    - password
-      responses:
-        '200':
-          description: 'Ok. Report deleted'
-        '400':
-          description: 'Something went wrong. Please try again'
+          description: 'Ok. Show Admin Panel UI.'
   
   # M04: User
-  /my:
+  /user/{id}:
     get:
       operationId: R401
-      summary: 'R401: My profile'
-      description: 'Show signed user account. Access: USR'
+      summary: 'R401: My profile UI.'
+      description: 'Show signed user profile, including personal information, form to edit personal information, bidding activity, owned auctions and followed auctions. Access: USR.'
       tags:
         - 'M04: Users'
 
-      responses:
-        '200':
-          description: 'Ok. Show My Profile UI'
-        '401':
-          description: 'Error user is not logged in'
-  
-  /my/settings:
-    get:
-      operationId: R402
-      summary: 'R402: My profile settings'
-      description: 'Show signed user profile settings. Access: USR'
-      tags:
-        - 'M04: Users'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer 
+            minimum: 1
 
       responses:
         '200':
-          description: 'Ok. Show My Profile settings UI'
-        '401':
-          description: 'Error user is not logged in'
+          description: 'Ok. Show My Profile UI.'
+        '403':
+          description: 'Error user does not have permissions.'
     
-    put:
-      operationId: R403
-      summary: 'R403: Change profile settings'
-      description: 'Process new profile settings. Access: USR'
+    post:
+      operationId: R402
+      summary: 'R402: Edit profile.'
+      description: 'Process new profile information. Access: USR.'
       tags:
         - 'M04: Users'
+
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer 
+            minimum: 1
       
       requestBody:
         required: true
@@ -621,196 +294,50 @@ paths:
                   format: date
                 address:
                   type: string
-                picture:
-                  type: string
-                  format: binary
-      
-      responses:
-        '200':
-          description: 'Ok. Show My Profile settings UI'
-        '401':
-          description: 'Error user is not logged in'
-
-  
-  /my/settings/password:
-    get:
-      operationId: R404
-      summary: 'R404: Change password'
-      description: 'Show password form. Access: USR'
-      tags:
-        - 'M04: Users'
-      
-      responses:
-        '200':
-          description: 'Ok. Show change password page.'
-        '401':
-          description: 'Error user is not logged in'
-    
-    put:
-      operationId: R405
-      summary: 'R405: New Password'
-      description: 'Processes new password submission. Access: USR'
-      tags:
-        - 'M04: Users'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                old_password:
+                current_password:
                   type: string
                   format: password
                 new_password:
                   type: string
                   format: password
-              required:
-                  - old_password
-                  - new_password
-      
+                confirm_password:
+                  type: string
+                  format: password
+
       responses:
         '302':
-          description: 'Redirect after changing password.'
+          description: 'Redirect after processing new user information.'
           headers:
             Location:
               schema:
                 type: string
               examples:
                 302Success:
-                  description: 'Successfully changed. Redirect user settings page.'
-                  value: '/my/settings'
+                  description: 'Successful edit. Redirect to user profile.'
+                  value: '/user/{id}'
                 302Failure:
-                  description: 'Failed. Redirect to the same page for new attempt.'
-                  value: '/my/settings/password'
-        '401':
-          description: 'Error user is not logged in'
-  
-  /my/settings/delete_account:
-    put:
-      operationId: R406
-      summary: 'R406: Delete account'
-      description: 'Deletes personal information. Access: USR'
-      tags:
-        - 'M04: Users'
-      
-      responses:
-        '302':
-          description: 'Redirect after deleting account.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successfully deleted account. Redirect to Home page.'
-                  value: '/'
-                302Failure:
-                  description: 'Failed to delete account. Redirect to the account settings page.'
-                  value: '/my/settings'
-        '401':
-          description: 'Error user is not logged in'
-  
-  /my/add_credits:
+                  description: 'Failed to edit. Redirect to user Form.'
+                  value: '/user/{id}'
+        '403':
+          description: 'Error user does not have permissions.'
+
+  /users:
     get:
-      operationId: R407
-      summary: 'R407: Add credits form'
-      description: 'Shows user credits form. Access: USR'
+      operationId: R403
+      summary: 'R403: List Users.'
+      description: 'Show list of users that are registered in the platform. Access: PUB.'
       tags:
         - 'M04: Users'
       
       responses:
         '200':
-          description: 'Ok. Show Credits UI'
-        '401':
-          description: 'Error user is not logged in'
-
-    put:
-      operationId: R408
-      summary: 'R408: Add credits to account'
-      description: 'Processes request to add credits'
-      tags:
-        - 'M04: Users'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                added_funds:
-                  type: integer
-                  minimum: 1
-              required:
-                - added_funds
-      
-      responses:
-        '302':
-          description: 'Redirect after adding credits.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successfully added credits to account. Redirect to account page.'
-                  value: '/my'
-                302Failure:
-                  description: 'Failed to add credits to account. Redirect to add credits form.'
-                  value: '/my/add_credits'
-        '401':
-          description: 'Error user is not logged in'
-
-  /my/followed:
-    get:
-      operationId: R409
-      summary: 'R409: Followed auctions'
-      description: 'Show signed user followed auctions. Access: USR'
-      tags:
-        - 'M04: Users'
-
-      responses:
-        '200':
-          description: 'Ok. Show followed auctions list'
-        '401':
-          description: 'Error user is not logged in'
-  
-  /my/bidded:
-    get:
-      operationId: R410
-      summary: 'R410: Bidded auctions'
-      description: 'Show signed user bidded auctions. Access: USR'
-      tags:
-        - 'M04: Users'
-
-      responses:
-        '200':
-          description: 'Ok. Show bidded auctions list'
-        '401':
-          description: 'Error user is not logged in'
-  
-  /my/auctions:
-    get:
-      operationId: R411
-      summary: 'R411: Users auctions list'
-      description: 'Collection of auctions that belong to the user. Access: OWN'
-      tags:
-        - 'M04: Users'
-
-      responses:
-        '200':
-          description: 'Ok. Show auctions list'
-        '401':
-          description: 'Error user is not logged in'
-
+          description: 'Ok. List users UI.'
 
   /users/{id}:
     get:
-      operationId: R412
-      summary: 'R412: View user profile'
-      description: 'Show user profile. Access: PUB'
+      operationId: R404
+      summary: 'R404: View user profile.'
+      description: 'Show user profile. Access: PUB.'
       tags:
         - 'M04: Users'
 
@@ -819,64 +346,28 @@ paths:
           name: id
           schema:
             type: integer
+            minimum: 1
           required: true
 
       responses:
         '200':
-          description: 'Ok. Show User Profile UI'
-
-  /my/wishlist:
-    get:
-      operationId: R413
-      summary: 'R413: My Wishlist'
-      description: 'Show wishlist configuration. Access: USR'
-      tags:
-        - 'M04: Users'
-
-      responses:
-        '200':
-          description: 'Ok. Show wishlist UI'
-        '401':
-          description: 'Error user is not logged in'
-    
-    put:
-      operationId: R414
-      summary: 'R414: Wishlist '
-      description: 'Change Wishlist configuration. Access: USR'
-      tags:
-        - 'M04: Users'
-      
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                whislist:
-                  type: array
-      
-      responses:
-        '200':
-          description: 'Ok. Show wishlist UI'
-        '401':
-          description: 'Error user is not logged in'
-
+          description: 'Ok. Show User Profile UI.'
 
   # M05: Auctions
-  /auctions/{id}:
+  /auctions/{auction_id}:
     get:
       operationId: R501
-      summary: 'R501: View Auction'
-      description: 'Show auction page. Access: PUB'
+      summary: 'R501: View Auction.'
+      description: 'Show auction page. Access: PUB.'
       tags:
         - 'M05: Auctions'
 
       parameters:
         - in: path
-          name: id
+          name: auction_id
           schema:
             type: integer
+            minimum: 1
           required: true
 
       responses:
@@ -894,8 +385,8 @@ paths:
       responses:
         '200':
           description: 'Ok. Show Create Auction Form UI.'
-        '401':
-          description: 'Error user is not logged in.'
+        '403':
+          description: 'Error user does not have permissions.'
     
     post:
       operationId: R503
@@ -935,26 +426,6 @@ paths:
                   type: array
                   items:
                     type: boolean
-                # Panini:
-                #   type: boolean
-                # Banknotes:
-                #   type: boolean
-                # Fine Art:
-                #   type: boolean
-                # Oil:
-                #   type: boolean
-                # Wine:
-                #   type: boolean
-                # ComicBooks:
-                #   type: boolean
-                # Fashion:
-                #   type: boolean
-                # Watches:
-                #   type: boolean
-                # Coins:
-                #   type: boolean
-                # Stamps:
-                #   type: boolean
               required:
                 - title
                 - description
@@ -979,14 +450,14 @@ paths:
                 302Failure:
                   description: 'Failed to create auction. Redirect create auction page.'
                   value: '/sell'
-        '401':
-          description: 'Error user is not logged in'
+        '403':
+          description: 'Error user does not have permissions.'
   
-  /auctions/{id}/edit:
+  /auctions/edit/{id}:
     get:
       operationId: R504
-      summary: 'R504: Edit auction page'
-      description: 'Fetch form to edit the auction. Access: OWN'
+      summary: 'R504: Edit Auction page.'
+      description: 'Fetch form to edit the auction. Access: OWN, ADM'
       tags:
         - 'M05: Auctions'
       
@@ -995,16 +466,19 @@ paths:
           name: id
           schema:
             type: integer
+            minimum: 1
           required: true
 
       responses:
         '200':
-          description: 'Show edit form UI'
+          description: 'Show edit form UI.'
+        '403':
+          description: 'Error user does not have permissions.'
     
-    put:
+    post:
       operationId: R505
-      summary: 'R505 Edit auction form'
-      description: 'Processes form in order to edit the auction. Access: OWN'
+      summary: 'R505 Edit Auction Action.'
+      description: 'Processes form in order to edit the auction. Access: OWN.'
       
       tags:
         - 'M05: Auctions'
@@ -1014,6 +488,7 @@ paths:
           name: id
           schema:
             type: integer
+            minimum: 1
           required: true
 
       requestBody:
@@ -1023,7 +498,7 @@ paths:
             schema:
               type: object
               properties:
-                name:
+                title:
                   type: string
                 description:
                   type: string
@@ -1031,22 +506,20 @@ paths:
                   type: integer
                 start_date:
                   type: string
-                  format: date
+                  format: date-time
                 end_date:
                   type: string
-                  format: date
+                  format: date-time
                 buy_now:
                   type: integer
-                auction_state:
-                  type: string
-                  enum: ['Running', 'To be started']
+                  nullable: true
               required:
-                - name
+                - title
                 - description
                 - base_price
                 - start_date
                 - end_date
-                - auction_state
+                - buy_now
 
       responses:
         '302':
@@ -1060,17 +533,16 @@ paths:
                   description: 'Successfully edited auction. Redirect to auction page.'
                   value: '/auction/{id}'
                 302Failure:
-                  description: 'Failed to edit auction. Redirect edit auction page.'
-                  value: '/auction/{id}/edit'
-        '401':
-          description: 'Error user is not logged in'
-
-  /auctions/{id}/follow:
+                  description: 'Failed to edit auction. Redirect edit Auction page.'
+                  value: '/auction/edit/{id}'
+        '403':
+          description: 'Error user does not have permissions.'
+  
+  /auctions/cancel/{id}:
     post:
       operationId: R506
-      summary: 'R506 Follow auction'
-      description: 'User makes a request to follow a specific auction. Access: USR'
-
+      summary: 'R506: Cancel Auction.'
+      description: 'Enables Owner to set auction state to cancelled. Access: OWN, ADM.'
       tags:
         - 'M05: Auctions'
 
@@ -1079,43 +551,96 @@ paths:
           name: id
           schema:
             type: integer
+            minimum: 1
           required: true
 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  type: integer
-              required:
-                - user_id
-      
       responses:
         '302':
-          description: 'Redirect after following auction.'
+          description: 'Redirect after cancelling the auction.'
           headers:
             Location:
               schema:
                 type: string
               examples:
                 302Success:
-                  description: 'Successfully followed auction. Redirect to auction page.'
-                  value: '/auction/{id}'
+                  description: 'Successfully canceled. Redirect to auction page.'
+                  value: '/'
                 302Failure:
-                  description: 'Failed to edit follow auction. Redirect edit auction page.'
+                  description: 'Failed to cancel. Redirect to auction page.'
                   value: '/auction/{id}'
-        '401':
-          description: 'Error user is not logged in'
+        '403':
+          description: 'Error user does not have permissions.'
+
+  /api/auctions/getAllBids/{auction_id}:
+    get:
+      operationId: R507
+      summary: 'R507: Auctions bids'
+      description: 'List the bids of a certain auction. Access: PUB'
+      tags:
+        - 'M05: Auctions'
+
+      parameters:
+        - in: path
+          name: auction_id
+          schema:
+            type: integer
+          required: true
+      
+      responses:
+        '200':
+          description: 'Successfully fetched data.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    bid_id:
+                      type: string
+                      minimum: 1
+                    date:
+                      type: string
+                      format: date-time
+                    amount:
+                      type: integer
+                      minimum: 1
+                    user_id:
+                      type: integer
+                      minimum: 1
+                    auction_id:
+                      type: integer
+                      minimum: 1
+                    username:
+                      type: string
+                  required:
+                    - bid_id
+                    - date
+                    - amount
+                    - user_id
+                    - auction_id
+                    - username
+                example:
+                  - bid_id: 100
+                    date: '2021-07-11 00:00:00+00'
+                    amount: 300
+                    user_id: 4
+                    auction_id: 9
+                    username: Manel
+                  - bid_id: 32
+                    date: '2021-07-09 00:00:00+00'
+                    amount: 200
+                    user_id: 2
+                    auction_id: 1
+                    username: Maria
+                  
+
 
   /api/auctions:
     post:
-      operationId: R507
-      summary: 'R507 Bid on auction.'
+      operationId: R508
+      summary: 'R508: Bid on auction.'
       description: 'User bids on the auction. Access: BDR.'
-
       tags:
         - 'M05: Auctions'
 
@@ -1154,13 +679,13 @@ paths:
                 302Failure:
                   description: 'Failed to make a bid. Redirect to auction page.'
                   value: '/auction/{id}'
-        '401':
-          description: 'Error user is not logged in'
+        '403':
+          description: 'Error user does not have permissions.'
   
   /api/search:
     get:
-      operationId: R508
-      summary: 'R508: Search auctions.'
+      operationId: R509
+      summary: 'R509: Search auctions.'
       description: 'This resource implements a search engine used to find specific auctions. User can search by text and filter the results based on the auction category. If no parameters get passed, returns all auctions. Access: PUB.'
 
       tags:
@@ -1203,6 +728,7 @@ paths:
                   properties:
                     id:
                       type: string
+                      minimum: 1
                     name:
                       type: string
                     description:
@@ -1223,8 +749,6 @@ paths:
                       enum: ['Cancelled', 'Running', 'To be started', 'Ended']
                     auction_owner_id:
                       type: integer
-                    category:
-                      type: string
                   required:
                     - id
                     - name
@@ -1235,7 +759,6 @@ paths:
                     - state
                     - buy_now
                     - auction_owner_id
-                    - category
                 example:
                   - id: 22
                     name: Adidas shirt
@@ -1246,7 +769,6 @@ paths:
                     state: 'Ended'
                     buy_now: 300
                     auction_owner_id: 4
-                    category: 'Fashion'
                   - id: 45
                     name: World cup Football
                     description: Adidas Football. Good state.
@@ -1256,7 +778,3 @@ paths:
                     buy_now: null
                     state: 'Running'
                     auction_owner_id: 9
-                    category: 'Relic'
-            
-
-      
