@@ -2,6 +2,9 @@ let countDownDate = new Date(document.getElementById("final-date").textContent).
 
 function updateButtons(bid) {
     let buttons = document.querySelectorAll('.price-suggestions form button');
+    buttons.forEach(button => {
+        button.disabled = false;
+    });
     buttons[0].textContent = ((parseFloat(bid.amount) * 1.10).toFixed(2)).toString() + '€';
     buttons[1].textContent = ((parseFloat(bid.amount) * 1.25).toFixed(2)).toString() + '€';
     buttons[2].textContent = ((parseFloat(bid.amount) * 1.50).toFixed(2)).toString() + '€';
