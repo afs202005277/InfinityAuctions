@@ -30,3 +30,7 @@ a {
     margin-bottom: 5em;
     margin-top: 4em;
 }
+
+button:hover{
+    cursor: pointer;
+}

@@ -147,6 +147,9 @@ function cardDeletedHandler() {
 function bidAddedHandler() {
     if (this.status !== 201) {
         console.log("Error adding bid!");
+        document.querySelector('.error').textContent = this.responseText.substring(this.responseText.indexOf('ERROR:') + "ERROR:".length+2, this.responseText.indexOf('.')+1);
+    } else {
+        document.querySelector('.error').textContent = "";
     }
 }
 
