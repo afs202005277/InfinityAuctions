@@ -11,7 +11,8 @@ servers:
 
 externalDocs:
   description: Find more info here.
-  url: https://web.fe.up.pt/~ssn/wiki/teach/lbaw/medialib/a07
+  url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw2271/-/blob/main/a7_openapi.yaml
+
 
 tags:
  - name: 'M01: Registration and authentication'
@@ -818,6 +819,8 @@ paths:
       operationId: R511
       summary: 'R511: Delete auction image.'
       description: 'This api deletes an image that is associated with a specific auction. Access: OWN, ADM'
+      tags:
+        - 'M05: Auctions'
       
       parameters:
           - in: path
