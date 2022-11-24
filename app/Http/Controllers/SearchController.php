@@ -15,7 +15,6 @@ class SearchController extends Controller
 
     public function search(Request $request)
     {
-        
         $search = $request->input('search');
         $filters = $request->input('category.*');
         if(!isset($filters)) {
@@ -24,8 +23,6 @@ class SearchController extends Controller
 
         $auctions = (new Auction())->searchResults($search, $filters);
 
-        $categories = Category::all();
-
-        return view('pages.search_page', compact('auctions', 'filters', 'categories', 'search'));
+        return $auctions;
     }
 }

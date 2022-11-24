@@ -46,7 +46,7 @@
               @include('partials.categories', ['categories' => $categories])
             </div>
             <div class="search">
-              <form action="{{ url('/api/search') }}" method="GET" role="search">
+              <form action="{{ url('/search') }}" method="GET" role="search">
                 <input class="search-text" type="text" placeholder="Search.." name="search" required>
               </form>
             </div>

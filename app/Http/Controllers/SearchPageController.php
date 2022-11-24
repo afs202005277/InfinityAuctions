@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Auction;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\SearchController;
 
 class SearchPageController extends Controller
 {
@@ -16,8 +17,16 @@ class SearchPageController extends Controller
      */
     public function show(Request $request)
     {
-        $active = (new Auction())->runningAuctions();
+        $search = $request->input('search');
+        $filters = $request->input('category.*');
+        if(!isset($filters)) {
+            $filters = [];
+        }
+
+        $auctions = (new SearchController())->search($request);
+
         $categories = Category::all();
-        return view('pages.search_page', compact('active', 'categories'));
+
+        return view('pages.search_page', compact('auctions', 'filters', 'categories', 'search'));
     }
 }

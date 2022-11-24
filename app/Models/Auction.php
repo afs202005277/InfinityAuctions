@@ -39,9 +39,9 @@ class Auction extends Model
     public function searchResults($search, $filters)
     {
         $query = DB::table('auction')
-                ->select('auction.*', 'category.name as categoryName')
-                ->join('auction_category', 'id', '=', 'auction_id')
-                ->join('category', 'category_id', '=', 'category.id');
+                ->select('auction.*')
+                ->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
+                ->join('category', 'auction_category.category_id', '=', 'category.id');
         if( count($filters) )
         {
             $query->whereIn('category.id', $filters);
@@ -57,7 +57,8 @@ class Auction extends Model
         //       WHERE auction_tokens @@ plainto_tsquery('english', :search)
         //       ORDER BY ts_rank(auction_tokens, plainto_tsquery('english', :search)) DESC;"),
         //       array('search' => $search,));
-
+        
+        $query->groupBy('auction.id');
         $values = $query->get();
 
         return $values;
