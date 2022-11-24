@@ -52,11 +52,11 @@
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-#info_bar_1, #info_bar_2, #info_bar_3, #info_bar_4, #info_bar_5{
+.info_bar_1, .info_bar_2, .info_bar_3, .info_bar_4, .info_bar_5{
   cursor: pointer;
 }
 
-#bidding_auctions {
+.bidding_auctions {
   width: 100%;
   display: grid;
   align-self: center;
@@ -65,7 +65,7 @@
   display: none;
 }
 
-#following_auctions {
+.following_auctions {
   display: grid;
   align-self: center;
   justify-items: center;
@@ -74,10 +74,10 @@
   display: none;
 }
 
-#bids_placed {
+.bids_placed {
   display: none;
 }
 
-#info_bar_1 {
+.info_bar_1 {
   text-decoration: underline;
 }

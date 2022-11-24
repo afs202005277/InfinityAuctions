@@ -55,7 +55,60 @@
         </div>
     </div>
 
-    <h4> Owned Auctions </h4>
+    
+    @if(Auth::user()!=null && Auth::user()->id==$user->id)
+    <div class="row">
+        <h4 class="info_bar_2"> Owned Auctions </h4>
+        <h4 class="info_bar_3"> Bids Placed </h4>
+        <h4 class="info_bar_4"> Bidding Auction </h4>
+        <h4 class="info_bar_5"> Following Auction</h4>
+    </div>
+    <hr/>
+
+    <!-- Owned Auctions -->
+    <div class="auctions_owned">
+        @if(!$user->ownedAuctions()->get()->isEmpty())
+            @foreach ($user->ownedAuctions as $auction)
+                @include('partials.auction', compact('auction'))
+            @endforeach
+        @else
+            <p> This user doesn't own any Auction ! </p>
+        @endif
+    </div>
+
+    <!-- Bids Placed -->
+    <div class="bids_placed">
+        @if(!$user->bids()->get()->isEmpty())
+            @include('partials.auction_bids', ['bids' => $user->bids])
+        @else
+            <p> This user hasn't placed any bids! </p>
+        @endif
+    </div>
+
+    <!-- Bidding Auction -->
+    <div class="bidding_auctions">
+        @if(!$user->biddingAuctions($user->id)->isEmpty())
+            @foreach ($user->biddingAuctions($user->id) as $auction)
+                @include('partials.auction', compact('auction'))
+            @endforeach
+        @else
+            <p> This user hasn't placed any bids ! </p>
+        @endif
+    </div>
+
+    <!-- Following Auction -->
+    <div class="following_auctions">
+        @if(!$user->followingAuctions()->get()->isEmpty())
+            @foreach ($user->followingAuctions as $auction)
+                @include('partials.auction', compact('auction'))
+            @endforeach
+        @else
+            <p> This user doesn't follow any Auction ! </p>
+        @endif
+    </div>
+    
+    @else
+    <h4 id="info_bar_2"> Owned Auctions </h4>
     <hr/>
     <div class="auctions_owned">
         @if(!$user->ownedAuctions()->get()->isEmpty())
@@ -66,4 +119,6 @@
             <p> This user doesn't own any Auctions </p>
         @endif
     </div>
+    @endif
+   
 @endsection
