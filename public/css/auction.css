@@ -268,7 +268,7 @@
     color: var(--thirty);
 }
 
-.below > .left > h3:first-of-type > span {
+.below > .left > h3:first-of-type > .nameuser {
     color: var(--ten);
     text-decoration: underline;
 }

@@ -48,7 +48,6 @@
             <div class="search">
               <form action="{{ url('/api/search') }}" method="GET" role="search">
                 <input class="search-text" type="text" placeholder="Search.." name="search" required>
-                <button class="search-button" type="submit" title="Search auctions">search</button>
               </form>
             </div>
             <a class="faq" href="{{ url('/faq') }}">FAQ</a>

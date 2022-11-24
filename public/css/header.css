@@ -50,18 +50,16 @@ header > .categories > #categories {
     display: block;
   }
 
+header > .search {
+    width: 20%;
+}
+
 header > .search > form > .search-text {
     height: 4rem;
     border: 1px solid #AAAAAA;
     padding: 0.5em;
     border-radius: 5px;
-}
-
-header > .search > form > .search-button {
-    height: 4rem;
-    border: 1px solid #AAAAAA;
-    padding: 0.5em;
-    border-radius: 5px;
+    width: 100%;
 }
 
 header > .search > form > .search-text:read-write {
