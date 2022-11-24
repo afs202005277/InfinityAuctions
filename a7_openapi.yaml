@@ -6,7 +6,7 @@ info:
  description: 'Web Resources Specification (A7) for Infinity Auction'
 
 servers:
- - url: http://lbaw2271.lbaw.fe.up.pt
+ - url: https://lbaw2271.lbaw.fe.up.pt/
    description: Production server
 
 externalDocs:
@@ -20,8 +20,7 @@ tags:
  - name: 'M04: Users'
  - name: 'M05: Auctions'
  - name: 'M06: Reports'
- - name: 'M07: Wishlist'
- - name: 'M08: Notifications'
+ - name: 'M07: Notifications'
  
 
 paths:
@@ -35,7 +34,7 @@ paths:
         - 'M01: Registration and authentication'
       responses:
         '200':
-          description: 'Ok. Show Log-in UI.'
+          description: 'Ok. Show Log-in UI [UI02].'
     post:
       operationId: R102
       summary: 'R102: Login Action.'
@@ -104,7 +103,7 @@ paths:
         - 'M01: Registration and authentication'
       responses:
         '200':
-          description: 'Ok. Show Sign-Up UI.'
+          description: 'Ok. Show Sign-Up UI [UI04].'
 
     post:
       operationId: R105
@@ -176,7 +175,7 @@ paths:
         - 'M02: Home page and Static pages'
       responses:
         '200':
-          description: 'Ok. Show Home Page UI.'
+          description: 'Ok. Show Home Page UI [UI01].'
   
   /about:
     get:
@@ -187,7 +186,7 @@ paths:
         - 'M02: Home page and Static pages'
       responses:
         '200':
-          description: 'Ok. Show about us UI.'
+          description: 'Ok. Show about us UI [UI05].'
 
   /services:
     get:
@@ -198,7 +197,7 @@ paths:
         - 'M02: Home page and Static pages'
       responses:
         '200':
-          description: 'Ok. Show Services Page UI.'
+          description: 'Ok. Show Services Page UI [UI07].'
   /faq:
     get:
       operationId: R204
@@ -208,7 +207,7 @@ paths:
         - 'M02: Home page and Static pages'
       responses:
         '200':
-          description: 'Ok. Show FAQ UI.'
+          description: 'Ok. Show FAQ UI [UI06].'
   
   /contacts:
     get:
@@ -219,7 +218,7 @@ paths:
         - 'M02: Home page and Static pages'
       responses:
         '200':
-          description: 'Ok. Show contacts page UI.'
+          description: 'Ok. Show contacts page UI [UI08].'
 
   # M03: Platform administration
   /manage:
@@ -232,7 +231,7 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show Admin Panel UI.'
+          description: 'Ok. Show Admin Panel UI [UI22].'
   
   # M04: User
   /user/{id}:
@@ -253,14 +252,14 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show My Profile UI.'
+          description: 'Ok. Show My Profile UI [UI14]. Edit profile section UI [UI18]. Bidding History section UI [UI20]. Followed auctions section UI [UI17]. Owned auctions section UI [UI09]'
         '403':
           description: 'Error user does not have permissions.'
     
     post:
       operationId: R402
       summary: 'R402: Edit profile.'
-      description: 'Process new profile information. Access: USR.'
+      description: 'Process new profile information. Access: USR, ADM.'
       tags:
         - 'M04: Users'
 
@@ -331,7 +330,7 @@ paths:
       
       responses:
         '200':
-          description: 'Ok. List users UI.'
+          description: 'Ok. List users UI [UI14].'
 
   /users/{id}:
     get:
@@ -372,7 +371,7 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show auction page'
+          description: 'Ok. Show auction page UI [UI10]'
   
   /sell:
     get:
@@ -384,9 +383,7 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show Create Auction Form UI.'
-        '403':
-          description: 'Error user does not have permissions.'
+          description: 'Ok. Show Create Auction Form UI [UI11].'
     
     post:
       operationId: R503
@@ -451,7 +448,7 @@ paths:
                   description: 'Failed to create auction. Redirect create auction page.'
                   value: '/sell'
         '403':
-          description: 'Error user does not have permissions.'
+          description: 'Error admins do not create auctions.'
   
   /auctions/edit/{id}:
     get:
@@ -471,14 +468,12 @@ paths:
 
       responses:
         '200':
-          description: 'Show edit form UI.'
-        '403':
-          description: 'Error user does not have permissions.'
+          description: 'Show edit form UI [UI12].'
     
     post:
       operationId: R505
       summary: 'R505 Edit Auction Action.'
-      description: 'Processes form in order to edit the auction. Access: OWN.'
+      description: 'Processes form in order to edit the auction. Access: OWN, ADM.'
       
       tags:
         - 'M05: Auctions'
@@ -584,6 +579,7 @@ paths:
           name: auction_id
           schema:
             type: integer
+            minimum: 1
           required: true
       
       responses:
@@ -654,7 +650,7 @@ paths:
                 user_id:
                   type: integer
                   minimum: 1
-                value:
+                amount:
                   type: integer
                   minimum: 1
                 auction_id:
@@ -685,7 +681,7 @@ paths:
   /api/search:
     get:
       operationId: R509
-      summary: 'R509: Search auctions.'
+      summary: 'R509: Search auctions api.'
       description: 'This resource implements a search engine used to find specific auctions. User can search by text and filter the results based on the auction category. If no parameters get passed, returns all auctions. Access: PUB.'
 
       tags:
@@ -778,3 +774,59 @@ paths:
                     buy_now: null
                     state: 'Running'
                     auction_owner_id: 9
+
+  /search:
+    get:
+      operationId: R510
+      summary: 'R510: Search auctions UI.'
+      description: 'This resource passes the filtering parameters to the search API, receiving and listing the results and the respective filters on the web page. Access: PUB.'
+
+      tags:
+        - 'M05: Auctions'
+
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+          examples:
+            searchQuery:
+              description: 'Full text search of an item that matches computer dell.'
+              value: 'computer dell' # ?search=computer+dell
+        - in: query
+          name: category
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+          examples:
+            oneFilter:
+              description: 'Getting the results of one category.'
+              value: [1]   # ?category%5B0%5D=1
+            multipleFilters:
+              description: 'Getting results matching many categories id.'
+              value: [1, 5, 7]   # ?category%5B0%5D=1&category%5B1%5D=5&category%5B2%5D=7
+
+      responses:
+        '200':
+          description: 'List search results UI [UI13].'
+
+  /api/image/{id}:
+    delete:
+      operationId: R511
+      summary: 'R511: Delete auction image.'
+      description: 'This api deletes an image that is associated with a specific auction. Access: OWN, ADM'
+      
+      parameters:
+          - in: path
+            name: auction_id
+            schema:
+              type: integer
+              minimum: 1
+            required: true
+    
+      responses:
+        '200':
+          description: 'Ok. Image was successfully deleted.'

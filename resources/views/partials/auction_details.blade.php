@@ -14,25 +14,26 @@
         <input type="number" id="bid_amount" name="amount" placeholder="Bid Amount">
         <button id="make_bid">BID</button>
     </form>
+    <span class="error" style="font-size: larger"></span>
     <section class="price-suggestions">
         @if ($bids->max())
             {{-- Price Suggest 1 --}}
             <form>
                 <input id="user_id" hidden value="{{Auth::id()}}">
                 <input type="number" hidden id="bid_amount" name="amount" placeholder="Bid Amount" value="{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}">
-                <button type="submit" disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}€</button>
+                <button type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}€</button>
             </form>
             {{-- Price Suggest 2 --}}
             <form>
                 <input id="user_id" hidden value="{{Auth::id()}}">
                 <input type="number" hidden id="bid_amount" name="amount" placeholder="Bid Amount" value="{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}">
-                <button type="submit" disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}€</button>
+                <button type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}€</button>
             </form>
             {{-- Price Suggest 3 --}}
             <form>
                 <input id="user_id" hidden value="{{Auth::id()}}">
                 <input type="number" hidden id="bid_amount" name="amount" placeholder="Bid Amount" value="{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}">
-                <button type="submit" disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}€</button>
+                <button type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}€</button>
             </form>
         @else
             {{-- Price Suggest 1 --}}

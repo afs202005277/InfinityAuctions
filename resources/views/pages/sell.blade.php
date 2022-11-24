@@ -50,7 +50,7 @@
 
             <label for="desc">Description</label>
             <textarea id="desc" placeholder="Describe your auction" name="desc"
-                      required> {{$to_use['desc']}} </textarea>
+                      required>{{$to_use['desc']}}</textarea>
             @if ($errors->has('desc'))
                 <span class="error">
                 {{ $errors->first('desc') }}
@@ -58,7 +58,7 @@
             @endif
 
             @if(!$editMode)
-                <label for="images">Images</label>
+                <label for="images">Images (at least 3)</label>
                 <input id="images" name="images[]" value="{{ old('images[]') }}" type="file" multiple required>
                 @if ($errors->has('images'))
                     <span class="error">
