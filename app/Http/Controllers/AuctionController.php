@@ -88,7 +88,7 @@ class AuctionController extends Controller
             $fileArray = array('image' => $file);
 
             $rules = array(
-                'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
+                'image' => 'mimes:jpeg,jpg,png,gif|required'
             );
 
             $validator = Validator::make($fileArray, $rules);
