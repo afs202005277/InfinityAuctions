@@ -124,6 +124,14 @@
     align-self: center;
 }
 
+.toparea #make_bid {
+    border: 1px solid var(--ten);
+    background-color: var(--ten);
+    color: var(--sixty);
+    font-family: inherit;
+    border-radius: 0 5px 5px 0;
+}
+
 .toparea > .details > div > .price-suggestions {
     display: flex;
     margin-top: 2rem;
@@ -143,6 +151,18 @@
     background-color: var(--sixty);
     border: 1px solid var(--ten);
     border-radius: 5px;
+}
+
+.toparea > .details > div > .price-suggestions > form > button:disabled {
+    background: none;
+    border-color: var(--thirty);
+    color: var(--thirty);
+}
+
+.toparea > .details > div > .price-suggestions > form > button:disabled:hover {
+    color: var(--thirty);
+    background: none;
+    cursor: default;
 }
 
 .toparea > .details > div > .price-suggestions > form > button:hover {
