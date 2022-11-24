@@ -12,7 +12,8 @@
         <p> Furthermore, we also have the reports functionality that is critical to make sure users don't try to
             sell/buy
             illegal items using our platform. </p>
-        <img class="logo img-fluid" src="{{ asset('img/infinityauctions_logo.png') }}" alt="Infinity Auctions logo" width=400>
     </div>
+    <div style="text-align: center">
     <i><b>Bidding the future and Selling the past.</b></i>
+    </div>
 @endsection
