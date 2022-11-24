@@ -58,11 +58,14 @@
 
 #currentImages {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 
 #currentImages > .auctionImage {
-    width: 25%;
+    width: 12rem;
+    height: 12rem;
+    object-fit: cover;
 }
 
 #currentImages > .auctionImage > img:first-child {
