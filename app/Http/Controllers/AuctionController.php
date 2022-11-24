@@ -100,8 +100,8 @@ class AuctionController extends Controller
                 'baseprice' => 'required|numeric|gt:0',
                 'startdate' => 'required|date|after:now',
                 'enddate' => 'required|date|after:startdate',
-                'buynow' => 'nullable|numeric|gt:baseprice',
-            ]);
+                'buynow' => 'nullable|numeric|gt:baseprice'
+            ], [ 'buynow.gt' => 'The "buy now" value must be greater than the base price.']);
 
             $auction->name = $validated['title'];
             $auction->description = $validated['desc'];
@@ -118,7 +118,8 @@ class AuctionController extends Controller
             $auction->save();
 
             foreach (Category::all() as $key => $category) {
-                if ($request->has($category->name)) {
+                $cat = str_replace(' ', '', $category->name);
+                if ($request->has($cat)) {
                     Auction::find($id + 1)->categories()->attach($key + 1);
                 }
             }
