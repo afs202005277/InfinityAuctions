@@ -4,7 +4,7 @@
                 <h5 class="title">{{ __('Edit Profile') }}</h5>
             </div>
             <form method="post" action="{{ url('/user/' . $user->id ) }}" autocomplete="off">
-                
+
                 <div class="card-body">
                         @csrf
                         @method('post')
@@ -58,7 +58,7 @@
                     @method('post')
 
                     @include('alerts.success', ['key' => 'password_status'])
-
+                    <span class="error">{{$errors->first()}}</span>
                     <div class="form-group{{ $errors->has('old_password') ? ' has-danger' : '' }}">
                         <label>{{ __('Current Password') }}</label>
                         <input type="password" name="old_password" class="form-control{{ $errors->has('old_password') ? ' is-invalid' : '' }}" placeholder="{{ __('Current Password') }}" value="" required>
