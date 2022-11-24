@@ -18,17 +18,12 @@ Route::get('/about-us', function () { return view('pages.about'); });
 Route::get('/contact-us', function () { return view('pages.contacts'); });
 Route::get('/services', function () { return view('pages.services'); });
 
-// Cards
-Route::get('cards', 'CardController@list');
+
 Route::get('auctions/{auction_id}', 'AuctionController@show');
 
 // API
 Route::get('api/auctions/getAllBids/{auction_id}', 'AuctionController@getAllBids');
 Route::post('api/auctions', 'BidController@store');
-Route::delete('api/cards/{card_id}', 'CardController@delete');
-Route::put('api/cards/{card_id}/', 'ItemController@create');
-Route::post('api/item/{id}', 'ItemController@update');
-Route::delete('api/item/{id}', 'ItemController@delete');
 Route::get('api/search', 'SearchController@search');
 Route::delete('api/image/{id}', 'ImageController@delete');
 
