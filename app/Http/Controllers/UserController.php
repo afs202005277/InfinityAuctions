@@ -40,7 +40,6 @@ class UserController extends Controller
             $this->authorize('update', $user);
             $validated = $request->validate([
                 'name' => 'required|min:1|max:255',
-                'gender' => 'required|min:1',
                 'cellphone' => 'required|min:1',
                 'email' => 'required|min:1',
                 'birth_date' => 'required|min:1',
@@ -48,7 +47,6 @@ class UserController extends Controller
             ]);
 
             $user->name = $validated['name'];
-            $user->gender = $validated['gender'];
             $user->cellphone = $validated['cellphone'];
             $user->email = $validated['email'];
             $user->birth_date = $validated['birth_date'];
