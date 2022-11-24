@@ -18,8 +18,6 @@ Route::get('/about-us', function () { return view('pages.about'); });
 Route::get('/contact-us', function () { return view('pages.contacts'); });
 Route::get('/services', function () { return view('pages.services'); });
 
-Route::get('search/{query}', 'AuctionController@showSearchResults');
-
 // Cards
 Route::get('cards', 'CardController@list');
 Route::get('auctions/{auction_id}', 'AuctionController@show');
@@ -59,3 +57,4 @@ Route::get('auctions/edit/{id}', 'AuctionController@edit');
 Route::post('auctions/edit/{id}', 'AuctionController@update')->name('editAuction');
 Route::get('sell', 'AuctionController@showSellForm')->name('sell');
 Route::post('sell', 'AuctionController@sell');
+Route::get('search', 'SearchPageController@show');
