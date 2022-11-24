@@ -281,9 +281,6 @@ paths:
               properties:
                 name:
                   type: string
-                gender:
-                  type: string
-                  enum: ['M', 'F', 'NB', 'O']
                 phone:
                   type: string
                 email:
@@ -294,15 +291,12 @@ paths:
                   format: date
                 address:
                   type: string
-                current_password:
-                  type: string
-                  format: password
-                new_password:
-                  type: string
-                  format: password
-                confirm_password:
-                  type: string
-                  format: password
+              required:
+                    - name
+                    - phone
+                    - email
+                    - birthdate
+                    - address
 
       responses:
         '302':
@@ -320,6 +314,8 @@ paths:
                   value: '/user/{id}'
         '403':
           description: 'Error user does not have permissions.'
+        '500': 
+          description: 'Invalid database parameters.'
 
   /users:
     get:
