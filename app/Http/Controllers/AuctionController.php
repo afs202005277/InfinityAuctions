@@ -205,7 +205,7 @@ class AuctionController extends Controller
                 }
             }
 
-            // return redirect('auctions/' . $auction->id);
+            return redirect('auctions/' . $auction->id);
         } catch (AuthorizationException $exception) {
             return redirect()->back()->withErrors("You don't have permissions to edit this auction!");
         }

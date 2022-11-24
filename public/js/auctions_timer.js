@@ -7,13 +7,6 @@ function updateButtons(bid) {
     buttons[2].textContent = ((parseFloat(bid.amount) * 1.50).toFixed(2)).toString() + '€';
 }
 
-function disableButtons() {
-    let buttons = document.querySelectorAll('.price-suggestions form button');
-    buttons.foreach(button => {
-        button.disabled = true;
-    }
-}
-
 function bidsReceivedHandler() {
     let bids = JSON.parse(this.responseText);
     if (bids.length !== 0) {
