@@ -579,6 +579,7 @@ paths:
           name: auction_id
           schema:
             type: integer
+            minimum: 1
           required: true
       
       responses:
@@ -680,7 +681,7 @@ paths:
   /api/search:
     get:
       operationId: R509
-      summary: 'R509: Search auctions.'
+      summary: 'R509: Search auctions api.'
       description: 'This resource implements a search engine used to find specific auctions. User can search by text and filter the results based on the auction category. If no parameters get passed, returns all auctions. Access: PUB.'
 
       tags:
@@ -811,3 +812,21 @@ paths:
       responses:
         '200':
           description: 'List search results UI [UI13].'
+
+  /api/image/{id}:
+    delete:
+      operationId: R511
+      summary: 'R511: Delete auctions image.'
+      description: 'This api deletes delete an image that is associated with a specific auction. Access: OWN'
+      
+      parameters:
+          - in: path
+            name: auction_id
+            schema:
+              type: integer
+              minimum: 1
+            required: true
+    
+      responses:
+        '200':
+          description: 'Ok. Image was successfully deleted.'
