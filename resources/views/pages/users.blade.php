@@ -58,12 +58,18 @@
     
     @if(Auth::user()!=null && Auth::user()->id==$user->id)
     <div class="row">
+        <h4 class="info_bar_1"> User Info </h4>
         <h4 class="info_bar_2"> Owned Auctions </h4>
         <h4 class="info_bar_3"> Bids Placed </h4>
         <h4 class="info_bar_4"> Bidding Auction </h4>
         <h4 class="info_bar_5"> Following Auction</h4>
     </div>
     <hr/>
+
+    <!-- Users Data -->
+    <div class="change_data">
+        @include('partials.edit_profile')
+    </div>
 
     <!-- Owned Auctions -->
     <div class="auctions_owned">

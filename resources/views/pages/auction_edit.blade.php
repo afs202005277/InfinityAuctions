@@ -22,7 +22,5 @@
     
     <h4> Change Data </h4>
     <hr/>
-    <div class="auctions_owned"> 
-        
-    </div>
+ 
 @endsection

@@ -4,7 +4,7 @@
             @php($images = App\Models\Auction::find($auction->id)->images()->get())
             @foreach($images as $image)
                 <img class="card_auction_img{{$loop->index + 1}}" src="{{ asset($image->path) }}">
-                @if($loop->index === 3)
+                @if($loop->index === 2)
                     @break
                 @endif
             @endforeach

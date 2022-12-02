@@ -16,7 +16,7 @@
 }
 
 .auctions_owned{
-  display: inline-grid;
+  display: none;
   align-self: center;
   justify-items: center;
   grid-template-columns: auto auto;
