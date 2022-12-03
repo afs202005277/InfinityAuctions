@@ -47,7 +47,7 @@
 
             @if(Auth::user()!=null && !Auth::user()->is_admin)
                 @if (Auth::user()->id!=$user->id)
-                <a class="report_btn" href="#">
+                <a class="report_btn" href="{{ url('/users/report/' . $user->id) }}">
                     <button> Report </button>
                 </a>
                 @endif
