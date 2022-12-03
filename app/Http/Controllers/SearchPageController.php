@@ -18,15 +18,21 @@ class SearchPageController extends Controller
     public function show(Request $request)
     {
         $search = $request->input('search');
-        $filters = $request->input('category.*');
-        if(!isset($filters)) {
-            $filters = [];
+        $filters['category'] = $request->input('filter.category.*');
+        if(!isset($filters['category'])) {
+            $filters['category'] = [];
+        }
+
+        $filters['state'] = $request->input('filter.state.*');
+        if(!isset($filters['state'])) {
+            $filters['state'] = [];
         }
 
         $auctions = (new SearchController())->search($request);
 
         $categories = Category::all();
+        $states = (new Auction())->returnStates();
 
-        return view('pages.search_page', compact('auctions', 'filters', 'categories', 'search'));
+        return view('pages.search_page', compact('auctions', 'states', 'filters', 'categories', 'search'));
     }
 }

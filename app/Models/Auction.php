@@ -42,9 +42,14 @@ class Auction extends Model
                 ->select('auction.*')
                 ->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
                 ->join('category', 'auction_category.category_id', '=', 'category.id');
-        if( count($filters) )
+        if( count($filters['category']) )
         {
-            $query->whereIn('category.id', $filters);
+            $query->whereIn('category.id', $filters['category']);
+        }
+
+        if( count($filters['state']) )
+        {
+            $query->whereIn('auction.state', $filters['state']);
         }
 
         if( isset($search) )
@@ -117,5 +122,11 @@ class Auction extends Model
 
     public function images(){
         return $this->hasMany(Image::class, 'auction_id');
+    }
+
+    public function returnStates() {
+        $states = DB::select(DB::raw("SELECT unnest(enum_range(NULL::auction_possible_state))::text AS type;"));
+        
+        return $states;
     }
 }

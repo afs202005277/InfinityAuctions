@@ -16,9 +16,14 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $filters = $request->input('category.*');
-        if(!isset($filters)) {
-            $filters = [];
+        $filters['category'] = $request->input('filter.category.*');
+        if(!isset($filters['category'])) {
+            $filters['category'] = [];
+        }
+
+        $filters['state'] = $request->input('filter.state.*');
+        if(!isset($filters['state'])) {
+            $filters['state'] = [];
         }
 
         $auctions = (new Auction())->searchResults($search, $filters);

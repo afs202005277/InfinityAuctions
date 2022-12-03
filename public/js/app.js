@@ -16,9 +16,14 @@ function modifyFiltersRequest() {
         newUrlParams.append('search', oldUrlParams.get('search'));
     }
 
-    let checked = document.querySelectorAll('#search-filter input[type=checkbox]:checked');
-    for (let i = 0; i < checked.length; i++) {
-        newUrlParams.append(checked[i].getAttribute("name") + '[' + i + ']', checked[i].getAttribute("value"));
+    let checkedCategory = document.querySelectorAll('#category-fieldset input[type=checkbox]:checked');
+    for (let i = 0; i < checkedCategory.length; i++) {
+        newUrlParams.append(checkedCategory[i].getAttribute("name") + '[' + i + ']', checkedCategory[i].getAttribute("value"));
+    }
+
+    let checkedState = document.querySelectorAll('#state-fieldset input[type=checkbox]:checked');
+    for (let i = 0; i < checkedState.length; i++) {
+        newUrlParams.append(checkedState[i].getAttribute("name") + '[' + i + ']', checkedState[i].getAttribute("value"));
     }
 
     window.location.href = window.location.pathname + '?' + newUrlParams;
