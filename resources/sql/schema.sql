@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS rates(
 
 CREATE TABLE IF NOT EXISTS password_resets(
     email VARCHAR(320) NOT NULL,
-    token TEXT NOT NULL
+    token TEXT NOT NULL,
+    created_at timestamp
 );
 
 CREATE TABLE IF NOT EXISTS auction

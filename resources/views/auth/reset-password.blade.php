@@ -10,11 +10,11 @@
         <label for="password">Password</label>
         <input id="password" placeholder="Type your password" type="password" name="password" required>
 
-        <label for="password-confirm">Confirm Password</label>
-        <input id="password-confirm" placeholder="Confirm your password" type="password" name="password_confirmation"
+        <label for="password_confirmation">Confirm Password</label>
+        <input id="password_confirmation" placeholder="Confirm your password" type="password" name="password_confirmation"
                required>
 
-        <input type="text" hidden value="{{$token}}">
+        <input type="text" hidden value="{{$token}}" name="token">
 
         <button type="submit">
             Change Password
