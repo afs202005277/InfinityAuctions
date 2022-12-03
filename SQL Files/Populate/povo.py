@@ -130,7 +130,7 @@ class Auction:
         self.buy_now = -1
 
         if (random.random() < 0.2):
-            self.buy_now = (int(auctions['SALE PRICE'][auction_id]*(1+random.random())) % 10) * 10
+            self.buy_now = (int(auctions['SALE PRICE'][auction_id]*(1+random.random())) % 10) * 10 * 100
         
         self.state = "Cancelled"
 
@@ -269,7 +269,7 @@ with open("instructions.txt", "w") as instr:
         u = User(user_id)
         user_id += 1
 
-        instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, rate, credits, wishlist, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.rate) + ", " + str(u.credits) + ", ARRAY " + print_list(u.wishlist) + "::text[], " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
+        instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, wishlist, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", ARRAY " + print_list(u.wishlist) + "::text[], " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
 
     instr.write("\n")
 
@@ -288,7 +288,7 @@ with open("instructions.txt", "w") as instr:
             perc = 1/am_bids
             for i in range(am_bids):
                 b = Bid(bid_id, a, perc)
-                if (b.date > "2022-11-18"):
+                if (b.date > "2022-12-03"):
                     bid_id += 1
                     perc += 1/am_bids
 
