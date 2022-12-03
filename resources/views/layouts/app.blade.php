@@ -34,6 +34,7 @@
     <script type="text/javascript" src={{ asset('js/faq.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/user_profile.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/edit_auction.js') }} defer></script>
+    <script type="text/javascript" src={{ asset('js/rate_seller.js') }} defer></script>
   </head>
   <body>
     <main>
