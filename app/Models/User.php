@@ -106,10 +106,12 @@ class User extends Authenticatable
         return false;
     }
 
+    // retorna todos os users que avaliaram o user atual
     public function rate_bidders(){
         return $this->belongsToMany(User::class, 'rates', 'id_seller', 'id_bidder');
     }
 
+    // retorna todos os users avaliados pelo current user
     public function rate_sellers(){
         return $this->belongsToMany(User::class, 'rates', 'id_bidder', 'id_seller');
     }
