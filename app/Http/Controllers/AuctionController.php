@@ -60,8 +60,8 @@ class AuctionController extends Controller
         $bids = $details->bids()->orderBy('amount')->get();
         $mostActive = (new Auction())->mostActive();
         $images = $details->images()->get('path');
-
-        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images'));
+        $ratingDetails = $owner->getRatingDetails();
+        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails'));
     }
 
     /**

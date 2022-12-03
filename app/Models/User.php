@@ -115,4 +115,8 @@ class User extends Authenticatable
     public function rate_sellers(){
         return $this->belongsToMany(User::class, 'rates', 'id_bidder', 'id_seller');
     }
+
+    public function getRatingDetails(){
+        return ["rate" => round($this->rate_bidders()->average('rate'), 2), "numberOfRatings" => $this->rate_bidders()->count()];
+    }
 }
