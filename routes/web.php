@@ -26,6 +26,7 @@ Route::get('api/auctions/getAllBids/{auction_id}', 'AuctionController@getAllBids
 Route::post('api/auctions', 'BidController@store');
 Route::get('api/search', 'SearchController@search');
 Route::delete('api/image/{id}', 'ImageController@delete');
+Route::delete('api/users/delete/{id}', 'UserController@destroy');
 
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
