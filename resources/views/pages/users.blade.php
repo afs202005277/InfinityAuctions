@@ -26,6 +26,7 @@
             <div>
                 <h4> {{$user->name}} </h4>
                 <p> {{$user->cellphone}} | {{$user->email}}</p>
+                @include('partials.rate', ['ratingDetails' => $ratingDetails])
             </div>
 
             @if(Auth::user()!=null)

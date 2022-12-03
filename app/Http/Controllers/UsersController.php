@@ -48,7 +48,8 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('pages.users', compact('user'));
+        $ratingDetails = $user->getRatingDetails();
+        return view('pages.users', compact('user', 'ratingDetails'));
     }
 
     /**
