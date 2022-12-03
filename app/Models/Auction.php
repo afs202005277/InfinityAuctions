@@ -39,9 +39,10 @@ class Auction extends Model
     public function searchResults($search, $filters)
     {
         $query = DB::table('auction')
-                ->select('auction.*')
+                ->selectRaw('auction.*')
                 ->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
-                ->join('category', 'auction_category.category_id', '=', 'category.id');
+                ->join('category', 'auction_category.category_id', '=', 'category.id')
+                ->join('bid', 'auction.id', '=', 'bid.auction_id');
         if( count($filters['category']) )
         {
             $query->whereIn('category.id', $filters['category']);
@@ -64,6 +65,12 @@ class Auction extends Model
         //       array('search' => $search,));
         
         $query->groupBy('auction.id');
+
+        if( isset($filters['maxPrice']) )
+        {
+            $query->havingRaw('MAX(bid.amount) < ?', [$filters['maxPrice']]);
+        }
+
         $values = $query->get();
 
         return $values;

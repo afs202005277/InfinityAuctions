@@ -26,6 +26,8 @@ class SearchController extends Controller
             $filters['state'] = [];
         }
 
+        $filters['maxPrice'] = $request->input('filter.maxPrice');
+
         $auctions = (new Auction())->searchResults($search, $filters);
 
         return $auctions;

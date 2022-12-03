@@ -1,5 +1,5 @@
 function addEventListeners() {
-    let filterCheckers = document.querySelectorAll('#search-filter input[type=checkbox]');
+    let filterCheckers = document.querySelectorAll('#search-filter input');
     [].forEach.call(filterCheckers, function(filterChecker) {
         filterChecker.addEventListener('change', modifyFiltersRequest);
     });
@@ -24,6 +24,11 @@ function modifyFiltersRequest() {
     let checkedState = document.querySelectorAll('#state-fieldset input[type=checkbox]:checked');
     for (let i = 0; i < checkedState.length; i++) {
         newUrlParams.append(checkedState[i].getAttribute("name") + '[' + i + ']', checkedState[i].getAttribute("value"));
+    }
+
+    let maxPrice = document.getElementById('maxPrice-input');
+    if(maxPrice.value){
+        newUrlParams.append(maxPrice.getAttribute("name"), maxPrice.value);
     }
 
     window.location.href = window.location.pathname + '?' + newUrlParams;

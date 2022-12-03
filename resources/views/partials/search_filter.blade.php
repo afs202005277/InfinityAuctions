@@ -15,9 +15,9 @@
         @endforeach
       </ul>
     </fieldset>
-    <fieldset id="maxPrice-fieldset">
-      <legend>Choose your product's max bid:</legend>
-      <input type="range" min="-10" max="10">
+    <fieldset>
+      <legend>Choose your product's max bid limit:</legend>
+      <input id="maxPrice-input"type="number" name="filter[maxPrice]" placeholder="maximum bid" min="1" value="{{ $filters['maxPrice'] }}">
     </fieldset>
 
 </div>
