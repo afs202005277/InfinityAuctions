@@ -51,6 +51,14 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT valid_birth CHECK (birth_date between '1900-01-01' and now() - interval '18 years')
 );
 
+CREATE TABLE IF NOT EXISTS rates(
+    id_bidder INTEGER REFERENCES users,
+    id_seller INTEGER REFERENCES users,
+    PRIMARY KEY (id_bidder, id_seller),
+    rate REAL NOT NULL,
+    CONSTRAINT valid_rate CHECK (rate >= 0.0 AND rate <= 5.0)
+);
+
 CREATE TABLE IF NOT EXISTS auction
 (
     id               SERIAL PRIMARY KEY,
