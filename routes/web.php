@@ -41,9 +41,11 @@ Route::post('user/{id}', 'UserController@update')->name('editUser');
 //Users
 Route::get('users', 'UsersController@index');
 Route::get('users/{id}', 'UsersController@show');
+Route::get('users/report/{id}', 'UsersController@showreport');
+Route::post('users/report', 'UsersController@report')->name('report');
 
 //Admin Panel
-Route::get('manage/', 'ManageController@show');
+Route::get('manage', 'ManageController@show');
 
 // Auctions
 Route::post('sell', 'AuctionController@sell');
