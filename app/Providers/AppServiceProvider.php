@@ -4,8 +4,11 @@ namespace App\Providers;
 
 use View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use App\Models\Category;
+use App\Models\Notification;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,8 +31,13 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.app', function($view) {
             $view->with('categories', Category::all());
+            if(Auth::user()!==null){
+                $view->with('notifications', Notification::where('user_id', Auth::user()->id)->get());
+            }
+            
         });
-
+        
+       
         if(env('FORCE_HTTPS',false)) {
             error_log('configuring https');
             $app_url = config("app.url");

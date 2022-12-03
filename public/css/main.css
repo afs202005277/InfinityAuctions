@@ -34,3 +34,92 @@ a {
 button:hover{
     cursor: pointer;
 }
+
+.notification-box {
+    z-index: 99;
+    position: relative;
+    text-align: center;
+}
+.notification-bell {
+    animation: bell 1s 1s both infinite;
+}
+.notification-bell * {
+    display: block;
+    margin: 0 auto;
+    background-color: rgb(255, 255, 255);
+}
+
+.notification-count {
+    position: absolute;
+    z-index: 1;
+    top: -13px;
+    right: -11px;
+    width: 2em;
+    height: 2em;
+    line-height: 2em;
+    font-size: 14px;
+    border-radius: 50%;
+    background-color: var(--ten);
+    color: rgb(255, 255, 255);
+    animation: zoom 2s 2s both infinite;
+}
+
+@keyframes bell {
+    0% { transform: rotate(0); }
+    10% { transform: rotate(10deg); }
+    20% { transform: rotate(0); }
+    80% { transform: rotate(0); }
+    90% { transform: rotate(-10deg); }
+    100% { transform: rotate(0); }
+}
+
+@keyframes zoom {
+    0% { opacity: 0; transform: scale(0); }
+    10% { opacity: 1; transform: scale(1); }
+    50% { opacity: 1; }
+    51% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+#notifications {
+    display: none;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-items: flex-start;
+    z-index: 500;
+    right: -6em;
+    margin-top: 1em;
+    position: absolute;
+    overflow: scroll;
+    height: 15em;
+    width: 18em;
+    border-radius: 1em;
+    background-color: #f9f9f9;
+}
+
+#notifications div {
+    display: flex;
+    background-color: #fff;
+    border-radius: 1em;
+    margin-right: 0.4em;
+    margin-left: 0.4em;
+    margin-top: 0.4em;
+    margin-bottom: 0em;
+    padding: 0.5em;
+    font-size: 11px;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+}
+
+#notifications div img{
+    height: 3em;
+    width: 3em;
+    border-radius: 50%;
+}
+
+.notification-box:hover #notifications{
+    display: block;
+}

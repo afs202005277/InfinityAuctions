@@ -13,15 +13,15 @@ class Notification extends Model
     // use HasFactory;
 
     public function user(){
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id')->get();
     }
 
     public function auction(){
-        return $this->belongsTo(Auction::class, 'auction_id');
+        return $this->belongsTo(Auction::class, 'auction_id')->get();
     }
 
     public function report(){
-        return $this->belongsTo(Report::class, 'report_id');
+        return $this->belongsTo(Report::class, 'report_id')->get();
     }
 
 }

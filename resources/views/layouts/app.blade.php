@@ -52,9 +52,16 @@
             </div>
             <a class="faq" href="{{ url('/faq') }}">FAQ</a>
             <a class="faq" href="{{ url('/users') }}">Users</a>
+            
             @if (Auth::check())
                 <a class="sell-button" href="{{ url('/sell') }}">Sell</a>
-                <img class= "notifications" src={{ asset('img/notificationbell.svg') }} alt="Notifications">
+                <div class="notification-box">
+                  <span class="notification-count">{{ count($notifications) }}</span>
+                  <div class="notification-bell">
+                    <img class= "notifications" src={{ asset('img/notificationbell.svg') }} alt="Notifications">
+                  </div>
+                  @include('partials.notifications', ['notifications' => $notifications])
+                </div>
                 <a class="user" href="{{ url('/users/' . Auth::user()->id) }}"><img src={{ asset('img/usericon.svg') }} alt="User"></a>
             @else
                 <a class="log-in" href="{{ url('/login') }}">Log In</a>
