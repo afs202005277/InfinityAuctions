@@ -12,6 +12,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -93,4 +95,19 @@ class UserController extends Controller
         }
         return $user;
     }
+
+    public function follow_auction($user_id,$auction_id)
+    {
+        $user = User::find($user_id);
+        $user->followingAuctions()->attach($auction_id);
+        return $user;
+    }
+
+    public function unfollow_auction($user_id,$auction_id)
+    {
+        $user = User::find($user_id);
+        $user->followingAuctions()->attach($auction_id);
+        return $user;
+    }
 }
+

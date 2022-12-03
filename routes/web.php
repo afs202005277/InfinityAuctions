@@ -38,6 +38,8 @@ Route::post('register', 'Auth\RegisterController@register');
 //User
 Route::get('user/{id}', 'UserController@show');
 Route::post('user/{id}', 'UserController@update')->name('editUser');
+Route::post('user/follow_auction/{$user_id}/{auction_id}', 'UserController@follow_auction');
+Route::post('user/unfollow_auction/{$user_id}/{auction_id}', 'UserController@unfollow_auction');
 
 //Users
 Route::get('users', 'UsersController@index');
@@ -56,3 +58,6 @@ Route::post('auctions/edit/{id}', 'AuctionController@update')->name('editAuction
 Route::get('sell', 'AuctionController@showSellForm')->name('sell');
 Route::post('sell', 'AuctionController@sell');
 Route::get('search', 'SearchPageController@show');
+
+//Notifications
+Route::delete('api/notifications/delete/{id}', 'NotificationController@destroy');

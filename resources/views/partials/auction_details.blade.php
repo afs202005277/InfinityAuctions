@@ -1,6 +1,13 @@
 <div>
+
     <h4 class="name">{{$details->name}}</h4>
     <h5 class="desc">{{$details->description}}</h5>
+    @if(Auth::user()!==NULL)
+    
+        <h1 id="user_id_details" hidden>{{Auth::id()}}</h1>
+        <h1 id="auction_id_details"hidden>{{$details->id}}</h1>
+        <button id="follow_auction">Follow</Button>
+    @endif
     <p class="time-rem">TIME REMAINING</p>
     @if ($details->state == "Running")
         <h5 id="final-date">{{$details->end_date}}</h5>

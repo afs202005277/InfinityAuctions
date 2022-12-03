@@ -20,7 +20,8 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Report_Option' => 'App\Policies\Report_OptionPolicy',
         'App\Models\Report' => 'App\Policies\ReportPolicy',
         'App\Models\Image' => 'App\Policies\ImagePolicy',
-        'App\Models\User' => 'App\Policies\UserPolicy'
+        'App\Models\User' => 'App\Policies\UserPolicy',
+        'App\Models\Nofication' => 'App\Policies\NotificationPolicy'
     ];
 
     /**
