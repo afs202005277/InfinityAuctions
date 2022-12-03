@@ -11,6 +11,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -36,14 +37,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
+        try {
             $user = User::find($id);
             $this->authorize('update', $user);
-            if ($request->has('old_password')){
-                if ($request->input('password') === $request->input('password_confirmation')){
+            if ($request->has('old_password')) {
+                if ($request->input('password') === $request->input('password_confirmation')) {
                     if (Hash::check($request->input('old_password'), $user->password))
                         $user->password = bcrypt($request->input('password'));
-                    else{
+                    else {
                         throw new \Exception('Invalid password!' . $request->input('old_password'));
                     }
                 } else {
@@ -67,11 +68,11 @@ class UserController extends Controller
 
             $user->save();
             return redirect('user/' . $user->id);
-        } catch (AuthorizationException $exception){
+        } catch (AuthorizationException $exception) {
             return redirect()->back()->withErrors("You don't have permissions to edit this user!");
-        } catch (QueryException $sqlExcept){
+        } catch (QueryException $sqlExcept) {
             return redirect()->back()->withErrors("Invalid database parameters!");
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }
     }
@@ -85,12 +86,21 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        try{
+        try {
             $this->authorize('delete', $user);
             $user->delete();
-        } catch(AuthorizationException $exception){
+        } catch (AuthorizationException $exception) {
             return $exception->getMessage();
         }
         return $user;
+    }
+
+    public function addReview(Request $request)
+    {
+        $validated = $request->validate(
+            ['rate' => 'required|min:1|max:5',
+                'user_id' => 'required|integer']);
+        //$this->authorize('addReview');
+        User::find(Auth::id())->rate_sellers()->attach($validated['user_id'], ['rate' => $validated['rate']]);
     }
 }

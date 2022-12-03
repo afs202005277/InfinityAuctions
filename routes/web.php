@@ -42,6 +42,7 @@ Route::post('api/auctions', 'BidController@store');
 Route::get('api/search', 'SearchController@search');
 Route::delete('api/image/{id}', 'ImageController@delete');
 Route::delete('api/users/delete/{id}', 'UserController@destroy');
+Route::post('api/users/addReview', 'UserController@addReview');
 
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
