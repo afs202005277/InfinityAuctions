@@ -170,7 +170,7 @@ class Report:
 
         if (random.random() < 0.5):
             d1 = datetime.strptime('2021-01-01', '%Y-%m-%d')
-            d2 = datetime.strptime('2022-10-15', '%Y-%m-%d')
+            d2 = datetime.strptime('2022-12-03', '%Y-%m-%d')
 
             self.date = random_date(d1, d2)
 
@@ -198,7 +198,7 @@ class Notification:
         self.id = notification_id
 
         d1 = datetime.strptime('2021-01-01', '%Y-%m-%d')
-        d2 = datetime.strptime('2022-10-15', '%Y-%m-%d')
+        d2 = datetime.strptime('2022-12-03', '%Y-%m-%d')
 
         self.date = random_date(d1, d2)
 
@@ -288,7 +288,7 @@ with open("instructions.txt", "w") as instr:
             perc = 1/am_bids
             for i in range(am_bids):
                 b = Bid(bid_id, a, perc)
-                if (b.date > "2022-12-03"):
+                if (b.date < "2022-12-03"):
                     bid_id += 1
                     perc += 1/am_bids
 
