@@ -125,6 +125,14 @@
             <p> This user doesn't own any Auctions </p>
         @endif
     </div>
+    
+    @endif
+    @if(Auth::user()!=null && (Auth::user()->id==$user->id || Auth::user()->is_admin))
+    <div>
+        <a href="#">
+            <button class="delete_account"> Delete </button>
+        </a>
+    </div>
     @endif
    
 @endsection
