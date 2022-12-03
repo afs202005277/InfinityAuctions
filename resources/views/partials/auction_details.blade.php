@@ -59,7 +59,7 @@
     @if ($details->buy_now)
         <form class="buy-now">
             <input id="user_id" hidden value="{{Auth::id()}}">
-            <button type="submit">Buy now for {{number_format((float)$details->buy_now, 2, '.', '')}}€</button>
+            <button id="buy-now">Buy now for {{number_format((float)$details->buy_now, 2, '.', '')}}€</button>
         </form>
     @endif
 </div>

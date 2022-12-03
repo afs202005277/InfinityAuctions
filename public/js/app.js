@@ -3,14 +3,22 @@ function addEventListeners() {
     [].forEach.call(filterCheckers, function(filterChecker) {
         filterChecker.addEventListener('change', modifyFiltersRequest);
     });
+    let buyNow = document.querySelector('#buy-now');
     let bidCreator = document.querySelector('#make_bid');
     if (bidCreator != null)
         bidCreator.addEventListener('click', sendCreateBidRequest);
+    if (buyNow != null)
+        buyNow.onclick = function (event) {
+            let bn = document.querySelector('#buy-now').textContent.split(' ');
+            document.querySelector('#bid_amount').value = bn[bn.length-1].slice(0, -1);
+            sendCreateBidRequest(event);
+            event.preventDefault();
+        };
 }
 
 function modifyFiltersRequest() {
     let oldUrlParams = new URLSearchParams(window.location.search);
-
+jjjj
     let newUrlParams = new URLSearchParams();
     if ( oldUrlParams.has('search') ) {
         newUrlParams.append('search', oldUrlParams.get('search'));

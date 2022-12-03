@@ -244,4 +244,11 @@ class AuctionController extends Controller
     {
         return (new Auction())->getAllbids($auction_id);
     }
+
+    public function endAuction($auction_id)
+    {
+        $auction = Auction::find($auction_id);
+        $auction->end_date = new DateTime('now');
+        $auction->save();
+    }
 }
