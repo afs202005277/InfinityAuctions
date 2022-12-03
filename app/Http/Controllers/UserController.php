@@ -18,7 +18,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param User $user
+     * @param $id
      * @return Application|Factory|View
      */
     public function show($id)

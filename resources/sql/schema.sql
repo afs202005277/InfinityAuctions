@@ -42,13 +42,24 @@ CREATE TABLE IF NOT EXISTS users
     birth_date    DATE        NOT NULL,
     address       VARCHAR(255) UNIQUE,
     password      VARCHAR     NOT NULL,
-    rate          REAL,
     credits       REAL,
     wishlist      TEXT[],
     is_admin      BOOLEAN     NOT NULL,
     profile_image INTEGER REFERENCES image,
-    CONSTRAINT valid_rate CHECK (rate >= 0 AND rate <= 5),
     CONSTRAINT valid_birth CHECK (birth_date between '1900-01-01' and now() - interval '18 years')
+);
+
+CREATE TABLE IF NOT EXISTS rates(
+    id_bidder INTEGER REFERENCES users,
+    id_seller INTEGER REFERENCES users,
+    PRIMARY KEY (id_bidder, id_seller),
+    rate REAL NOT NULL,
+    CONSTRAINT valid_rate CHECK (rate >= 0.0 AND rate <= 5.0)
+);
+
+CREATE TABLE IF NOT EXISTS password_resets(
+    email VARCHAR(320) NOT NULL,
+    token TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS auction
