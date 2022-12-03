@@ -13,6 +13,6 @@ class Report_Option extends Model
     // use HasFactory;
 
     public function reports(){
-        return $this->belongsToMany(Report::class);
+        return $this->belongsToMany(Report::class,'report_reasons','id_report_option');
     }
 }

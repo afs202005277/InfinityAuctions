@@ -21,7 +21,7 @@ class Report extends Model
     }
 
     public function reportOptions(){
-        return $this->belongsToMany(Report_Option::class);
+        return $this->belongsToMany(Report_Option::class,'report_reasons','id_report','id_report_option');
     }
 
     public function reportedUser(){

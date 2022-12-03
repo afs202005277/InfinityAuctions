@@ -81,3 +81,14 @@
 .info_bar_1 {
   text-decoration: underline;
 }
+
+.delete_account {
+  background-color: red;
+  width: 10em;
+  padding: 0.3em;
+  border: none;
+  border-radius: 0.5em;
+  color:aliceblue;
+  cursor: pointer;
+  margin: 1em;
+}
