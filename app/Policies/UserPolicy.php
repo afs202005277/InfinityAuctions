@@ -34,4 +34,8 @@ class UserPolicy
     {
         return Auth::check() && (Auth::id() == $model->id || $model->is_admin);
     }
+
+    public function addReview(User $user, $userToRate){
+        return Auth::check() && Auth::id() !== $userToRate;
+    }
 }

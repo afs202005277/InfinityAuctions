@@ -100,7 +100,16 @@ class UserController extends Controller
         $validated = $request->validate(
             ['rate' => 'required|min:1|max:5',
                 'user_id' => 'required|integer']);
-        //$this->authorize('addReview');
-        User::find(Auth::id())->rate_sellers()->attach($validated['user_id'], ['rate' => $validated['rate']]);
+        $userToRate = $validated['user_id'];
+        try {
+            $this->authorize('addReview', [User::class, $userToRate]);
+            User::find(Auth::id())->rate_sellers()->attach($userToRate, ['rate' => $validated['rate']]);
+        } catch (AuthorizationException $exception) {
+            return response("You don't have permissions to add this review!", 403);
+        } catch (QueryException $sqlExcept) {
+            return response("You can only review each seller once!", 500);
+        }
+        return response('Review added successfully!', 200);
     }
 }
+
