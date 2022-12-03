@@ -31,6 +31,11 @@ function modifyFiltersRequest() {
         newUrlParams.append(maxPrice.getAttribute("name"), maxPrice.value);
     }
 
+    let buyNow = document.getElementById('buyNow-filter');
+    if(buyNow.checked){
+        newUrlParams.append(buyNow.getAttribute("name"), "on");
+    }
+
     window.location.href = window.location.pathname + '?' + newUrlParams;
 }
 

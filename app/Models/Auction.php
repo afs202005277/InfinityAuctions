@@ -59,6 +59,11 @@ class Auction extends Model
             $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);
         }
 
+        if( isset($filters['buyNow']))
+        {
+            $query->whereRaw("auction.buy_now IS NOT NULL");
+        }
+
         //$values = DB::select(DB::raw("SELECT * FROM auction
         //       WHERE auction_tokens @@ plainto_tsquery('english', :search)
         //       ORDER BY ts_rank(auction_tokens, plainto_tsquery('english', :search)) DESC;"),

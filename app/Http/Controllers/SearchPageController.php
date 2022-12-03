@@ -29,7 +29,8 @@ class SearchPageController extends Controller
         }
 
         $filters['maxPrice'] = $request->input('filter.maxPrice');
-
+        $filters['buyNow'] = $request->input('filter.buyNow');
+        
         $auctions = (new SearchController())->search($request);
 
         $categories = Category::all();
