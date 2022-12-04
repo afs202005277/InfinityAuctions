@@ -89,8 +89,9 @@ class UserController extends Controller
         $user = User::find($id);
         try {
             $this->authorize('delete', $user);
-            $response = $user->hasPendingMaxBids();
-            if ($response->has_max_bid === NULL){
+            $bids = $user->hasPendingMaxBids();
+            $runningAuctions = $user->ownedRunningAuctions()->get();
+            if ($bids->has_max_bid === NULL && $runningAuctions->isEmpty()){
                 $user->name = 'Deleted Account';
                 $user->email = NULL;
                 $user->gender = NULL;
@@ -100,9 +101,18 @@ class UserController extends Controller
                 $user->credits = NULL;
                 $user->wishlist = NULL;
                 $user->save();
+
+                $toBeStarted = $user->ownedToBeStartedAuctions()->get();
+                foreach ($toBeStarted as $auction){
+                    $auction->state = 'Cancelled';
+                    $auction->save();
+                }
                 return response('Success', 204);
             } else{
-                return response($response->has_max_bid, 403);
+                if ($bids->has_max_bid === NULL)
+                    return response($bids->has_max_bid, 403);
+                else
+                    return response('You are not allowed to delete your account while you have running auctions.', 403);
             }
         } catch (AuthorizationException $exception) {
             return response('Only the account owner or an admin can delete an user account.', 403);
