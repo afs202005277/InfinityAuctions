@@ -89,11 +89,24 @@ class UserController extends Controller
         $user = User::find($id);
         try {
             $this->authorize('delete', $user);
-            $user->delete();
+            $response = $user->hasPendingMaxBids();
+            if ($response->has_max_bid === NULL){
+                $user->name = 'Deleted Account';
+                $user->email = NULL;
+                $user->gender = NULL;
+                $user->cellphone = NULL;
+                $user->birth_date = NULL;
+                $user->address = NULL;
+                $user->credits = NULL;
+                $user->wishlist = NULL;
+                $user->save();
+                return response('Success', 204);
+            } else{
+                return response($response->has_max_bid, 403);
+            }
         } catch (AuthorizationException $exception) {
-            return $exception->getMessage();
+            return response('Only the account owner or an admin can delete an user account.', 403);
         }
-        return $user;
     }
 
     public function follow_auction($user_id,$auction_id)

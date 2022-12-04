@@ -89,7 +89,7 @@ CREATE TRIGGER bid_date
     FOR EACH ROW
 EXECUTE PROCEDURE bid_date();
 -- Trigger04 / 05
-CREATE OR REPLACE FUNCTION stop_delete_users() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION has_max_bid(ruser_id INTEGER) RETURNS VARCHAR LANGUAGE plpgsql AS
 $BODY$
 BEGIN
     IF EXISTS(
@@ -101,30 +101,16 @@ BEGIN
           AND NOT EXISTS(
             SELECT bid.amount
             FROM bid
-            where bid.amount > current_bid.amount
+            where bid.amount > current_bid.amount AND bid.auction_id = current_bid.auction_id
             )
-          AND current_bid.user_id = OLD.id
-        ) THEN
-        RAISE EXCEPTION 'You can not delete your account while you have the highest bidding in an active auction.';
+          AND current_bid.user_id = ruser_id
+        ) THEN RETURN 'You can not delete your account while you have the highest bidding in an active auction.';
+    ELSE
+        RETURN NULL;
     END IF;
-    UPDATE users
-    SET name       = 'Deleted Account',
-        email      = NULL,
-        gender     = NULL,
-        cellphone  = NULL,
-        birth_date = NULL,
-        address    = NULL,
-        credits    = NULL,
-        wishlist   = NULL
-    WHERE id = OLD.id;
-    RETURN NULL;
 END
-$BODY$ LANGUAGE plpgsql;
+$BODY$;
 DROP TRIGGER IF EXISTS delete_users ON users;
-CREATE TRIGGER delete_users
-    BEFORE DELETE
-    ON users
-EXECUTE PROCEDURE stop_delete_users();
 -- Trigger06
 CREATE OR REPLACE FUNCTION check_max_bid() RETURNS TRIGGER AS
 $BODY$
@@ -206,10 +192,3 @@ EXECUTE PROCEDURE auction_tokens_update();
 
 -- Create an index on the ts_vectors.
 CREATE INDEX idx_auctions ON auction USING GIN (auction_tokens);
-
--- Query
-SELECT name, description, ts_rank(auction_tokens, query) AS rank
-FROM auction,
-     plainto_tsquery('english', 'ford car') query
-WHERE auction_tokens @@ query
-ORDER BY rank DESC
