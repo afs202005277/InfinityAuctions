@@ -66,7 +66,7 @@ class ImagePolicy
      */
     public function delete(User $user, Image $image)
     {
-        return Auth::check() && ($user->id == $image->auction()->value('auction_owner_id') || $user->is_admin) && $image->auction()->value('state') != 'Canceled' && $image->auction()->value('state') != 'Ended';
+        return Auth::check() && ($user->is_admin || ($user->id == $image->auction()->value('auction_owner_id') && $image->auction()->value('state') != 'Canceled' && $image->auction()->value('state') != 'Ended'));
     }
 
     /**

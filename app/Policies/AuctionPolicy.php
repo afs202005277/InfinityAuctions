@@ -32,7 +32,7 @@ class AuctionPolicy
      */
     public function update(User $user, Auction $auction)
     {
-        return Auth::check() && ($user->id == $auction->owner()->value('id') || $user->is_admin) && $auction->state != 'Canceled' && $auction->state != 'Ended';
+        return Auth::check() && ($user->is_admin || (!$user->isBanned() && $user->id == $auction->owner()->value('id') && $auction->state != 'Canceled' && $auction->state != 'Ended'));
     }
 
     /**

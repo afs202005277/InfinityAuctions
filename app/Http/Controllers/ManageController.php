@@ -17,6 +17,7 @@ class ManageController extends Controller
      */
     public function show(Request $request)
     {
+        $this->authorize('showAdminPanel');
         return view('pages.admin_panel');
     }
 }

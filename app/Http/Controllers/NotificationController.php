@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -76,7 +77,7 @@ class NotificationController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Notification  $notification
-     * @return \Illuminate\Http\Response
+     * @return string
      */
     public function destroy($id)
     {
@@ -85,7 +86,7 @@ class NotificationController extends Controller
             $this->authorize('delete', $notification);
             $notification->delete();
         } catch(AuthorizationException $exception){
-            return $exception->getMessage();
+            return response($exception->getMessage(), 500);
         }
         return $notification;
     }
