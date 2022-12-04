@@ -11,12 +11,27 @@
 |
 */
 // Home
-Route::get('/', MainPageController::class);
-Route::get('/faq', function () { return view('pages.faq'); });
+use App\Http\Controllers\MainPageController;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
-Route::get('/about-us', function () { return view('pages.about'); });
-Route::get('/contact-us', function () { return view('pages.contacts'); });
-Route::get('/services', function () { return view('pages.services'); });
+Route::get('/', MainPageController::class);
+Route::get('/faq', function () {
+    return view('pages.faq');
+});
+
+Route::get('/about-us', function () {
+    return view('pages.about');
+});
+Route::get('/contact-us', function () {
+    return view('pages.contacts');
+});
+Route::get('/services', function () {
+    return view('pages.services');
+});
 
 
 Route::get('auctions/{auction_id}', 'AuctionController@show');
@@ -27,6 +42,7 @@ Route::post('api/auctions', 'BidController@store');
 Route::get('api/search', 'SearchController@search');
 Route::delete('api/image/{id}', 'ImageController@delete');
 Route::delete('api/users/delete/{id}', 'UserController@destroy');
+Route::post('api/users/addReview', 'UserController@addReview');
 
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -59,5 +75,46 @@ Route::get('sell', 'AuctionController@showSellForm')->name('sell');
 Route::post('sell', 'AuctionController@sell');
 Route::get('search', 'SearchPageController@show');
 
+
 //Notifications
 Route::delete('api/notifications/delete/{id}', 'NotificationController@destroy');
+
+//Password
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->middleware('guest')->name('password.request');
+
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+    return $status === Password::RESET_LINK_SENT
+        ? back()->with(['status' => __($status)])
+        : back()->withErrors(['email' => __($status)]);
+})->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
+
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:6|confirmed',
+    ]);
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function ($user, $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+            $user->save();
+            event(new PasswordReset($user));
+        }
+    );
+    return $status === Password::PASSWORD_RESET
+        ? redirect()->route('login')->with('status', __($status))
+        : back()->withErrors(['email' => [__($status)]]);
+})->middleware('guest')->name('password.update');

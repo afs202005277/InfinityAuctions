@@ -322,3 +322,24 @@
     cursor: pointer;
     margin: 1em;
 }
+
+#in_stars{
+    display: flex;
+}
+
+#in_stars svg {
+    width: 2em;
+}
+
+#sellerInfo{
+    margin: 0;
+    margin-left: 2em;
+    display: inline-block;
+}
+
+#ratings{
+    display: flex;
+    align-items: center;
+}
+
+

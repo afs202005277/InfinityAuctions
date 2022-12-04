@@ -13,6 +13,10 @@ class User extends Authenticatable
     // Don't add create and update timestamps in database.
     public $timestamps = false;
 
+    public function getEmailForPasswordReset(){
+        return $this->email;
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,7 +49,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Auction::Class, 'auction_owner_id');
     }
-    
+
     public function biddingAuctions($user_id)
     {
         return DB::table('bid')
@@ -100,5 +104,19 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    // retorna todos os users que avaliaram o user atual
+    public function rate_bidders(){
+        return $this->belongsToMany(User::class, 'rates', 'id_seller', 'id_bidder');
+    }
+
+    // retorna todos os users avaliados pelo current user
+    public function rate_sellers(){
+        return $this->belongsToMany(User::class, 'rates', 'id_bidder', 'id_seller');
+    }
+
+    public function getRatingDetails(){
+        return ["rate" => round($this->rate_bidders()->average('rate'), 2), "numberOfRatings" => $this->rate_bidders()->count()];
     }
 }
