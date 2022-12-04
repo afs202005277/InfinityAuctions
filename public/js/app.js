@@ -41,7 +41,7 @@ function encodeForAjax(data) {
 }
 
 function sendAjaxRequest(method, url, data, handler) {
-    
+
     let request = new XMLHttpRequest();
 
     request.open(method, url, true);
@@ -96,6 +96,13 @@ function createBidInfo(bid) {
     new_bid_info.innerHTML = `<span>${bid.name}</span> - ${parseDate(bid.date)}`;
 
     return new_bid_info;
+}
+
+function createErrorMessage(message){
+    let error = document.createElement('span');
+    error.className = "error";
+    error.textContent = message;
+    return error;
 }
 
 addEventListeners();

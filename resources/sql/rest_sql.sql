@@ -96,28 +96,27 @@ BEGIN
         SELECT *
         FROM auction,
              bid AS current_bid
-        WHERE bid.auction_id == auction.id
-          AND auction.state == 'Running'
+        WHERE current_bid.auction_id = auction.id
+          AND auction.state = 'Running'
           AND NOT EXISTS(
             SELECT bid.amount
             FROM bid
             where bid.amount > current_bid.amount
             )
-          AND current_bid.user_id == OLD.user_id
+          AND current_bid.user_id = OLD.id
         ) THEN
         RAISE EXCEPTION 'You can not delete your account while you have the highest bidding in an active auction.';
     END IF;
-    UPDATE bid
-    SET name       = "Deleted Account",
+    UPDATE users
+    SET name       = 'Deleted Account',
         email      = NULL,
         gender     = NULL,
         cellphone  = NULL,
         birth_date = NULL,
         address    = NULL,
-        rate       = NULL,
         credits    = NULL,
         wishlist   = NULL
-    WHERE id == OLD.id;
+    WHERE id = OLD.id;
     RETURN NULL;
 END
 $BODY$ LANGUAGE plpgsql;

@@ -9,9 +9,7 @@ function paintStars(starNumber) {
 
 function rateAdded() {
     if (this.status >= 400 && this.status <= 600) {
-        let error = document.createElement('span');
-        error.className = "error";
-        error.textContent = this.responseText;
+        let error = createErrorMessage(this.responseText);
         document.querySelector("#popup").appendChild(error);
     } else {
         document.querySelector('#popup').style.display = 'none';

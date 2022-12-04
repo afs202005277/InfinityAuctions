@@ -59,9 +59,9 @@
 
             @if(Auth::user()!=null && !Auth::user()->is_admin)
                 @if (Auth::user()->id!=$user->id)
-                <a class="report_btn" href="{{ url('/users/report/' . $user->id) }}">
-                    <button> Report </button>
-                </a>
+                    <a class="report_btn" href="{{ url('/users/report/' . $user->id) }}">
+                        <button> Report</button>
+                    </a>
                     <button id="rateSellerButton">Rate this seller</button>
                 @endif
             @endif
@@ -127,25 +127,21 @@
         </div>
 
     @else
-    <h4 id="info_bar_2"> Owned Auctions </h4>
-    <hr/>
-    <div class="auctions_owned">
-        @if(!$user->ownedAuctions()->get()->isEmpty())
-            @foreach ($user->ownedAuctions as $auction)
-                @include('partials.auction', compact('auction'))
-            @endforeach
-        @else
-            <p> This user doesn't own any Auctions </p>
-        @endif
-    </div>
-    
+        <h4 id="info_bar_2"> Owned Auctions </h4>
+        <hr/>
+        <div class="auctions_owned">
+            @if(!$user->ownedAuctions()->get()->isEmpty())
+                @foreach ($user->ownedAuctions as $auction)
+                    @include('partials.auction', compact('auction'))
+                @endforeach
+            @else
+                <p> This user doesn't own any Auctions </p>
+            @endif
+        </div>
+
     @endif
-    @if(Auth::user()!=null && (Auth::user()->id==$user->id || Auth::user()->is_admin))
-    <div>
-        <a href="#">
-            <button class="delete_account"> Delete </button>
-        </a>
-    </div>
+    @if(Auth::user()!==null && (Auth::id()===$user->id || Auth::user()->is_admin))
+        <button class="delete_account"> Delete</button>
     @endif
 
 @endsection

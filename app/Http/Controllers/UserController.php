@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -110,7 +109,7 @@ class UserController extends Controller
         $user->followingAuctions()->attach($auction_id);
         return $user;
     }
-    
+
     public function addReview(Request $request)
     {
         $validated = $request->validate(
