@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
@@ -45,6 +46,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Auction::class, 'following');
     }
 
+    public function ownedToBeStartedAuctions(){
+        return $this->ownedAuctions()->where('state', '=','To be started');
+    }
+
+    public function ownedRunningAuctions(){
+        return $this->ownedAuctions()->where('state','=','Running');
+    }
     public function ownedAuctions()
     {
         return $this->hasMany(Auction::Class, 'auction_owner_id');
@@ -118,5 +126,9 @@ class User extends Authenticatable
 
     public function getRatingDetails(){
         return ["rate" => round($this->rate_bidders()->average('rate'), 2), "numberOfRatings" => $this->rate_bidders()->count()];
+    }
+
+    public function hasPendingMaxBids(){
+        return DB::select(DB::raw('select has_max_bid(' . Auth::id() . ');'))[0];
     }
 }

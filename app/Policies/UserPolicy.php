@@ -36,6 +36,10 @@ class UserPolicy
     }
 
     public function addReview(User $user, $userToRate){
-        return Auth::check() && Auth::id() !== $userToRate;
+        return Auth::check() && Auth::id() !== $userToRate && !(Auth::user()->is_admin);
+    }
+
+    public function showAdminPanel(User $user){
+        return Auth::check() && Auth::user()->is_admin;
     }
 }

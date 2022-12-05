@@ -6,7 +6,10 @@ use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,6 +76,7 @@ class AuctionController extends Controller
     public function showSellForm()
     {
         $categories = Category::all();
+        $this->authorize('create', new Auction());
         return view('pages.sell', compact('categories'));
     }
 
@@ -141,12 +145,12 @@ class AuctionController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\Auction $auction
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
         $auction = Auction::find($id);
-
+        $this->authorize('update', $auction);
         return view('pages.sell')
             ->with('title', $auction->name)
             ->with('desc', $auction->description)
@@ -164,7 +168,7 @@ class AuctionController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Auction $auction
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -216,7 +220,7 @@ class AuctionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Auction $auction
-     * @return \Illuminate\Http\Response
+     * @return Application|RedirectResponse|Redirector
      */
     public function cancel($id)
     {
