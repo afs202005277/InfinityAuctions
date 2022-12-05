@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+
 class UsersController extends Controller
 {
     /**
@@ -105,6 +106,11 @@ class UsersController extends Controller
         }
     }
 
+    public function topSellers()
+    {
+        $sellers =  User::paginate(10);
+        return $sellers;
+    }
 
 
     /**
