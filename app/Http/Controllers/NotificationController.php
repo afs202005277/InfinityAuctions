@@ -18,6 +18,16 @@ class NotificationController extends Controller
         //
     }
 
+    public function addWishListNotification($user_id, $auction_id)
+    {
+        $notification = new Notification();
+        $notification->id = $notification->getNextId();
+        $notification->type = 'Wishlist Targeted';
+        $notification->user_id = $user_id;
+        $notification->auction_id = $auction_id;
+        $notification->save();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -31,7 +41,7 @@ class NotificationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -42,7 +52,7 @@ class NotificationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Notification  $notification
+     * @param \App\Models\Notification $notification
      * @return \Illuminate\Http\Response
      */
     public function show(Notification $notification)
@@ -53,7 +63,7 @@ class NotificationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Notification  $notification
+     * @param \App\Models\Notification $notification
      * @return \Illuminate\Http\Response
      */
     public function edit(Notification $notification)
@@ -64,8 +74,8 @@ class NotificationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Notification  $notification
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Notification $notification
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Notification $notification)
@@ -76,16 +86,16 @@ class NotificationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Notification  $notification
+     * @param \App\Models\Notification $notification
      * @return string
      */
     public function destroy($id)
     {
         $notification = Notification::find($id);
-        try{
+        try {
             $this->authorize('delete', $notification);
             $notification->delete();
-        } catch(AuthorizationException $exception){
+        } catch (AuthorizationException $exception) {
             return response($exception->getMessage(), 500);
         }
         return $notification;

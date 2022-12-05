@@ -155,6 +155,7 @@ CREATE TRIGGER check_bid_user_exists
     ON bid
     FOR EACH ROW
 EXECUTE PROCEDURE check_bid_user_exists();-- Add new column in auction for tsvectors
+
 ALTER TABLE auction
     ADD COLUMN auction_tokens TSVECTOR;
 
