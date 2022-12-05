@@ -15,7 +15,7 @@
         <form method="POST" class="sell" action="{{$to_use['route']}}" enctype="multipart/form-data">
             {{ csrf_field() }}
 
-            <input id="title" placeholder="Name your auction" type="text" name="reported_user" value="{{ $to_use['reported_user'] }}">
+            <input id="title" placeholder="Name your auction" type="text" name="reported_user" value="{{ $user->name}}">
             <div class="option">
                 <legend>Options</legend>
                 <br/>

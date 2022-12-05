@@ -1,4 +1,4 @@
-<h2>SELECTED AUCTIONS </h2>
+<h2>Followed Auctions </h2>
 @if ($selected_auctions === NULL)
     <p>Login to see your selected auctions! </p>
 @else
