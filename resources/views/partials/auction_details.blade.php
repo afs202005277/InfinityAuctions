@@ -2,11 +2,21 @@
 
     <h4 class="name">{{$details->name}}</h4>
     <h5 class="desc">{{$details->description}}</h5>
+    <h1 id="user_id_details" hidden>{{Auth::id()}}</h1>
+    <h1 id="auction_id_details"hidden>{{$details->id}}</h1>
     @if(Auth::user()!==NULL)
-    
-        <h1 id="user_id_details" hidden>{{Auth::id()}}</h1>
-        <h1 id="auction_id_details"hidden>{{$details->id}}</h1>
-        <button id="follow_auction">Follow</Button>
+        @php $found = false @endphp
+        @foreach (Auth::user()->followingAuctions()->get() as $auc)
+            @if($auc->id == $details->id)
+                @php $found = true @endphp
+                <button id="follow_auction">Following</Button>
+                @break
+            @endif
+        @endforeach
+
+        @if(!$found)
+            <button id="follow_auction">Follow</Button>
+        @endif
     @endif
     <p class="time-rem">TIME REMAINING</p>
     @if ($details->state == "Running")

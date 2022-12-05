@@ -7,12 +7,12 @@ function follow() {
         if(button.textContent == "Follow"){
             button.textContent = "Following";
             button.style.backgroundColor = "#FF6B00";
-            sendAjaxRequest('post','/user/follow_auction/'+ user_id + "/" + auction_id,{},null);
+            sendAjaxRequest('post','/api/user/follow_auction',{user_id: user_id,auction_id: auction_id},null);
         }
         else {
             button.textContent = "Follow";
             button.style.backgroundColor = "#EFEFEF";
-            sendAjaxRequest('post','/user/unfollow_auction/'+ user_id + "/" + auction_id,{},null);
+            sendAjaxRequest('post','/api/user/unfollow_auction',{user_id: user_id,auction_id: auction_id},null);
         }
     });
     

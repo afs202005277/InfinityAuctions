@@ -64,7 +64,7 @@
     <h5 hidden>{{$notification->id }}</h5>
         <a href=""><img src={{ asset("img/cross.svg") }}></a>
         @php($images = App\Models\Auction::find($notification->auction()->value('id'))->images()->get())
-        <img src="{{ asset($images[0]->path) }}">
+        
         <p> A new auction called <strong>{{ $notification->auction()->value('name') }}</strong> was created!</p>
     </div>
 @endif
