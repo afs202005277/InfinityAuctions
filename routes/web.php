@@ -60,8 +60,8 @@ Route::post('user/{id}', 'UserController@update')->name('editUser');
 //Users
 Route::get('users', 'UsersController@index');
 Route::get('users/{id}', 'UsersController@show');
-Route::get('users/report/{id}', 'UsersController@showreport');
-Route::post('users/report', 'UsersController@report')->name('report');
+Route::get('users/report/{id}', 'ReportController@showreport');
+Route::post('users/report', 'ReportController@report')->name('report');
 
 //Admin Panel
 Route::get('manage', 'ManageController@show');
@@ -74,7 +74,8 @@ Route::post('auctions/edit/{id}', 'AuctionController@update')->name('editAuction
 Route::get('sell', 'AuctionController@showSellForm')->name('sell');
 Route::post('sell', 'AuctionController@sell');
 Route::get('search', 'SearchPageController@show');
-
+Route::get('auctions/report/{id}', 'ReportController@createAuctionReport');
+Route::post('auctions/report', 'ReportController@reportAuction');
 
 //Notifications
 Route::delete('api/notifications/delete/{id}', 'NotificationController@destroy');
