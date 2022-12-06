@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bid;
+use App\Models\Notification;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,9 +52,24 @@ class BidController extends Controller
                 }
             }
 
+            $this->addNotification($bid->auction_id);
             return $bid;
         } catch (QueryException $exc){
             return $exc->getMessage();
+        }
+    }
+
+    public function addNotification($auction_id){
+        $biddingUsers = Auction::find($auction_id)->biddingUsers()->get();
+        $id = DB::table('notification')->max('id')+1;
+        foreach ($biddingUsers as $biddingUser){
+            $notification = new Notification();
+            $notification->id = $id;
+            $notification->type = 'New Bid';
+            $notification->user_id = $biddingUser->id;
+            $notification->auction_id = $auction_id;
+            $notification->save();
+            $id++;
         }
     }
 }

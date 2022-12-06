@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Image;
+use App\Models\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\QueryException;
@@ -216,6 +217,20 @@ class AuctionController extends Controller
         }
     }
 
+    public function addNotifications($auction_id){
+        $biddingUsers = Auction::find($auction_id)->biddingUsers()->get();
+        $id = DB::table('notification')->max('id')+1;
+        foreach ($biddingUsers as $biddingUser){
+            $notification = new Notification();
+            $notification->id = $id;
+            $notification->type = 'Auction Canceled';
+            $notification->user_id = $biddingUser->id;
+            $notification->auction_id = $auction_id;
+            $notification->save();
+            $id++;
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -231,6 +246,8 @@ class AuctionController extends Controller
             $auction->state = 'Cancelled';
 
             $auction->save();
+
+            $this->addNotifications($auction->id);
             return redirect('/');
         } catch (AuthorizationException $exception) {
             return redirect('auctions/' . $id)->withErrors("You don't have permissions to cancel this auction! ");

@@ -19,6 +19,13 @@ class Auction extends Model
         return $this->hasMany(Bid::class);
     }
 
+    public function biddingUsers(){
+        return $this->bids()
+            ->join('users', 'bid.user_id', '=', 'users.id')
+            ->select('users.id')
+            ->distinct();
+    }
+
     public function mostActive()
     {
         $values = DB::select(DB::raw('SELECT duration_table.*, amount.amount_bids, amount_bids::decimal / to_seconds(duration)::decimal as "rate"
