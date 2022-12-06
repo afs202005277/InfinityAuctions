@@ -57,7 +57,7 @@ class Auction extends Model
         //       WHERE auction_tokens @@ plainto_tsquery('english', :search)
         //       ORDER BY ts_rank(auction_tokens, plainto_tsquery('english', :search)) DESC;"),
         //       array('search' => $search,));
-        
+
         $query->groupBy('auction.id');
         $values = $query->get();
 
@@ -102,7 +102,7 @@ class Auction extends Model
 
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'auction_reported');
     }
 
     public function getAllBids($id)

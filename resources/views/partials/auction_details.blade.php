@@ -17,6 +17,9 @@
         @if(!$found)
             <button id="follow_auction">Follow</Button>
         @endif
+        <a class="report_btn" href="{{ url('/auctions/report/' . $details->id) }}">
+            <button>Report</button>
+        </a>
     @endif
     <p class="time-rem">TIME REMAINING</p>
     @if ($details->state == "Running")

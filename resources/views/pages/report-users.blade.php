@@ -4,9 +4,17 @@
 
     @php
         $to_use = array();
-        $pageTitle = 'User Report';
-        $to_use['route'] = route('report');
-        $to_use['reported_user'] = $user->id;
+        if ($isUserReport){
+            $to_use['route'] = route('reportUser');
+            $to_use['reported'] = $user->id;
+            $to_use['input_name'] = 'reported_user';
+            $to_use['name'] = $user->name;
+        } else{
+            $to_use['route'] = route('reportAuction');
+            $to_use['reported'] = $auction->id;
+            $to_use['name'] = $auction->name;
+            $to_use['input_name'] = 'reported_auction';
+        }
     @endphp
 
     @if (!Auth::user())
@@ -14,8 +22,8 @@
     @else
         <form method="POST" class="sell" action="{{$to_use['route']}}">
             {{ csrf_field() }}
-            <input id="title" type="text" name="reported_user" value="{{ $user->id}}" hidden>
-            <input id="title" type="text" name="reported_user_name" value="{{ $user->name}}">
+            <input id="title" type="text" name="{{$to_use['input_name']}}" value="{{$to_use['reported']}}" hidden>
+            <input id="title" type="text" name="reported_user_name" value="{{$to_use['name']}}">
             <div class="option">
                 <legend>Options</legend>
                 <br/>

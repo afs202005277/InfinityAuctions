@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Auction;
 use App\Models\Report;
 use App\Models\Report_Option;
 use App\Models\User;
@@ -14,11 +15,20 @@ use Illuminate\Validation\ValidationException;
 
 class ReportController extends Controller
 {
-    public function showreport($id)
+    public function showUserReport($id)
     {
         $user = User::find($id);
         $options = Report_Option::all();
-        return view('pages.report-users', compact('user', 'options'));
+        $isUserReport = True;
+        return view('pages.report-users', compact('user', 'options', 'isUserReport'));
+    }
+
+    public function showAuctionReport($id)
+    {
+        $auction = Auction::find($id);
+        $options = Report_Option::all();
+        $isUserReport = False;
+        return view('pages.report-users', compact('auction', 'options', 'isUserReport'));
     }
 
     public function createReport($reportedUserId = NULL, $reportedAuctionId = NULL){
@@ -38,16 +48,17 @@ class ReportController extends Controller
         try {
             $this->authorize('create', new Report());
 
+            $validated = array();
             if ($request->has('reported_user')){
                 $validated = $request->validate([
                     'reported_user' => 'required|numeric|min:1',
                 ]);
                 $validated['reported_auction'] = NULL;
-            } else if ($request->has('reported_user')){
-                $validated['reported_user'] = NULL;
+            } else if ($request->has('reported_auction')){
                 $validated = $request->validate([
                     'reported_auction' => 'required|numeric|min:1',
                 ]);
+                $validated['reported_user'] = NULL;
             } else {
                 throw ValidationException::withMessages(['Missing parameters in request!']);
             }
