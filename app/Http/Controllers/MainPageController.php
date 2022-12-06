@@ -23,7 +23,6 @@ class MainPageController extends Controller
      */
     public function __invoke(Request $request)
     {
-        (new Auction())->refresh();
         $auctionController = new AuctionController();
         $userController = new UsersController();
         $selectedAuctions = $auctionController->selectedAuctions();

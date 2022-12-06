@@ -19,7 +19,13 @@ class Auction extends Model
         return $this->hasMany(Bid::class);
     }
 
-    public function biddingUsers(){
+    public function getWinnerID(){
+        $maxAmount = $this->bids()->max('amount');
+        return $this->bids()->where('amount', '=', $maxAmount)->get()->user_id;
+    }
+
+    public function biddingUsers()
+    {
         return $this->bids()
             ->join('users', 'bid.user_id', '=', 'users.id')
             ->select('users.id')
@@ -38,24 +44,33 @@ class Auction extends Model
         return $values;
     }
 
-    public function refresh()
+    public static function toEndAuctions()
+    {
+        return DB::select(DB::raw("SELECT * FROM auction WHERE state = 'Running' AND now() + interval '1 hour' > end_date;"));
+    }
+
+    public static function nearEndAuctions()
+    {
+        return DB::select(DB::raw("SELECT * FROM auction WHERE state = 'Running' AND to_char(now() + interval '1 hour', 'DD-MM-YYYY:HH24:MI') = to_char(end_date, 'DD-MM-YYYY:HH24:MI');"));
+    }
+
+    public static function updateStates()
     {
         DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
+        DB::raw("UPDATE auction SET state='Running' WHERE state = 'To be started' AND now() >= start_date;");
     }
 
     public function searchResults($search, $filters)
     {
         $query = DB::table('auction')
-                ->select('auction.*')
-                ->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
-                ->join('category', 'auction_category.category_id', '=', 'category.id');
-        if( count($filters) )
-        {
+            ->select('auction.*')
+            ->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
+            ->join('category', 'auction_category.category_id', '=', 'category.id');
+        if (count($filters)) {
             $query->whereIn('category.id', $filters);
         }
 
-        if( isset($search) )
-        {
+        if (isset($search)) {
             $query->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
             $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);
         }
@@ -122,7 +137,8 @@ class Auction extends Model
             ->get();
     }
 
-    public function images(){
+    public function images()
+    {
         return $this->hasMany(Image::class, 'auction_id');
     }
 }

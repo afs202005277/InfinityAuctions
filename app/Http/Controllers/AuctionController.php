@@ -217,13 +217,17 @@ class AuctionController extends Controller
         }
     }
 
-    public function addNotifications($auction_id){
-        $biddingUsers = Auction::find($auction_id)->biddingUsers()->get();
+    public static function addNotifications($auction_id, $type){
+        $auction = Auction::find($auction_id);
+        $biddingUsers = $auction->biddingUsers()->get();
         $id = DB::table('notification')->max('id')+1;
         foreach ($biddingUsers as $biddingUser){
             $notification = new Notification();
             $notification->id = $id;
-            $notification->type = 'Auction Canceled';
+            if ($type == 'Auction Ended' && $auction->getWinnerID() == $biddingUser->id)
+                $notification->type = 'Auction Won';
+            else
+                $notification->type = $type;
             $notification->user_id = $biddingUser->id;
             $notification->auction_id = $auction_id;
             $notification->save();
@@ -247,7 +251,7 @@ class AuctionController extends Controller
 
             $auction->save();
 
-            $this->addNotifications($auction->id);
+            $this->addNotifications($auction->id, 'Auction Canceled');
             return redirect('/');
         } catch (AuthorizationException $exception) {
             return redirect('auctions/' . $id)->withErrors("You don't have permissions to cancel this auction! ");
@@ -271,5 +275,17 @@ class AuctionController extends Controller
         $auction = Auction::find($auction_id);
         $auction->end_date = new DateTime('now');
         $auction->save();
+    }
+
+    public static function updateAuctionsState(){
+        $auctionsToEnd = Auction::toEndAuctions();
+        foreach ($auctionsToEnd as $auction){
+            AuctionController::addNotifications($auction->id, 'Auction Ended');
+        }
+        $auctionsEnding = Auction::nearEndAuctions();
+        foreach ($auctionsEnding as $auction){
+            AuctionController::addNotifications($auction->id, 'Auction Ending');
+        }
+        Auction::updateStates();
     }
 }
