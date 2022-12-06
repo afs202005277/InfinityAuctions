@@ -219,7 +219,10 @@ class AuctionController extends Controller
 
     public static function addNotifications($auction_id, $type){
         $auction = Auction::find($auction_id);
-        $biddingUsers = $auction->biddingUsers()->get();
+        if ($type === 'Auction Canceled')
+            $biddingUsers =  $auction->biddersAndFollowers()->get();
+        else
+            $biddingUsers = $auction->biddingUsers()->get();
         $id = DB::table('notification')->max('id')+1;
         foreach ($biddingUsers as $biddingUser){
             $notification = new Notification();
@@ -233,6 +236,7 @@ class AuctionController extends Controller
             $notification->save();
             $id++;
         }
+
     }
 
     /**

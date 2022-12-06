@@ -65,7 +65,7 @@ class BidController extends Controller
         foreach ($biddingUsers as $biddingUser){
             $notification = new Notification();
             $notification->id = $id;
-            $notification->type = 'New Bid';
+            $notification->type = 'Outbid';
             $notification->user_id = $biddingUser->id;
             $notification->auction_id = $auction_id;
             $notification->save();

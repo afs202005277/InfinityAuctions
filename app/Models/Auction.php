@@ -102,9 +102,21 @@ class Auction extends Model
             ->get();
     }
 
+    public function biddersAndFollowers(){
+        $biddingUsers =$this->biddingUsers()->select('user_id');
+        $followingUsers =$this->followers()->select('user_id');
+        return $biddingUsers
+            ->union($followingUsers)
+            ->distinct();
+    }
+
+    public function followsAuction($user_id){
+        return $this->followers()->where('user_id', '=', $user_id)->get();
+    }
+
     public function followers()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'following');
     }
 
     public function owner()
