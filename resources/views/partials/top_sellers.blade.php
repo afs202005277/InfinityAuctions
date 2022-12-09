@@ -1,4 +1,4 @@
 <h2>Top Sellers </h2>
-<section>
+<div class="topsellers">
     @each('partials.user_card', $topSellers, 'user', 'partials.no_items')
-</section>
+</div>

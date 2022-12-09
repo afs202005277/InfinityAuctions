@@ -6,7 +6,7 @@
         <div class="contentBx">
             <h2>{{$user->name}}</h2>
         <div class="size">
-            <h3> <strong> {{$user -> rate}} </strong> </h3>
+            @include('partials.rate',['ratingDetails' => $user->getRatingDetails()]) 
         </div>
         <div class="color">
             <h3>{{$user -> cellphone}}</h3> 
