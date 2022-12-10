@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<form method="POST" class="register" action="{{ route('register') }}">
+<form method="POST" class="register" action="{{ route('register') }}" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <h3>Sign Up</h3>
@@ -68,6 +68,9 @@
 
     <label for="password-confirm">Confirm Password</label>
     <input id="password-confirm" placeholder="Confirm your password" type="password" name="password_confirmation" required>
+
+    <label for="profile_picture_input">Choose a profile picture:</label>
+    <input type="file" name="profile_picture" id="profile_picture_input">
 
     <button type="submit">
       Register

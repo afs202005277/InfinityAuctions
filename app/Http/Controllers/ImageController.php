@@ -13,7 +13,7 @@ class ImageController extends Controller
      * @param Image $image
      * @return Image
      */
-    public function store($image, $pathPrefix, $auction_id)
+    public static function store($image, $pathPrefix, $auction_id)
     {
         $stored_image = new Image();
 
@@ -28,7 +28,7 @@ class ImageController extends Controller
         $stored_image->auction_id = $auction_id;
         $stored_image->save();
 
-        return $image;
+        return $stored_image->id;
     }
 
     /**
