@@ -59,8 +59,9 @@ class RegisterController extends Controller
             'birth_date' => 'required|date|before:-18 years',
             'address' => ['required', 'unique:users', new IsValidAddress],
             'password' => 'required|string|min:6|confirmed',
-            'profile_picture' => 'mimes:jpeg,jpg,png,gif',
-        ]);
+            'profile_picture' => 'mimes:jpeg,jpg,png,gif'],
+            ['birth_date.before' => "You need to be, at least, 18 years old to sign up in our website."]
+        );
     }
 
     /**

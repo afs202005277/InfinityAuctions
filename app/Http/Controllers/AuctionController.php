@@ -103,7 +103,7 @@ class AuctionController extends Controller
                 'desc' => 'required|min:1|max:255',
                 'images' => 'required|array|min:3',
                 'baseprice' => 'required|numeric|gt:0',
-                'startdate' => 'required|date|after:now',
+                'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
                 'enddate' => 'required|date|after:startdate',
                 'buynow' => 'nullable|numeric|gt:baseprice'
             ], [ 'buynow.gt' => 'The "buy now" value must be greater than the base price.']);

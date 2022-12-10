@@ -70,7 +70,7 @@
     <input id="password-confirm" placeholder="Confirm your password" type="password" name="password_confirmation" required>
 
     <label for="profile_picture_input">Choose a profile picture:</label>
-    <input type="file" name="profile_picture" id="profile_picture_input">
+    <input type="file" name="profile_picture" id="profile_picture_input" value="{{ old('profile_picture') }}">
 
     <button type="submit">
       Register
