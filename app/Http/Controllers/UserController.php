@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
@@ -26,7 +27,8 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('pages.user', compact('user'));
+        $image = Image::find($user->profile_image)->path;
+        return view('pages.user', compact('user', 'image'));
     }
 
     /**
@@ -127,7 +129,7 @@ class UserController extends Controller
     }
 
     public function unfollow_auction(Request $request)
-    {   
+    {
         $user = User::find($request->user_id);
         $user->followingAuctions()->detach($request->auction_id);
         return $user;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\User;
 use App\Models\Report;
 use App\Models\Report_Option;
@@ -54,7 +55,8 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $ratingDetails = $user->getRatingDetails();
-        return view('pages.users', compact('user', 'ratingDetails'));
+        $image = Image::find($user->profile_image)->path;
+        return view('pages.users', compact('user', 'ratingDetails', 'image'));
     }
 
     public function topSellers()
