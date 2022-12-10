@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\AuctionController;
+use App\Models\Auction;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,6 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->call(function (){AuctionController::updateAuctionsState();})->everyMinute();
         $schedule->command('auth:clear-resets')->everyFifteenMinutes();
     }
 
