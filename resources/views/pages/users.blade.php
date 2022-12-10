@@ -19,7 +19,7 @@
 
         <div class="bio">
             <div>
-                <img src="{{ asset('img/user1.png') }}" alt="">
+                <img src="{{ asset($image) }}" alt="">
             </div>
         </div>
         <div class="bio2">

@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS users
     credits       REAL,
     wishlist      TEXT[],
     is_admin      BOOLEAN NOT NULL,
-    profile_image INTEGER REFERENCES image,
+    profile_image INTEGER REFERENCES image DEFAULT 1,
     CONSTRAINT valid_birth CHECK (birth_date between '1900-01-01' and now() - interval '18 years')
 );
 

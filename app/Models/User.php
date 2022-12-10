@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'gender', 'cellphone', 'email', 'birth_date', 'address', 'password', 'rate', 'credits', 'wishlist', 'is_admin'
+        'id', 'name', 'gender', 'cellphone', 'email', 'birth_date', 'address', 'password', 'rate', 'credits', 'wishlist', 'is_admin', 'profile_image'
     ];
 
     /**
@@ -130,5 +130,11 @@ class User extends Authenticatable
 
     public function hasPendingMaxBids(){
         return DB::select(DB::raw('select has_max_bid(' . Auth::id() . ');'))[0];
+    }
+
+    public static function getUsersWithImages(){
+        return DB::table('users')
+            ->join('image', 'users.profile_image', '=', 'image.id')
+            ->select('*');
     }
 }

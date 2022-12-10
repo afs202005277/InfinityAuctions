@@ -128,9 +128,8 @@ class AuctionController extends Controller
                 }
             }
 
-            $imageController = new ImageController();
             foreach ($request->file('images') as $key => $image) {
-                $imageController->store($image, 'AuctionImages/', $auction->id);
+                ImageController::store($image, 'AuctionImages/', $auction->id);
             }
 
             return redirect('auctions/' . $auction->id);
@@ -203,10 +202,9 @@ class AuctionController extends Controller
             if (count($ids) > 0)
                 $auction->categories()->sync($ids);
 
-            $imageController = new ImageController();
             if ($request->file('images') !== null){
                 foreach ($request->file('images') as $image) {
-                    $imageController->store($image, 'AuctionImages/', $auction->id);
+                    ImageController::store($image, 'AuctionImages/', $auction->id);
                 }
             }
 

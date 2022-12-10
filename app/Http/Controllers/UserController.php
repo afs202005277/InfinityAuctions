@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
@@ -12,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +28,8 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('pages.user', compact('user'));
+        $image = Image::find($user->profile_image)->path;
+        return view('pages.user', compact('user', 'image'));
     }
 
     /**
@@ -58,7 +61,13 @@ class UserController extends Controller
                     'email' => 'required|min:1',
                     'birth_date' => 'required|min:1',
                     'address' => 'required|min:1',
+                    'profile_image' => 'mimes:jpeg,jpg,png,gif'
                 ]);
+
+                if ($validated['profile_image'] !== NULL){
+                    (new ImageController())->deleteUserImage($user->profile_image);
+                    $user->profile_image = ImageController::store($validated['profile_image'], 'UserImages/', NULL);
+                }
 
                 $user->name = $validated['name'];
                 $user->cellphone = $validated['cellphone'];
@@ -127,7 +136,7 @@ class UserController extends Controller
     }
 
     public function unfollow_auction(Request $request)
-    {   
+    {
         $user = User::find($request->user_id);
         $user->followingAuctions()->detach($request->auction_id);
         return $user;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ImageController extends Controller
 {
@@ -13,7 +14,7 @@ class ImageController extends Controller
      * @param Image $image
      * @return Image
      */
-    public function store($image, $pathPrefix, $auction_id)
+    public static function store($image, $pathPrefix, $auction_id)
     {
         $stored_image = new Image();
 
@@ -28,7 +29,7 @@ class ImageController extends Controller
         $stored_image->auction_id = $auction_id;
         $stored_image->save();
 
-        return $image;
+        return $stored_image->id;
     }
 
     /**
@@ -71,11 +72,18 @@ class ImageController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
         $image = Image::find($id);
         $this->authorize('delete', $image);
         $image->delete();
         return $image;
+    }
+
+    public function deleteUserImage($imageID){
+        $image = Image::find($imageID);
+        if (!str_contains($image->path, 'default')){
+            File::delete($image->path);
+        }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\ImageController;
+use App\Models\Image;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Rules\IsValidAddress;
@@ -57,6 +59,7 @@ class RegisterController extends Controller
             'birth_date' => 'required|date|before:-18 years',
             'address' => ['required', 'unique:users', new IsValidAddress],
             'password' => 'required|string|min:6|confirmed',
+            'profile_picture' => 'mimes:jpeg,jpg,png,gif',
         ]);
     }
 
@@ -68,6 +71,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $imageId = ImageController::store($data['profile_picture'], 'UserImages/', NULL);
         return User::create([
             'id' => User::max('id') + 1,
             'name' => $data['name'],
@@ -77,10 +81,10 @@ class RegisterController extends Controller
             'birth_date' => $data['birth_date'],
             'address' => $data['address'],
             'password' => bcrypt($data['password']),
-            'rate' => NULL,
             'credits' => 0,
             'wishlist' => NULL,
             'is_admin' => FALSE,
+            'profile_image' => $imageId,
         ]);
     }
 }
