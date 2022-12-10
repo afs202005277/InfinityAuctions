@@ -131,4 +131,10 @@ class User extends Authenticatable
     public function hasPendingMaxBids(){
         return DB::select(DB::raw('select has_max_bid(' . Auth::id() . ');'))[0];
     }
+
+    public static function getUsersWithImages(){
+        return DB::table('users')
+            ->join('image', 'users.profile_image', '=', 'image.id')
+            ->select('*');
+    }
 }

@@ -20,7 +20,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::getUsersWithImages()->get();
         return view('pages.search_users', compact('users'));
     }
 
