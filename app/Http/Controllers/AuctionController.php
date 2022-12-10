@@ -215,7 +215,7 @@ class AuctionController extends Controller
         }
     }
 
-    public static function addNotifications($auction_id, $type){
+    public static function addNotificationsAuction($auction_id, $type){
         $auction = Auction::find($auction_id);
         if ($type === 'Auction Canceled')
             $biddingUsers =  $auction->biddersAndFollowers()->get();
@@ -225,6 +225,8 @@ class AuctionController extends Controller
         foreach ($biddingUsers as $biddingUser){
             $notification = new Notification();
             $notification->id = $id;
+            \Log::info('winner: |' . $auction->getWinnerID() . '|');
+            \Log::info('curren: |' . $biddingUser->id . '|');
             if ($type == 'Auction Ended' && $auction->getWinnerID() == $biddingUser->id)
                 $notification->type = 'Auction Won';
             else
@@ -282,11 +284,11 @@ class AuctionController extends Controller
     public static function updateAuctionsState(){
         $auctionsToEnd = Auction::toEndAuctions();
         foreach ($auctionsToEnd as $auction){
-            AuctionController::addNotifications($auction->id, 'Auction Ended');
+            AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
         }
         $auctionsEnding = Auction::nearEndAuctions();
         foreach ($auctionsEnding as $auction){
-            AuctionController::addNotifications($auction->id, 'Auction Ending');
+            AuctionController::addNotificationsAuction($auction->id, 'Auction Ending');
         }
         Auction::updateStates();
     }

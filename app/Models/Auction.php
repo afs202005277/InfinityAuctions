@@ -21,7 +21,7 @@ class Auction extends Model
 
     public function getWinnerID(){
         $maxAmount = $this->bids()->max('amount');
-        return $this->bids()->where('amount', '=', $maxAmount)->get()->user_id;
+        return $this->bids()->where('amount', $maxAmount)->value('user_id');
     }
 
     public function biddingUsers()
@@ -46,12 +46,12 @@ class Auction extends Model
 
     public static function toEndAuctions()
     {
-        return DB::select(DB::raw("SELECT * FROM auction WHERE state = 'Running' AND now() + interval '1 hour' > end_date;"));
+        return DB::select(DB::raw("SELECT * FROM auction WHERE state = 'Running' AND to_char(now(), 'YYYY-MM-DD:HH24:MI') = to_char(end_date, 'YYYY-MM-DD:HH24:MI');"));
     }
 
     public static function nearEndAuctions()
     {
-        return DB::select(DB::raw("SELECT * FROM auction WHERE state = 'Running' AND to_char(now() + interval '1 hour', 'DD-MM-YYYY:HH24:MI') = to_char(end_date, 'DD-MM-YYYY:HH24:MI');"));
+        return DB::select(DB::raw("SELECT * FROM auction WHERE state = 'Running' AND to_char(now() + interval '1 hour', 'YYYY-MM-DD:HH24:MI') = to_char(end_date, 'YYYY-MM-DD:HH24:MI');"));
     }
 
     public static function updateStates()

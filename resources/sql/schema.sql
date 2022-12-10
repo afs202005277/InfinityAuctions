@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS bid
 (
     id         SERIAL PRIMARY KEY,
     date       TIMESTAMP WITH TIME ZONE DEFAULT now()::timestamp(0)           NOT NULL,
-    amount     REAL                                                           NOT NULL,
+    amount     NUMERIC                                                           NOT NULL,
     user_id    INTEGER REFERENCES users ON UPDATE CASCADE                     NOT NULL,
     auction_id INTEGER REFERENCES auction ON UPDATE CASCADE ON DELETE CASCADE NOT NULL
 );

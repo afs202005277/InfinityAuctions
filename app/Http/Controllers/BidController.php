@@ -48,28 +48,35 @@ class BidController extends Controller
                     $d = new DateTime('now');
                     $dstr = $d->format('Y-m-d H:i:s');
                     $auction->end_date = $dstr;
-                    $res = (int) $auction->save();
+                    $auction->save();
                 }
             }
-
-            $this->addNotification($bid->auction_id);
+            if ($auction->bids()->get()->count() !== 1)
+                $this->addNotification($bid->auction_id, $bid->user_id);
             return $bid;
         } catch (QueryException $exc){
             return $exc->getMessage();
         }
     }
 
-    public function addNotification($auction_id){
+    public function addNotification($auction_id, $except_user_id){
         $biddingUsers = Auction::find($auction_id)->biddingUsers()->get();
         $id = DB::table('notification')->max('id')+1;
         foreach ($biddingUsers as $biddingUser){
-            $notification = new Notification();
-            $notification->id = $id;
-            $notification->type = 'Outbid';
-            $notification->user_id = $biddingUser->id;
-            $notification->auction_id = $auction_id;
-            $notification->save();
-            $id++;
+            \Log::info($biddingUser->id == $except_user_id);
+            \Log::info($biddingUser->id !== $except_user_id);
+            // NAO ALTERAR O LOOP OS IF #cursed
+            if ($biddingUser->id == $except_user_id) {
+                continue;
+            } else{
+                $notification = new Notification();
+                $notification->id = $id;
+                $notification->type = 'Outbid';
+                $notification->user_id = $biddingUser->id;
+                $notification->auction_id = $auction_id;
+                $notification->save();
+                $id++;
+            }
         }
     }
 }
