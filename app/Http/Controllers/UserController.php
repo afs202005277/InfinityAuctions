@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
@@ -60,7 +61,13 @@ class UserController extends Controller
                     'email' => 'required|min:1',
                     'birth_date' => 'required|min:1',
                     'address' => 'required|min:1',
+                    'profile_image' => 'mimes:jpeg,jpg,png,gif'
                 ]);
+
+                if ($validated['profile_image'] !== NULL){
+                    (new ImageController())->deleteUserImage($user->profile_image);
+                    $user->profile_image = ImageController::store($validated['profile_image'], 'UserImages/', NULL);
+                }
 
                 $user->name = $validated['name'];
                 $user->cellphone = $validated['cellphone'];
