@@ -56,8 +56,8 @@ class Auction extends Model
 
     public static function updateStates()
     {
-        DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
-        DB::raw("UPDATE auction SET state='Running' WHERE state = 'To be started' AND now() >= start_date;");
+        DB::select(DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;"));
+        DB::select(DB::raw("UPDATE auction SET state='Running' WHERE state = 'To be started' AND now() >= start_date;"));
     }
 
     public function searchResults($search, $filters)
