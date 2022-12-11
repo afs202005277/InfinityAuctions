@@ -221,12 +221,11 @@ class AuctionController extends Controller
             $biddingUsers =  $auction->biddersAndFollowers()->get();
         else
             $biddingUsers = $auction->biddingUsers()->get();
+
         $id = DB::table('notification')->max('id')+1;
         foreach ($biddingUsers as $biddingUser){
             $notification = new Notification();
             $notification->id = $id;
-            \Log::info('winner: |' . $auction->getWinnerID() . '|');
-            \Log::info('curren: |' . $biddingUser->id . '|');
             if ($type == 'Auction Ended' && $auction->getWinnerID() == $biddingUser->id)
                 $notification->type = 'Auction Won';
             else
@@ -255,7 +254,7 @@ class AuctionController extends Controller
 
             $auction->save();
 
-            $this->addNotifications($auction->id, 'Auction Canceled');
+            AuctionController::addNotificationsAuction($auction->id, 'Auction Canceled');
             return redirect('/');
         } catch (AuthorizationException $exception) {
             return redirect('auctions/' . $id)->withErrors("You don't have permissions to cancel this auction! ");

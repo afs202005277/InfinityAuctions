@@ -64,7 +64,7 @@ class UserController extends Controller
                     'profile_image' => 'mimes:jpeg,jpg,png,gif'
                 ]);
 
-                if ($validated['profile_image'] !== NULL){
+                if (isset($validated['profile_image'])){
                     (new ImageController())->deleteUserImage($user->profile_image);
                     $user->profile_image = ImageController::store($validated['profile_image'], 'UserImages/', NULL);
                 }
@@ -83,7 +83,7 @@ class UserController extends Controller
         } catch (QueryException $sqlExcept) {
             return redirect()->back()->withErrors("Invalid database parameters!");
         } catch (\Exception $exception) {
-            return redirect()->back()->withErrors($exception->getMessage());
+            return redirect()->back()->withErrors(["password", $exception->getMessage()]);
         }
     }
 

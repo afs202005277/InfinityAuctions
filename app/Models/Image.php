@@ -18,4 +18,8 @@ class Image extends Model
     public function auction(){
         return $this->belongsTo(Auction::class, 'auction_id');
     }
+
+    public static function getDefaultUser(){
+        return DB::table('image')->where('path', 'like', '%default_user%')->get('id');
+    }
 }

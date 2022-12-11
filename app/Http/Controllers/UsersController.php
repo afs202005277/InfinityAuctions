@@ -61,7 +61,7 @@ class UsersController extends Controller
 
     public function topSellers()
     {
-        $sellers =  User::paginate(10);
+        $sellers =  User::getUsersWithImages()->paginate(10);
         return $sellers;
     }
 

@@ -103,8 +103,8 @@ class Auction extends Model
     }
 
     public function biddersAndFollowers(){
-        $biddingUsers =$this->biddingUsers()->select('user_id');
-        $followingUsers =$this->followers()->select('user_id');
+        $biddingUsers =$this->biddingUsers()->select('user_id as id');
+        $followingUsers =$this->followers()->select('user_id as id');
         return $biddingUsers
             ->union($followingUsers)
             ->distinct();

@@ -72,7 +72,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $imageId = ImageController::store($data['profile_picture'], 'UserImages/', NULL);
+        if (isset($data['profile_picture'])){
+            $imageId = ImageController::store($data['profile_picture'], 'UserImages/', NULL);
+        } else {
+            $imageId = Image::getDefaultUser()->value('id');
+        }
         return User::create([
             'id' => User::max('id') + 1,
             'name' => $data['name'],
