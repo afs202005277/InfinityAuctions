@@ -81,7 +81,7 @@ class Auction extends Model
         //       array('search' => $search,));
 
         $query->groupBy('auction.id');
-        $values = $query->get();
+        $values = $query->paginate(1);
 
         return $values;
     }

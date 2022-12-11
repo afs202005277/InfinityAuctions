@@ -8,4 +8,5 @@
     @endif
     @include('partials.search_filter', ['filters' => $filters, 'categories' => $categories])
     @include('partials.search_results', ['auctions' => $auctions])
+    {{$auctions->links("partials.pagination_sequence",['paginator' => $auctions])}}
 @endsection
