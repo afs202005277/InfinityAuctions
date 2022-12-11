@@ -25,11 +25,16 @@ class SearchController extends Controller
         if(!isset($filters['state'])) {
             $filters['state'] = [];
         }
+        
+        $order = $request->input('order');
+        if(!isset($order)) {
+            $order = 1;
+        }
 
         $filters['maxPrice'] = $request->input('filter.maxPrice');
         $filters['buyNow'] = $request->input('filter.buyNow');
 
-        $auctions = (new Auction())->searchResults($search, $filters);
+        $auctions = (new Auction())->searchResults($search, $filters, $order);
 
         return $auctions;
     }

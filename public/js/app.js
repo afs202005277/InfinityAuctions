@@ -1,14 +1,18 @@
 function addEventListeners() {
     let filterCheckers = document.querySelectorAll('#search-filter input');
     [].forEach.call(filterCheckers, function(filterChecker) {
-        filterChecker.addEventListener('change', modifyFiltersRequest);
+        filterChecker.addEventListener('change', modifySearchAttributesRequest);
+    });
+    let orderChecker = document.querySelectorAll('#order-fieldset input[type=radio]');
+    [].forEach.call(orderChecker, function(orderCheck) {
+        orderCheck.addEventListener('change', modifySearchAttributesRequest);
     });
     let bidCreator = document.querySelector('#make_bid');
     if (bidCreator != null)
         bidCreator.addEventListener('click', sendCreateBidRequest);
 }
 
-function modifyFiltersRequest() {
+function modifySearchAttributesRequest() {
     let oldUrlParams = new URLSearchParams(window.location.search);
 
     let newUrlParams = new URLSearchParams();
@@ -21,7 +25,7 @@ function modifyFiltersRequest() {
         newUrlParams.append(checkedCategory[i].getAttribute("name") + '[' + i + ']', checkedCategory[i].getAttribute("value"));
     }
 
-    let checkedState = document.querySelectorAll('#state-fieldset input[type=checkbox]:checked');
+    let checkedState = document.querySelectorAll('#state-fieldset > ul > div > input[type=checkbox]:checked');
     for (let i = 0; i < checkedState.length; i++) {
         newUrlParams.append(checkedState[i].getAttribute("name") + '[' + i + ']', checkedState[i].getAttribute("value"));
     }
@@ -34,6 +38,12 @@ function modifyFiltersRequest() {
     let buyNow = document.getElementById('buyNow-filter');
     if(buyNow.checked){
         newUrlParams.append(buyNow.getAttribute("name"), "on");
+    }
+
+    let order = document.querySelectorAll('#order-fieldset input[type=radio]:checked')
+    if (order.length > 0) {
+        if( order[0].getAttribute("value") != "1")
+            newUrlParams.append(order[0].getAttribute("name"), order[0].getAttribute("value"));
     }
 
     window.location.href = window.location.pathname + '?' + newUrlParams;

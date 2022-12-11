@@ -30,12 +30,16 @@ class SearchPageController extends Controller
 
         $filters['maxPrice'] = $request->input('filter.maxPrice');
         $filters['buyNow'] = $request->input('filter.buyNow');
+        $order = $request->input('order');
+        if(!isset($order)) {
+            $order = 1;
+        }
         
         $auctions = (new SearchController())->search($request);
 
         $categories = Category::all();
         $states = (new Auction())->returnStates();
 
-        return view('pages.search_page', compact('auctions', 'states', 'filters', 'categories', 'search'));
+        return view('pages.search_page', compact('auctions', 'states', 'filters', 'order', 'categories', 'search'));
     }
 }

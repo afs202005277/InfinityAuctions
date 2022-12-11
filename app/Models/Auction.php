@@ -36,13 +36,15 @@ class Auction extends Model
         DB::raw("UPDATE auction SET state='Ended' WHERE state = 'Running' AND now() > end_date;");
     }
 
-    public function searchResults($search, $filters)
+    public function searchResults($search, $filters, $order)
     {
         $query = DB::table('auction')
                 ->selectRaw('auction.*')
                 ->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
                 ->join('category', 'auction_category.category_id', '=', 'category.id')
+                ->join('users', 'auction.auction_owner_id', '=', 'users.id')
                 ->join('bid', 'auction.id', '=', 'bid.auction_id');
+        
         if( count($filters['category']) )
         {
             $query->whereIn('category.id', $filters['category']);
@@ -56,7 +58,19 @@ class Auction extends Model
         if( isset($search) )
         {
             $query->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
-            $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);
+            if( $order == 1 )
+            {
+                $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);       
+            }
+        }
+
+        if( $order == 2 ) {
+            $query->orderByRaw("MAX(bid.amount) DESC"); 
+        } elseif ( $order == 3 ) {
+            $query->orderByRaw("MAX(bid.amount) ASC");
+        } elseif ( $order == 4 ) {
+            $query->orderByRaw("users.rate DESC");
+            $query->groupBy('users.rate');
         }
 
         if( isset($filters['buyNow']))
