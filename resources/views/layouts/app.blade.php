@@ -38,6 +38,7 @@
     <script type="text/javascript" src={{ asset('js/followbtn.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/rate_seller.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/banner.js') }} defer></script>
+    <script type="text/javascript" src={{ asset('js/pagination.js') }} defer></script>
   </head>
   <body>
     <main>

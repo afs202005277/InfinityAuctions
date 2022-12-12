@@ -1,16 +1,18 @@
 
 
 <div class="pagination p1">
-      <ul>
-        @if($paginator->currentPage() != 1)
-        <a href="{{url($paginator->previousPageUrl())}}"><li><</li></a>
-        @endif
-        <a class="is-active" href="#"><li>{{$paginator->currentPage()}}</li></a>
-        <a href="{{url($paginator->url($paginator->currentPage()+1))}}"><li>{{$paginator->currentPage()+1}}</li></a>
-        <a href="{{url($paginator->url($paginator->currentPage()+2))}}"><li>{{$paginator->currentPage()+2}}</li></a>
-        <a href="{{url($paginator->url($paginator->currentPage()+3))}}"><li>{{$paginator->currentPage()+3}}</li></a>
-        <a href="{{url($paginator->url($paginator->currentPage()+4))}}"><li>{{$paginator->currentPage()+4}}</li></a>
-        <a href="{{url($paginator->url($paginator->currentPage()+5))}}"><li>{{$paginator->currentPage()+5}}</li></a>
-        <a href="{{url($paginator->nextPageUrl())}}"><li>></li></a>
-      </ul>
-    </div>
+  <p hidden id="pageNumberUsers"> {{$paginator->currentPage()}} </p>
+  <ul>
+    @if($paginator->currentPage() != 1 )
+    <li><</li>
+    @endif
+    <a  href="#"><li class="is-active">1</li></a>
+    @for ($i = 2; $i < 6; $i++)
+      <a href="{{url($paginator->url($i))}}"><li>{{$i}}</li></a>
+    @endfor
+    @for ($i = 6; $i < 11; $i++)
+      <a hidden href="{{url($paginator->url($i))}}"><li>{{$i}}</li></a>
+    @endfor
+    <li>></li>
+  </ul>
+</div>

@@ -1,33 +1,22 @@
 .card {
   position: relative;
   display: flex;
+  align-self: center;
+  margin: 0 auto;
+  align-items: center;
+  align-content: center;
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 1rem;
 }
 
-.card-header {
-  padding: 0.5rem 1.5rem;
-  background-color: #fbd0ae;
-  border-radius: 1em;
-  margin: 2em 0em;
-}
-
-.card-header .title {
-  color: var(--sixty);
-  font-size: 1em;
-  align-self: center;
-}
-
-.card-body {
-  border-radius: 1em;
-}
 
 .row {
   display: flex;
   margin-left: 2em;
   margin-right: 4em;
   justify-content: space-between;
+  
 }
 
 .col-md-8 {
@@ -52,7 +41,7 @@
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-.info_bar_1, .info_bar_2, .info_bar_3, .info_bar_4, .info_bar_5{
+.info_bar_1, .info_bar_2, .info_bar_3, .info_bar_4, .info_bar_5, .info_bar_6{
   cursor: pointer;
 }
 

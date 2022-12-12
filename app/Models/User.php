@@ -53,9 +53,15 @@ class User extends Authenticatable
     public function ownedRunningAuctions(){
         return $this->ownedAuctions()->where('state','=','Running');
     }
+
     public function ownedAuctions()
     {
         return $this->hasMany(Auction::Class, 'auction_owner_id');
+    }
+    
+    public function wonedAuctions()
+    {
+        return $this->hasMany(Auction::Class, 'auction_id');
     }
 
     public function biddingAuctions($user_id)
