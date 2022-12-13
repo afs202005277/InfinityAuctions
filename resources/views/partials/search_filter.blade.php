@@ -1,6 +1,8 @@
+<button type="button" class="collapsible">Filters</button>
 <section id="search-filter" class="filter-panel">
   <div id="category-fieldset">
-    <legend>Choose your product's category:</legend>
+    <legend>CATEGORY</legend>
+    <hr>
     <ul>
       @foreach ($categories as $category)
         @include('partials.category_checkbox', ['category' => $category, 'categoryfilters' => $filters['category']])
@@ -8,7 +10,8 @@
     </ul>
   </div>
   <div id="state-fieldset">
-    <legend>Choose your product's state:</legend>
+    <legend>STATE</legend>
+    <hr>
     <ul>
       @foreach ($states as $state)
         @include('partials.state_checkbox', ['state' => $state, 'stateFilters' => $filters['state']])
@@ -16,15 +19,23 @@
     </ul>
   </div>
   <div>
-    <legend>Choose your product's max bid limit:</legend>
+    <legend>BID LIMIT</legend>
+    <hr>
     <input id="maxPrice-input" type="number" name="filter[maxPrice]" placeholder="maximum bid" min="1" value="{{ $filters['maxPrice'] }}">
   </div>
   <div>
-    <legend>Enable buy now filter</legend>
+    <legend>BUY NOW</legend>
+    <hr>
     <input type="checkbox" 
     id="buyNow-filter" 
     name="filter[buyNow]"
     @checked(isset($filters['buyNow']))>
     <label for="buyNow-filter">Buy Now</label><br>
   </div>
+  <div id="order-fieldset">
+    <legend>ORDER BY</legend>
+    <hr>
+    @include('partials.order_results', ['order' => $order])
+  </div>
 </section>
+<hr>

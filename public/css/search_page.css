@@ -1,0 +1,35 @@
+.collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.filter-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out
+}
+
+.filter-panel > div > legend {
+    text-align: center;
+}
+
+.filter-panel > div > ul {
+    display: contents;
+}
+
+.active:after {
+    content: none;
+}
+  
+.collapsible:hover {
+    background-color: rgb(222, 33, 33);
+}
