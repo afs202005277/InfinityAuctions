@@ -1,4 +1,4 @@
-<button type="button" class="collapsible">Filters</button>
+<button type="button" class="collapsible"><i class="material-icons">tune</i></button>
 <section id="search-filter" class="filter-panel">
   <div id="category-fieldset">
     <legend>CATEGORY</legend>
