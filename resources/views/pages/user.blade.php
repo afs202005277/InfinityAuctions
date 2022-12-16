@@ -23,7 +23,6 @@
         <h4 class="info_bar_3"> Bids Placed </h4>
         <h4 class="info_bar_4"> Bidding Auction </h4>
         <h4 class="info_bar_5"> Following Auction</h4>
-        <h4 class="info_bar_6"> Woned Auctions</h4>
     </div>
     <hr/>
     <!-- Change Data -->
@@ -73,15 +72,6 @@
         @endif
     </div>
 
-    <!-- Woned Auction -->
-    <div class="woned_auctions">
-        @if(!$user->wonedAuctions()->get()->isEmpty())
-            @foreach ($user->wonedAuctions as $auction)
-                @include('partials.auction', compact('auction'))
-            @endforeach
-        @else
-            <p> This user hasn't woned any Auction ! </p>
-        @endif
-    </div>
+ 
 
 @endsection

@@ -63,6 +63,15 @@
   display: none;
 }
 
+.woned_auctions {
+  display: grid;
+  align-self: center;
+  justify-items: center;
+  grid-template-columns: auto auto;
+  min-height: 100vh;
+  display: none;
+}
+
 .bids_placed {
   display: none;
 }
