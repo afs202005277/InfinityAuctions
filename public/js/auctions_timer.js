@@ -58,7 +58,7 @@ let x = setInterval(function () {
     sendAjaxRequest('get', '/api/auctions/getAllBids/' + auction_id, {}, bidsReceivedHandler);
 
     let bn = document.querySelector('#buy-now').textContent.split(' ');
-    if (document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0] >= bn[bn.length-1].slice(0, -1)) {
+    if (parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) >= parseFloat(bn[bn.length-1].slice(0, -1))) {
         location.reload();
     }
 
