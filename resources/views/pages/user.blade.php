@@ -44,7 +44,7 @@
     <!-- Bids Placed -->
     <div class="bids_placed">
         @if(!$user->bids()->get()->isEmpty())
-            @include('partials.auction_bids', ['bids' => $user->bids])
+            @include('partials.auction_bids2', ['bids' => $user->bids])
         @else
             <p> This user hasn't placed any bids! </p>
         @endif
