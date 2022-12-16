@@ -17,7 +17,9 @@ CREATE INDEX IF NOT EXISTS notification_user_id ON notification USING hash (user
 
 CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE (auction_id, amount);
 
-CREATE INDEX IF NOT EXISTS user_wishlist ON users USING GIN (wishlist);-- SET search_path TO lbaw2271;
+ALTER TABLE wishlist
+    ADD COLUMN wishlist_tokens TSVECTOR;
+CREATE INDEX IF NOT EXISTS wishlist ON wishlist USING GIN (wishlist_tokens);-- SET search_path TO lbaw2271;
 
 -- Trigger01
 CREATE OR REPLACE FUNCTION bid_owner() RETURNS TRIGGER AS

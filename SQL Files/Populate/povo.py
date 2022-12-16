@@ -243,7 +243,7 @@ am_bids = 50
 am_reports = 30
 am_notifications = 300000
 am_followings = 2000
-maxWishlistItems = 5
+maxWishlistItems = 2
 
 def print_list(l):
     res = "["
@@ -256,12 +256,12 @@ def print_list(l):
     return res
 
 with open("instructions.txt", "w") as instr:
-    instr.write("INSERT INTO image(id, path, auction_id) VALUES (1, 'UserImages/default_user.png', NULL);")
+    instr.write("INSERT INTO image(id, path, auction_id) VALUES (1, 'UserImages/default_user.png', NULL);\n")
     for i in range(am_users):
         u = User(user_id)
         user_id += 1
 
-        instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, wishlist, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
+        instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
 
     instr.write("\n")
 
@@ -270,10 +270,15 @@ with open("instructions.txt", "w") as instr:
         instr.write(f"insert into wishlist(id, name) values ({i+1}, '{collections[i]}');\n")
         max_wishlist_id = i+1
 
+    usedPairs_wishlist = []
     for i in range(am_users):
         numItems = random.randint(0, maxWishlistItems)
         for j in range(numItems):
-            cur_wishlist_id = random.randint(1, max_wishlist_id)
+            while True:
+                cur_wishlist_id = random.randint(1, max_wishlist_id)
+                if ((i+1, cur_wishlist_id) not in usedPairs_wishlist):
+                    break
+            usedPairs_wishlist += [(i+1, cur_wishlist_id)]
             instr.write(f"insert into users_wishlist(users_id, wishlist_id) values ({i+1}, {cur_wishlist_id});\n")
 
     instr.write("\n")
