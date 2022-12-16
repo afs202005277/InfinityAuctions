@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="https://use.typekit.net/ivx1jos.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -30,6 +31,8 @@
     <link href="{{ asset('css/admin_panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction_edit.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tmp.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/filter_panel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/search_page.css') }}" rel="stylesheet">
     <script type="text/javascript" src={{ asset('js/app.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/faq.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/user_profile.js') }} defer></script>
@@ -39,6 +42,7 @@
     <script type="text/javascript" src={{ asset('js/rate_seller.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/banner.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/pagination.js') }} defer></script>
+    <script type="text/javascript" src={{ asset('js/search_page.js') }} defer></script>
   </head>
   <body>
     <main>

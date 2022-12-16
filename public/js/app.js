@@ -1,9 +1,4 @@
 function addEventListeners() {
-    let filterCheckers = document.querySelectorAll('#search-filter input[type=checkbox]');
-    [].forEach.call(filterCheckers, function(filterChecker) {
-        filterChecker.addEventListener('change', modifyFiltersRequest);
-    });
-    let buyNow = document.querySelector('#buy-now');
     let bidCreator = document.querySelector('#make_bid');
     if (bidCreator != null)
         bidCreator.addEventListener('click', sendCreateBidRequest);
@@ -15,23 +10,6 @@ function addEventListeners() {
             event.preventDefault();
         };
 }
-
-function modifyFiltersRequest() {
-    let oldUrlParams = new URLSearchParams(window.location.search);
-jjjj
-    let newUrlParams = new URLSearchParams();
-    if ( oldUrlParams.has('search') ) {
-        newUrlParams.append('search', oldUrlParams.get('search'));
-    }
-
-    let checked = document.querySelectorAll('#search-filter input[type=checkbox]:checked');
-    for (let i = 0; i < checked.length; i++) {
-        newUrlParams.append(checked[i].getAttribute("name") + '[' + i + ']', checked[i].getAttribute("value"));
-    }
-
-    window.location.href = window.location.pathname + '?' + newUrlParams;
-}
-
 
 function encodeForAjax(data) {
     if (data == null) return null;

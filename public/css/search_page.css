@@ -1,0 +1,59 @@
+.collapsible {
+    background-color: var(--sixty);
+    color: var(--thirty);
+    border-radius: 5%;
+    cursor: pointer;
+    text-align: left;
+    outline: none;
+    font-size: 20px;
+    display: inline-block;
+}
+
+.collapsible > i {
+    display: block;
+}
+
+.filter-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out
+}
+
+.filter-panel > div > legend {
+    text-align: center;
+    padding-top: 16px;
+}
+
+.filter-panel > div > ul {
+    display: contents;
+}
+
+.filter-panel input[type=checkbox]:checked {
+    accent-color: var(--ten);
+}
+
+.filter-panel input[type=radio]:checked {
+    accent-color: var(--ten);
+}
+
+.active:after {
+    content: none;
+}
+  
+.collapsible:hover {
+    background-color: var(--ten);
+    color: var(--sixty);
+}
+
+.filter-panel input::-webkit-outer-spin-button,
+.filter-panel input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.filter-panel input[type=number] {
+  -moz-appearance: textfield;
+}
