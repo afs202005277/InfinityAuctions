@@ -54,8 +54,15 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $ratingDetails = $user->getRatingDetails();
         $image = Image::find($user->profile_image)->path;
+
+        if($user->is_admin) {
+            $usrReports = $user->pendingUsrReports()->get();
+            $aucReports = $user->pendingAucReports()->get();
+            return view('pages.admin', compact('user', 'image', 'usrReports', 'aucReports'));
+        } 
+        
+        $ratingDetails = $user->getRatingDetails();
         return view('pages.users', compact('user', 'ratingDetails', 'image'));
     }
 

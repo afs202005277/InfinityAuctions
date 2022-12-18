@@ -89,6 +89,14 @@ class User extends Authenticatable
         return $this->hasMany(Report::class, 'reported_user');
     }
 
+    public function pendingAucReports() {
+        return $this->reportsHandled()->whereNotNull('auction_reported')->whereNull('penalty');
+    }
+
+    public function pendingUsrReports() {
+        return $this->reportsHandled()->whereNotNull('reported_user')->whereNull('penalty');
+    }
+
     public function reportsHandled()
     {
         return $this->hasMany(Report::class, 'admin_id');
