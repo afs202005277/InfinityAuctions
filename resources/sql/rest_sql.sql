@@ -1,3 +1,4 @@
+set search_path to lbaw2271;
 ALTER TABLE users
     ADD COLUMN remember_token CHAR(100);
 
@@ -19,6 +20,8 @@ CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE (auction_id,
 
 ALTER TABLE wishlist
     ADD COLUMN wishlist_tokens TSVECTOR;
+UPDATE wishlist SET wishlist_tokens = to_tsvector('english', coalesce(wishlist.name, ''));
+
 CREATE INDEX IF NOT EXISTS wishlist ON wishlist USING GIN (wishlist_tokens);-- SET search_path TO lbaw2271;
 
 -- Trigger01
@@ -195,3 +198,28 @@ EXECUTE PROCEDURE auction_tokens_update();
 
 -- Create an index on the ts_vectors.
 CREATE INDEX idx_auctions ON auction USING GIN (auction_tokens);
+
+CREATE OR REPLACE FUNCTION wishlist_targeted() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    INSERT INTO notification(type, user_id, auction_id, report_id)
+    SELECT 'Wishlist Targeted' as type, users_id as user_id, NEW.id as auction_id, NULL as report_id FROM
+                    (SELECT *, ts_rank(wishlist_tokens, query) AS rank
+                   FROM wishlist, plainto_tsquery('english',NEW.name) query
+                   WHERE wishlist_tokens @@ query
+                   ORDER BY rank DESC LIMIT 1) as Tokens, users_wishlist
+        WHERE users_wishlist.wishlist_id = Tokens.id;
+    RETURN NEW;
+END
+$BODY$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS check_wishlist ON auction;
+CREATE TRIGGER check_wishlist
+    AFTER
+        INSERT
+    ON auction
+    FOR EACH ROW
+EXECUTE PROCEDURE wishlist_targeted();
+
+INSERT INTO users_wishlist(users_id, wishlist_id) values (1002, 42);
+insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(101, 'emerald', 'teste', 50, '2021-09-09', '2022-01-03', NULL, 'Ended', 268);
+

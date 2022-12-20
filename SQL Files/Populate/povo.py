@@ -256,18 +256,18 @@ def print_list(l):
     return res
 
 with open("instructions.txt", "w") as instr:
-    instr.write("INSERT INTO image(id, path, auction_id) VALUES (1, 'UserImages/default_user.png', NULL);\n")
+    instr.write("INSERT INTO image(path, auction_id) VALUES ('UserImages/default_user.png', NULL);\n")
     for i in range(am_users):
         u = User(user_id)
         user_id += 1
 
-        instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
+        instr.write("insert into users(name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values('" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
 
     instr.write("\n")
 
     max_wishlist_id = 0
     for i in range(len(collections)):
-        instr.write(f"insert into wishlist(id, name) values ({i+1}, '{collections[i]}');\n")
+        instr.write(f"insert into wishlist(name) values ('{collections[i]}');\n")
         max_wishlist_id = i+1
 
     usedPairs_wishlist = []
@@ -288,7 +288,7 @@ with open("instructions.txt", "w") as instr:
         acs.append(a)
         auction_id += 1
 
-        instr.write("insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(" + str(a.id) + ", '" + a.name + "', '" + "".join(["'" + l if l == "'" else l for l in a.description]) + "', " + str(a.base_price) + ", '" + a.start_date + "', '" + a.end_date + "', " + (str(a.buy_now) if a.buy_now != -1 else "NULL") + ", '" + a.state + "', " + str(a.user_id) + ");\n")
+        instr.write("insert into auction(name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(" + "'" + a.name + "', '" + "".join(["'" + l if l == "'" else l for l in a.description]) + "', " + str(a.base_price) + ", '" + a.start_date + "', '" + a.end_date + "', " + (str(a.buy_now) if a.buy_now != -1 else "NULL") + ", '" + a.state + "', " + str(a.user_id) + ");\n")
 
     instr.write("\n")
 
@@ -301,7 +301,7 @@ with open("instructions.txt", "w") as instr:
                     bid_id += 1
                     perc += 1/am_bids
 
-                    instr.write("insert into bid(id, date, amount, user_id, auction_id) values(" + str(b.id) + ", '" + b.date + "', " + "{:.2f}".format(b.amount) + ", " + str(b.user_id) + ", " + str(b.auction_id) + ");\n")
+                    instr.write("insert into bid(date, amount, user_id, auction_id) values(" + "'" + b.date + "', " + "{:.2f}".format(b.amount) + ", " + str(b.user_id) + ", " + str(b.auction_id) + ");\n")
     
     instr.write("\n")
 
@@ -309,7 +309,7 @@ with open("instructions.txt", "w") as instr:
         r = Report(report_id, random.choice(acs))
         report_id += 1
 
-        instr.write("insert into report(id, date, penalty, reported_user, reporter, auction_reported, admin_id) values(" + str(r.id) + ", '" + r.date + "', '" + r.type_ban + "', " + (str(r.reported_user) if r.reported_user != -1 else "NULL") + ", " + str(r.reporter) + ", " + (str(r.reported_auction) if r.reported_auction != -1 else "NULL") + ", NULL);\n")
+        instr.write("insert into report(date, penalty, reported_user, reporter, auction_reported, admin_id) values(" + "'" + r.date + "', '" + r.type_ban + "', " + (str(r.reported_user) if r.reported_user != -1 else "NULL") + ", " + str(r.reporter) + ", " + (str(r.reported_auction) if r.reported_auction != -1 else "NULL") + ", NULL);\n")
 
     instr.write("\n")
 
@@ -317,7 +317,7 @@ with open("instructions.txt", "w") as instr:
         n = Notification(notification_id)
         notification_id += 1
 
-        instr.write("insert into notification(id, date, TYPE, user_id, auction_id, report_id) values(" + str(n.id) + ", '" + n.date + "', '" + n.notification_type + "', " + str(n.user_id) + ", " + (str(n.auction_id) if n.auction_id != -1 else "NULL") + ", " + (str(n.report_id) if n.report_id != -1 else "NULL") + ");\n")
+        instr.write("insert into notification(date, TYPE, user_id, auction_id, report_id) values(" + "'" + n.date + "', '" + n.notification_type + "', " + str(n.user_id) + ", " + (str(n.auction_id) if n.auction_id != -1 else "NULL") + ", " + (str(n.report_id) if n.report_id != -1 else "NULL") + ");\n")
 
     instr.write("\n")
 
@@ -325,7 +325,7 @@ with open("instructions.txt", "w") as instr:
         c = Category(category_id, i)
         category_id += 1
 
-        instr.write("insert into category(id, name) values(" + str(c.id) + ", '" + c.name + "');\n")
+        instr.write("insert into category(name) values(" + "'" + c.name + "');\n")
 
     instr.write("\n")
 
@@ -357,7 +357,7 @@ with open("instructions.txt", "w") as instr:
         ro = ReportOption(report_option_id, i)
         report_option_id += 1
 
-        instr.write("insert into report_option(id, name) values(" + str(ro.id) + ", '" + ro.name + "');\n")
+        instr.write("insert into report_option(name) values(" + "'" + ro.name + "');\n")
     
     instr.write("\n")
 
