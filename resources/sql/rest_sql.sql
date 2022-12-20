@@ -18,11 +18,7 @@ CREATE INDEX IF NOT EXISTS notification_user_id ON notification USING hash (user
 
 CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE (auction_id, amount);
 
-ALTER TABLE wishlist
-    ADD COLUMN wishlist_tokens TSVECTOR;
-UPDATE wishlist SET wishlist_tokens = to_tsvector('english', coalesce(wishlist.name, ''));
-
-CREATE INDEX IF NOT EXISTS wishlist ON wishlist USING GIN (wishlist_tokens);-- SET search_path TO lbaw2271;
+-- CREATE INDEX IF NOT EXISTS wishlist ON wishlist USING GIN (wishlist_tokens);-- SET search_path TO lbaw2271;
 
 -- Trigger01
 CREATE OR REPLACE FUNCTION bid_owner() RETURNS TRIGGER AS
@@ -204,9 +200,9 @@ $BODY$
 BEGIN
     INSERT INTO notification(type, user_id, auction_id, report_id)
     SELECT 'Wishlist Targeted' as type, users_id as user_id, NEW.id as auction_id, NULL as report_id FROM
-                    (SELECT *, ts_rank(wishlist_tokens, query) AS rank
-                   FROM wishlist, plainto_tsquery('english',NEW.name) query
-                   WHERE wishlist_tokens @@ query
+                    (SELECT *, ts_rank(NEW.auction_tokens, query) AS rank
+                   FROM wishlist, plainto_tsquery('english',wishlist.name) query
+                   WHERE NEW.auction_tokens @@ query
                    ORDER BY rank DESC LIMIT 1) as Tokens, users_wishlist
         WHERE users_wishlist.wishlist_id = Tokens.id;
     RETURN NEW;
@@ -220,6 +216,6 @@ CREATE TRIGGER check_wishlist
     FOR EACH ROW
 EXECUTE PROCEDURE wishlist_targeted();
 
-INSERT INTO users_wishlist(users_id, wishlist_id) values (1002, 42);
-insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(101, 'emerald', 'teste', 50, '2021-09-09', '2022-01-03', NULL, 'Ended', 268);
+-- INSERT INTO users_wishlist(users_id, wishlist_id) values (1002, 42);
+-- insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(101, 'emerald green', 'teste', 50, '2021-09-09', '2022-01-03', NULL, 'Ended', 268);
 
