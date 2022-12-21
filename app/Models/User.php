@@ -117,4 +117,15 @@ class User extends Authenticatable
     public static function getBalance($id) {
         return User::find($id)->credits;
     }
+
+    public static function heldBalance($user_id) {
+        $value = DB::select(DB::raw('SELECT SUM(max) 
+                                    FROM (  SELECT auction_id, user_id, MAX(amount) 
+                                            FROM BID 
+                                            GROUP BY auction_id, user_id 
+                                         ) top_bids 
+                                    WHERE user_id = ' . $user_id . ' GROUP BY user_id;'));
+
+        return $value[0]->sum;
+    }
 }
