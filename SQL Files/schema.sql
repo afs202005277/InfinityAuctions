@@ -31,12 +31,12 @@ CREATE TABLE IF NOT EXISTS general_user (
     birth_date DATE NOT NULL,
 	address VARCHAR(255) UNIQUE,
 	password VARCHAR NOT NULL,
-	rate REAL,
 	credits REAL,
 	wishlist TEXT [],
 	is_admin BOOLEAN NOT NULL,
 	CONSTRAINT valid_rate CHECK (rate >= 0 AND rate <= 5),
-    CONSTRAINT valid_birth CHECK (birth_date between '1900-01-01' and now() - interval '18 years')
+    CONSTRAINT valid_birth CHECK (birth_date between '1900-01-01' and now() - interval '18 years'),
+	CONSTRAINT credit_const CHECK (credits >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS auction (

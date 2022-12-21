@@ -119,3 +119,14 @@ Route::post('/reset-password', function (Request $request) {
         ? redirect()->route('login')->with('status', __($status))
         : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
+
+//Payments
+Route::get('balance', 'PaypalController@show')->name('payments');
+
+Route::get('deposit', 'PayPalController@payment')->name('deposit');
+Route::get('deposit/cancel', 'PayPalController@cancel')->name('deposit.cancel');
+Route::get('deposit/success', 'PayPalController@success')->name('deposit.success');
+
+Route::get('withdraw', 'PayPalController@withdraw')->name('withdraw');
+Route::get('withdraw/cancel', 'PayPalController@withdrawCancel')->name('withdraw.cancel');
+Route::get('withdraw/success', 'PayPalController@withdrawSuccess')->name('withdraw.success');
