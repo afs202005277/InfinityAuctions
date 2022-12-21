@@ -81,6 +81,8 @@ class RegisterController extends Controller
             'credits' => 0,
             'wishlist' => NULL,
             'is_admin' => FALSE,
+            'provider_id' => NULL,
+            'avatar' => NULL
         ]);
     }
 }

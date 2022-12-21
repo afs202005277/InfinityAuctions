@@ -56,3 +56,14 @@ Route::post('auctions/edit/{id}', 'AuctionController@update')->name('editAuction
 Route::get('sell', 'AuctionController@showSellForm')->name('sell');
 Route::post('sell', 'AuctionController@sell');
 Route::get('search', 'SearchPageController@show');
+
+//Payments
+Route::get('balance', 'PaypalController@show')->name('payments');
+
+Route::get('deposit', 'PayPalController@payment')->name('deposit');
+Route::get('deposit/cancel', 'PayPalController@cancel')->name('deposit.cancel');
+Route::get('deposit/success', 'PayPalController@success')->name('deposit.success');
+
+Route::get('withdraw', 'PayPalController@withdraw')->name('withdraw');
+Route::get('withdraw/cancel', 'PayPalController@withdrawCancel')->name('withdraw.cancel');
+Route::get('withdraw/success', 'PayPalController@withdrawSuccess')->name('withdraw.success');

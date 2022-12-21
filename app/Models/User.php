@@ -101,4 +101,20 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public static function addBalance($id, $amount) {
+        $user = User::find($id);
+        $user->credits = User::getBalance($id)+$amount;
+        return $user->save();
+    }
+
+    public static function removeBalance($id, $amount) {
+        $user = User::find($id);
+        $user->credits = User::getBalance($id)-$amount;
+        return $user->save();
+    }
+
+    public static function getBalance($id) {
+        return User::find($id)->credits;
+    }
 }
