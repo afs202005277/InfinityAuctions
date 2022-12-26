@@ -71,7 +71,15 @@
             <p> This user doesn't follow any Auction ! </p>
         @endif
     </div>
-
-
+    <!-- Wishlist -->
+    <div class="wishlist_list">
+        @if(!$user->wishlist()->get()->isEmpty())
+            @foreach ($user->wishlist as $item)
+                <p>{{$item}}</p>
+            @endforeach
+        @else
+            <p> This user doesn't have anything on his Wishlist! </p>
+        @endif
+    </div>
 
 @endsection

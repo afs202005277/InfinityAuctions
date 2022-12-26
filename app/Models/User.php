@@ -41,6 +41,11 @@ class User extends Authenticatable
         return $this->hasMany(Bid::class);
     }
 
+    public function wishlist()
+    {
+        return $this->belongsToMany(Wishlist::class, 'users_wishlist', 'users_id');
+    }
+
     public function followingAuctions()
     {
         return $this->belongsToMany(Auction::class, 'following');

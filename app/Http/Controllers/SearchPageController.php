@@ -6,6 +6,7 @@ use App\Models\Auction;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SearchController;
+use App\Models\Wishlist;
 
 class SearchPageController extends Controller
 {
@@ -40,6 +41,8 @@ class SearchPageController extends Controller
         $categories = Category::all();
         $states = (new Auction())->returnStates();
 
-        return view('pages.search_page', compact('auctions', 'states', 'filters', 'order', 'categories', 'search'));
+        $follows = Wishlist::follows($search);
+
+        return view('pages.search_page', compact('auctions', 'states', 'filters', 'order', 'categories', 'search', 'follows'));
     }
 }

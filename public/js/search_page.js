@@ -19,6 +19,42 @@ function SearchPageEventList() {
         }
         });
     });
+
+
+    // Wishlist
+    let follow_button = document.getElementById("follow_word");
+    let unfollow_button = document.getElementById("unfollow_word");
+    let search = document.getElementById("search");
+    follow_button.addEventListener('click', function (event) {
+        sendAjaxRequest('post', '/api/user/follow_term', {
+            search: search.value
+        }, addedToWishlist);
+    })
+    unfollow_button.addEventListener('click', function (event) {
+        sendAjaxRequest('post', '/api/user/unfollow_term', {
+            search: search.value
+        }, removedFromWishlist);
+    })
+}
+
+function removedFromWishlist() {
+    if (this.status >= 400 && this.status <= 600) {
+        console.log('ERROR');
+    } else {
+        document.getElementById("follow_word").classList.remove("hide");
+        document.getElementById("unfollow_word").classList.add("hide");
+        console.log('SUCCESS');
+    }
+}
+
+function addedToWishlist() {
+    if (this.status >= 400 && this.status <= 600) {
+        console.log('ERROR');
+    } else {
+        document.getElementById("follow_word").classList.add("hide");
+        document.getElementById("unfollow_word").classList.remove("hide");
+        console.log('SUCCESS');
+    }
 }
 
 function modifySearchAttributesRequest() {

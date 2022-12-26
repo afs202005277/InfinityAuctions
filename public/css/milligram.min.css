@@ -96,3 +96,7 @@ body {
     width: 1.6rem;
     filter: invert(42%) sepia(17%) saturate(6693%) hue-rotate(4deg) brightness(108%) contrast(102%);
 }
+
+.hide {
+    display: none;
+}
