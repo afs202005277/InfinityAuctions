@@ -241,7 +241,7 @@
     --form-control-color: var(--form-control-disabled);
 
   color: var(--form-control-disabled);
-  cursor: not-allowed;  
+  cursor: not-allowed;
 }
 
 .toparea > .details > div > .buy-now {
@@ -320,7 +320,7 @@
 }
 
 #bid_list2 {
-   
+
 }
 
 .bid2 {
@@ -412,11 +412,11 @@
     margin: 1em;
 }
 
-#in_stars{
+.in_stars{
     display: flex;
 }
 
-#in_stars svg {
+.in_stars svg {
     width: 2em;
 }
 

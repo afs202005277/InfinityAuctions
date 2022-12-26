@@ -5,7 +5,7 @@
 @section('content')
     <div id="popup" style="display: none">
         <h1>Place your rate: </h1>
-        <div id="in_stars">
+        <div class="in_stars">
             @for ($i = 0; $i < 5; $i++)
                 <svg aria-hidden="true" id="star_{{$i+1}}" fill="grey" viewBox="0 0 20 20"
                      xmlns="http://www.w3.org/2000/svg">
