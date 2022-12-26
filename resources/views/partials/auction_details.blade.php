@@ -82,4 +82,10 @@
             <button id="buy-now">Buy now for {{number_format((float)$details->buy_now, 2, '.', '')}}€</button>
         </form>
     @endif
+    <section class="autobid">
+        <input type="numeric" id="autobuymaxvalue" placeholder="Auto Bidder">
+        <input type="checkbox" id="autobuycheckbox">
+        @if (Auth::user())
+            <p id="autobuyuser" hidden>{{Auth::user()->name}}</p>
+        @endif
 </div>
