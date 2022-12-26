@@ -61,6 +61,7 @@ class User extends Authenticatable
     
     public function wonedAuctions()
     {
+        //return bidding auctinons where the first bidder has the user_id
         return $this->hasMany(Auction::Class, 'auction_owner_id');
     }
 

@@ -1,10 +1,19 @@
 function pagination() {
-    let lis = document.querySelectorAll(".pagination ul a");
+    let current_page = document.getElementById("pageNumberUsers");
+
+    let lis = document.querySelectorAll(".pagination ul a li");
     for (let li of lis) {
-        li.addEventListener("click", function () {
-            notification.className = "is-active";
-        });
-    } 
+
+        if( parseInt(li.innerText) > parseInt(current_page.innerText) + 2 || parseInt(li.innerText) < parseInt(current_page.innerText - 2) ){
+            li.style.display = "none";
+        }
+
+        if(li.innerText == current_page.innerText){
+            li.className = "is-active";
+        }
+    }
+
+    
 }
 
 function seeNext() {
