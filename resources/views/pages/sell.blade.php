@@ -143,7 +143,7 @@
                 @php($images = App\Models\Auction::find($auction_id)->images()->get())
                 @foreach($images as $image)
                     <div class="auctionImage">
-                        <img src={{ asset('img/trash.svg')}}>
+                        <img src={{ asset('img/trash.svg')}} alt="Remove image button">
                         <img src="{{ asset($image->path) }}" alt="auction image">
                     </div>
                 @endforeach

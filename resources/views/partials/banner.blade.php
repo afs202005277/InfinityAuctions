@@ -1,9 +1,9 @@
 
 <div class="slider">
-  <input type="radio" name="slider" title="slide1" checked="checked" class="slider__nav"/>
-  <input type="radio" name="slider" title="slide2" class="slider__nav"/>
-  <input type="radio" name="slider" title="slide3" class="slider__nav"/>
-  <input type="radio" name="slider" title="slide4" class="slider__nav"/>
+  <input type="radio" name="slider" title="slide1" checked="checked" class="slider__nav">
+  <input type="radio" name="slider" title="slide2" class="slider__nav">
+  <input type="radio" name="slider" title="slide3" class="slider__nav">
+  <input type="radio" name="slider" title="slide4" class="slider__nav">
   <div class="slider__inner">
     <div class="slider__contents"><i class="slider__image fa fa-codepen"></i>
       <h2 class="slider__caption">Luxury Week</h2>

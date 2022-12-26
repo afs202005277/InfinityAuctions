@@ -1,7 +1,7 @@
 <div class="container">
     <div class="card">
         <div class="imgBx">
-            <img src="{{ asset($user->path) }}">
+            <img src="{{ asset($user->path) }}" alt="user image">
         </div>
         <div class="contentBx">
             <h2>{{$user->name}}</h2>

@@ -99,12 +99,6 @@ class User:
         
         self.credits = random.randint(0, 3942)
 
-        wishlist_amount = random.randint(0, 6)
-        wishlist = []
-        while len(set(wishlist)) < wishlist_amount:
-            wishlist.append(random.choice(collections))
-        self.wishlist = wishlist
-
         self.is_admin = False
 
 class Auction:
@@ -151,9 +145,6 @@ class Bid:
 
         day, month, year = date_add(auction.start_day, auction.start_month, auction.start_year, math.floor(auction.time_amount*percent))
         self.date = year + "-" + ("0" + month if len(month) == 1 else month) + "-" + ("0" + day if len(day) == 1 else day)
-
-        if (self.date > auction.end_date or self.date < auction.start_date):
-            print("ERROR - ", self.id)
 
         self.amount = auctions['SALE PRICE'][auction.id]*percent
 
@@ -252,6 +243,7 @@ am_bids = 50
 am_reports = 30
 am_notifications = 300000
 am_followings = 2000
+maxWishlistItems = 2
 
 def print_list(l):
     res = "["
@@ -264,22 +256,39 @@ def print_list(l):
     return res
 
 with open("instructions.txt", "w") as instr:
-
+    instr.write("INSERT INTO image(path, auction_id) VALUES ('UserImages/default_user.png', NULL);\n")
     for i in range(am_users):
         u = User(user_id)
         user_id += 1
 
-        instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, wishlist, is_admin) values(" + str(u.id) + ", '" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", ARRAY " + print_list(u.wishlist) + "::text[], " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
+        instr.write("insert into users(name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values('" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
 
     instr.write("\n")
 
+    max_wishlist_id = 0
+    for i in range(len(collections)):
+        instr.write(f"insert into wishlist(name) values ('{collections[i]}');\n")
+        max_wishlist_id = i+1
+
+    usedPairs_wishlist = []
+    for i in range(am_users):
+        numItems = random.randint(0, maxWishlistItems)
+        for j in range(numItems):
+            while True:
+                cur_wishlist_id = random.randint(1, max_wishlist_id)
+                if ((i+1, cur_wishlist_id) not in usedPairs_wishlist):
+                    break
+            usedPairs_wishlist += [(i+1, cur_wishlist_id)]
+            instr.write(f"insert into users_wishlist(users_id, wishlist_id) values ({i+1}, {cur_wishlist_id});\n")
+
+    instr.write("\n")
     acs = []
     for i in range(am_auctions):
         a = Auction(auction_id)
         acs.append(a)
         auction_id += 1
 
-        instr.write("insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(" + str(a.id) + ", '" + a.name + "', '" + "".join(["'" + l if l == "'" else l for l in a.description]) + "', " + str(a.base_price) + ", '" + a.start_date + "', '" + a.end_date + "', " + (str(a.buy_now) if a.buy_now != -1 else "NULL") + ", '" + a.state + "', " + str(a.user_id) + ");\n")
+        instr.write("insert into auction(name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(" + "'" + a.name + "', '" + "".join(["'" + l if l == "'" else l for l in a.description]) + "', " + str(a.base_price) + ", '" + a.start_date + "', '" + a.end_date + "', " + (str(a.buy_now) if a.buy_now != -1 else "NULL") + ", '" + a.state + "', " + str(a.user_id) + ");\n")
 
     instr.write("\n")
 
@@ -292,7 +301,7 @@ with open("instructions.txt", "w") as instr:
                     bid_id += 1
                     perc += 1/am_bids
 
-                    instr.write("insert into bid(id, date, amount, user_id, auction_id) values(" + str(b.id) + ", '" + b.date + "', " + "{:.2f}".format(b.amount) + ", " + str(b.user_id) + ", " + str(b.auction_id) + ");\n")
+                    instr.write("insert into bid(date, amount, user_id, auction_id) values(" + "'" + b.date + "', " + "{:.2f}".format(b.amount) + ", " + str(b.user_id) + ", " + str(b.auction_id) + ");\n")
     
     instr.write("\n")
 
@@ -300,7 +309,7 @@ with open("instructions.txt", "w") as instr:
         r = Report(report_id, random.choice(acs))
         report_id += 1
 
-        instr.write("insert into report(id, date, penalty, reported_user, reporter, auction_reported, admin_id) values(" + str(r.id) + ", '" + r.date + "', '" + r.type_ban + "', " + (str(r.reported_user) if r.reported_user != -1 else "NULL") + ", " + str(r.reporter) + ", " + (str(r.reported_auction) if r.reported_auction != -1 else "NULL") + ", NULL);\n")
+        instr.write("insert into report(date, penalty, reported_user, reporter, auction_reported, admin_id) values(" + "'" + r.date + "', '" + r.type_ban + "', " + (str(r.reported_user) if r.reported_user != -1 else "NULL") + ", " + str(r.reporter) + ", " + (str(r.reported_auction) if r.reported_auction != -1 else "NULL") + ", NULL);\n")
 
     instr.write("\n")
 
@@ -308,7 +317,7 @@ with open("instructions.txt", "w") as instr:
         n = Notification(notification_id)
         notification_id += 1
 
-        instr.write("insert into notification(id, date, TYPE, user_id, auction_id, report_id) values(" + str(n.id) + ", '" + n.date + "', '" + n.notification_type + "', " + str(n.user_id) + ", " + (str(n.auction_id) if n.auction_id != -1 else "NULL") + ", " + (str(n.report_id) if n.report_id != -1 else "NULL") + ");\n")
+        instr.write("insert into notification(date, TYPE, user_id, auction_id, report_id) values(" + "'" + n.date + "', '" + n.notification_type + "', " + str(n.user_id) + ", " + (str(n.auction_id) if n.auction_id != -1 else "NULL") + ", " + (str(n.report_id) if n.report_id != -1 else "NULL") + ");\n")
 
     instr.write("\n")
 
@@ -316,30 +325,30 @@ with open("instructions.txt", "w") as instr:
         c = Category(category_id, i)
         category_id += 1
 
-        instr.write("insert into category(id, name) values(" + str(c.id) + ", '" + c.name + "');\n")
+        instr.write("insert into category(name) values(" + "'" + c.name + "');\n")
 
     instr.write("\n")
 
-    itfuck = []
+    used_categories = []
 
     for i in range(auction_id-1):
         for _ in range(random.randint(1, 2)):
             ac = AuctionCategory(i+1)
 
-            if ((ac.category, ac.auction_id) not in itfuck):
+            if ((ac.category, ac.auction_id) not in used_categories):
                 instr.write("insert into auction_category(category_id, auction_id) values(" + str(ac.category) + ", " + str(ac.auction_id) + ");\n")
-                itfuck += [(ac.category, ac.auction_id)]
+                used_categories += [(ac.category, ac.auction_id)]
     
     instr.write("\n")
 
-    fuckit = []
+    used_pairs = []
 
     for i in range(am_followings):
         f = Following(random.randint(1, user_id-1))
 
-        if ((f.user_id, f.auction_id) not in fuckit):
+        if ((f.user_id, f.auction_id) not in used_pairs):
             instr.write("insert into following(user_id, auction_id) values(" + str(f.user_id) + ", " + str(f.auction_id) + ");\n")
-            fuckit += [(f.user_id, f.auction_id)]
+            used_pairs += [(f.user_id, f.auction_id)]
 
     
     instr.write("\n")
@@ -348,7 +357,7 @@ with open("instructions.txt", "w") as instr:
         ro = ReportOption(report_option_id, i)
         report_option_id += 1
 
-        instr.write("insert into report_option(id, name) values(" + str(ro.id) + ", '" + ro.name + "');\n")
+        instr.write("insert into report_option(name) values(" + "'" + ro.name + "');\n")
     
     instr.write("\n")
 
@@ -356,4 +365,27 @@ with open("instructions.txt", "w") as instr:
         rr = ReportReasons(i+1)
 
         instr.write("insert into report_reasons(id_report_option, id_report) values(" + str(rr.report_option_id) + ", " + str(rr.report_id) + ");\n")
+
+    instr.write("\n")
+    usedValues = []
+    for numRates in range(10000):
+        seller_id = random.randint(1, am_users)
+        bidder_id = random.randint(1, am_users)
+        while (seller_id == bidder_id or ((seller_id, bidder_id) in usedValues)):
+            seller_id = random.randint(1,am_users)
+            bidder_id = random.randint(1, am_users)
+        usedValues += [(seller_id, bidder_id)]
+        instr.write(f"INSERT INTO rates(id_bidder, id_seller, rate) VALUES ({bidder_id}, {seller_id}, {random.randint(10, 50)/10});\n")
+    
+    instr.write("\n")
+    id=0
+    for auction_id in range(100):
+            instr.write(f"INSERT INTO image(id, path, auction_id) VALUES ({id}, 'AuctionImages/default_auction.png', {auction_id});\n")
+            id+=1
+            instr.write(f"INSERT INTO image(id, path, auction_id) VALUES ({id}, 'AuctionImages/default_auction.png', {auction_id});\n")
+            id+=1
+            instr.write(f"INSERT INTO image(id, path, auction_id) VALUES ({id}, 'AuctionImages/default_auction.png', {auction_id});\n")
+            id+=1
+    
+    
 

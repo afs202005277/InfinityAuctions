@@ -13,7 +13,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-two">
             <h3 class="faq-page">Will online auctions help me achieve higher sale prices?</h3>
             <div class="faq-body">
@@ -22,7 +22,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-three">
             <h3 class="faq-page">
                 What industries can benefit most from online auction technology?
@@ -33,7 +33,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-four">
             <h3 class="faq-page">
                 Do live online auctions replace traditional auctions?
@@ -44,7 +44,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-five">
             <h3 class="faq-page">
                 Do online bidders experience a technical delay?
@@ -55,7 +55,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-six">
             <h3 class="faq-page">
                 Is there a cost to online bidders?
@@ -66,7 +66,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-seven">
             <h3 class="faq-page">
                 Is there any cost to the auctioneer?
@@ -77,7 +77,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-eight">
             <h3 class="faq-page">
                 How do users register?
@@ -88,7 +88,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-nine">
             <h3 class="faq-page">
                 How do I login to my account?
@@ -99,7 +99,7 @@
                 </p>
             </div>
         </div>
-        <hr class="hr-line" />
+        <hr class="hr-line">
         <div class="faq-ten">
             <h3 class="faq-page">
                 What can I sell?

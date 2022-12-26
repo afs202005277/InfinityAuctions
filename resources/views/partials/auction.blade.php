@@ -3,7 +3,7 @@
         <div class="imgBxAuction">
             @php($images = App\Models\Auction::find($auction->id)->images()->get())
             @foreach($images as $image)
-                <img class="card_auction_img{{$loop->index + 1}}" src="{{ asset($image->path) }}">
+                <img class="card_auction_img{{$loop->index + 1}}" src="{{ asset($image->path) }}" alt="Auction image">
                 @if($loop->index === 2)
                     @break
                 @endif

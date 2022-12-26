@@ -5,7 +5,7 @@
 @section('content')
     <div id="popup" style="display: none">
         <h1>Place your rate: </h1>
-        <div id="in_stars">
+        <div class="in_stars">
             @for ($i = 0; $i < 5; $i++)
                 <svg aria-hidden="true" id="star_{{$i+1}}" fill="grey" viewBox="0 0 20 20"
                      xmlns="http://www.w3.org/2000/svg">
@@ -19,7 +19,7 @@
 
         <div class="bio">
             <div>
-                <img src="{{ asset($image) }}" alt="">
+                <img src="{{ asset($image) }}" alt="profile picture">
             </div>
         </div>
         <div class="bio2">
@@ -73,7 +73,8 @@
             <h4 class="info_bar_3"> Bids Placed </h4>
             <h4 class="info_bar_4"> Bidding Auction </h4>
             <h4 class="info_bar_5"> Following Auction</h4>
-            <h4 class="info_bar_6"> Woned Auction</h4>
+            <h4 class="info_bar_6"> Wishlist</h4>
+            <h4 class="info_bar_7"> Woned Auction</h4>
         </div>
         <hr/>
 
@@ -121,6 +122,17 @@
                 @endforeach
             @else
                 <p> This user doesn't follow any Auction ! </p>
+            @endif
+        </div>
+
+        <!-- Wishlist -->
+        <div class="wishlist_list">
+            @if(!$user->wishlist()->get()->isEmpty())
+                @foreach ($user->wishlist as $item)
+                    <p>{{$item->name}}</p>
+                @endforeach
+            @else
+                <p> This user doesn't have anything on his Wishlist! </p>
             @endif
         </div>
 

@@ -35,7 +35,7 @@
             <p id="timer"></p>
             @include('partials.auction_details', ['details' => $details])
             <section class="confident">
-                <img src={{ asset('img/protection_shield.svg')}}>
+                <img src={{ asset('img/protection_shield.svg')}} alt="Protection shield symbol">
                 <p>Bid with confidence</p>
             </section>
             <section class="bids">
@@ -52,9 +52,9 @@
             <p>Load up your credits with Paypal, MBWay, ShopPay, Apple Pay and Google Pay.</p>
             <h3>Share</h3>
             <ul class="link">
-                <li><a href="https://instagram.com"><img src={{ asset("img/instagram.svg") }}></a></li>
-                <li><a href="https://facebook.com"><img src={{ asset("img/facebook.svg") }}></a></li>
-                <li><a href="https://twitter.com"><img src={{ asset("img/twitter.svg") }}></a></li>
+                <li><a href="https://instagram.com"><img src={{ asset("img/instagram.svg") }} alt="Instagram logo"></a></li>
+                <li><a href="https://facebook.com"><img src={{ asset("img/facebook.svg") }} alt="Facebook logo"></a></li>
+                <li><a href="https://twitter.com"><img src={{ asset("img/twitter.svg") }} alt="Twitter logo"></a></li>
             </ul>
         </section>
         <section class="right">

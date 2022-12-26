@@ -56,6 +56,9 @@ Route::post('api/user/follow_auction', 'UserController@follow_auction');
 Route::post('api/user/unfollow_auction', 'UserController@unfollow_auction');
 Route::get('user/{id}', 'UserController@show');
 Route::post('user/{id}', 'UserController@update')->name('editUser');
+Route::post('api/user/follow_term', 'WishlistController@follow_term');
+Route::post('api/user/unfollow_term', 'WishlistController@unfollow_term');
+Route::post('/api/user/follows_term', 'WishlistController@follows');
 
 //Users
 Route::get('users', 'UsersController@index');
@@ -119,3 +122,14 @@ Route::post('/reset-password', function (Request $request) {
         ? redirect()->route('login')->with('status', __($status))
         : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
+
+//Payments
+Route::get('balance', 'PaypalController@show')->name('payments');
+
+Route::get('deposit', 'PayPalController@payment')->name('deposit');
+Route::get('deposit/cancel', 'PayPalController@cancel')->name('deposit.cancel');
+Route::get('deposit/success', 'PayPalController@success')->name('deposit.success');
+
+Route::get('withdraw', 'PayPalController@withdraw')->name('withdraw');
+Route::get('withdraw/cancel', 'PayPalController@withdrawCancel')->name('withdraw.cancel');
+Route::get('withdraw/success', 'PayPalController@withdrawSuccess')->name('withdraw.success');

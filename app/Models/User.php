@@ -41,6 +41,11 @@ class User extends Authenticatable
         return $this->hasMany(Bid::class);
     }
 
+    public function wishlist()
+    {
+        return $this->belongsToMany(Wishlist::class, 'users_wishlist', 'users_id');
+    }
+
     public function followingAuctions()
     {
         return $this->belongsToMany(Auction::class, 'following');
@@ -143,5 +148,32 @@ class User extends Authenticatable
         return DB::table('users')
             ->join('image', 'users.profile_image', '=', 'image.id')
             ->select('*');
+    }
+    
+    public static function addBalance($id, $amount) {
+        $user = User::find($id);
+        $user->credits = User::getBalance($id)+$amount;
+        return $user->save();
+    }
+
+    public static function removeBalance($id, $amount) {
+        $user = User::find($id);
+        $user->credits = User::getBalance($id)-$amount;
+        return $user->save();
+    }
+
+    public static function getBalance($id) {
+        return User::find($id)->credits;
+    }
+
+    public static function heldBalance($user_id) {
+        $value = DB::select(DB::raw('SELECT SUM(max) 
+                                    FROM (  SELECT auction_id, user_id, MAX(amount) 
+                                            FROM BID 
+                                            GROUP BY auction_id, user_id 
+                                         ) top_bids 
+                                    WHERE user_id = ' . $user_id . ' GROUP BY user_id;'));
+
+        return $value[0]->sum;
     }
 }
