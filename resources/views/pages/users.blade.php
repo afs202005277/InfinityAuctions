@@ -73,7 +73,8 @@
             <h4 class="info_bar_3"> Bids Placed </h4>
             <h4 class="info_bar_4"> Bidding Auction </h4>
             <h4 class="info_bar_5"> Following Auction</h4>
-            <h4 class="info_bar_6"> Woned Auction</h4>
+            <h4 class="info_bar_6"> Wishlist</h4>
+            <h4 class="info_bar_7"> Woned Auction</h4>
         </div>
         <hr/>
 
@@ -121,6 +122,17 @@
                 @endforeach
             @else
                 <p> This user doesn't follow any Auction ! </p>
+            @endif
+        </div>
+
+        <!-- Wishlist -->
+        <div class="wishlist_list">
+            @if(!$user->wishlist()->get()->isEmpty())
+                @foreach ($user->wishlist as $item)
+                    <p>{{$item->name}}</p>
+                @endforeach
+            @else
+                <p> This user doesn't have anything on his Wishlist! </p>
             @endif
         </div>
 

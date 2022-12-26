@@ -7,6 +7,9 @@
         <div>
             <p id="you-searched-for">You searched for "{{$search}}"</p>
             <button id="del-search-button" onclick="window.location='{{ url("/search") }}' "><img src={{ asset('img/cross.svg') }}></button>
+            <input type="text" id="search" name="search" hidden value="{{$search}}">
+            <button id="follow_word" @php if ($follows) { echo 'class="hide"'; } @endphp>Follow</Button>
+            <button id="unfollow_word" @php if (!$follows) { echo 'class="hide"'; } @endphp>Unfollow</Button>
         </div>
     @endif
     @include('partials.search_filter', ['filters' => $filters, 'categories' => $categories, 'states' => $states, 'order' => $order])
