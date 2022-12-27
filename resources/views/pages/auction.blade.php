@@ -25,19 +25,19 @@
 
 
     <div class="toparea">
-        <section class="images">
+        <div class="images">
             <div class="container">
                 <img id="expandedImg" style="width:100%" alt="expanded auction image">
             </div>
             @include('partials.auction_images', ['images' => $images])
-        </section>
+        </div>
         <div class="details">
             <p id="timer"></p>
             @include('partials.auction_details', ['details' => $details])
-            <section class="confident">
+            <div class="confident">
                 <img src={{ asset('img/protection_shield.svg')}} alt="Protection shield symbol">
                 <p>Bid with confidence</p>
-            </section>
+            </div>
             <section class="bids">
                 <h3 class="bid-history">Bid History</h3>
                 @include('partials.auction_bids', ['bids' => $bids])

@@ -59,7 +59,7 @@
 
             @if(!$editMode)
                 <label for="images">Images (at least 3)</label>
-                <input id="images" name="images[]" value="{{ old('images[]') }}" type="file" multiple required>
+                <input id="images" name="images[]" type="file" multiple required>
                 @if ($errors->has('images'))
                     <span class="error">
                 {{ $errors->first('images') }}
@@ -111,7 +111,7 @@
             </span>
             @endif
 
-            <div class="categories">
+            <fieldset class="categories">
                 <legend>Categories</legend>
                 @foreach ($categories as $category)
                     @php $id = str_replace(' ', '', $category->name);
@@ -132,7 +132,7 @@
                     @endif
                     <label for="{{$id}}">{{$category->name}}</label><br>
                 @endforeach
-            </div>
+            </fieldset>
 
             <button type="submit">SUBMIT</button>
         </form>
