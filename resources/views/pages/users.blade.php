@@ -5,7 +5,7 @@
 @section('content')
     <div id="popup" style="display: none">
         <h1>Place your rate: </h1>
-        <div id="in_stars">
+        <div class="in_stars">
             @for ($i = 0; $i < 5; $i++)
                 <svg aria-hidden="true" id="star_{{$i+1}}" fill="grey" viewBox="0 0 20 20"
                      xmlns="http://www.w3.org/2000/svg">
@@ -19,7 +19,7 @@
 
         <div class="bio">
             <div>
-                <img src="{{ asset($image) }}" alt="">
+                <img src="{{ asset($image) }}" alt="profile picture">
             </div>
         </div>
         <div class="bio2">
@@ -35,9 +35,10 @@
                         <a class="edit"href="{{ url('/balance') }}">
                             <button> Balance</button>
                         </a>
-                        <a href="{{ url('/logout') }}">
-                            <button> Logout</button>
-                        </a>
+                        <form class="edit" action="{{url('/logout')}}" method="get">
+                            <button type="submit">Logout</button>
+                        </form>
+
                         @if(Auth::user()->is_admin)
                             <a class="manage_btn" href="{{ url('/manage') }}">
                                 <button> Admin Panel</button>
@@ -59,9 +60,9 @@
 
             @if(Auth::user()!=null && !Auth::user()->is_admin)
                 @if (Auth::user()->id!=$user->id)
-                    <a class="report_btn" href="{{ url('/users/report/' . $user->id) }}">
-                        <button> Report</button>
-                    </a>
+                    <form class="report_btn" action="{{ url('/users/report/' . $user->id) }}">
+                        <button type="submit">Report</button>
+                    </form>
                     <button id="rateSellerButton">Rate this seller</button>
                 @endif
             @endif
@@ -77,9 +78,9 @@
             <h4 class="info_bar_4"> Bidding Auction </h4>
             <h4 class="info_bar_5"> Following Auction</h4>
             <h4 class="info_bar_6"> Wishlist</h4>
-            <h4 class="info_bar_7"> Woned Auction</h4>
+            <h4 class="info_bar_7"> Won Auction</h4>
         </div>
-        <hr/>
+        <hr>
 
         <!-- Users Data -->
         <div class="change_data">
@@ -141,18 +142,18 @@
 
         <!-- Woned Auction -->
         <div class="woned_auctions">
-            @if(!$user->wonedAuctions()->get()->isEmpty())
-                @foreach ($user->wonedAuctions as $auction)
-                    @include('partials.auction', compact('auction'))
+            @if(count($user->wonAuctions())!=0)
+                @foreach ($user->wonAuctions as $auction)
+                    @include('partials.woned_auction', compact('auction'))
                 @endforeach
             @else
-                <p> This user hasn't woned any Auction ! </p>
+                <p> This user hasn't won any Auction ! </p>
             @endif
         </div>
 
     @else
         <h4 id="info_bar_2"> Owned Auctions </h4>
-        <hr/>
+        <hr>
         <div class="auctions_owned">
             @if(!$user->ownedAuctions()->get()->isEmpty())
                 @foreach ($user->ownedAuctions as $auction)
@@ -165,7 +166,7 @@
 
     @endif
     @if(Auth::user()!==null && (Auth::id()===$user->id || Auth::user()->is_admin))
-        <button class="delete_account"> Delete</button>
+        @include('partials.delete_confirmation')
     @endif
 
 @endsection

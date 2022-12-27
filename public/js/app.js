@@ -7,7 +7,6 @@ function addEventListeners() {
             let bn = document.querySelector('#buy-now').textContent.split(' ');
             document.querySelector('#bid_amount').value = bn[bn.length-1].slice(0, -1);
             sendCreateBidRequest(event);
-            event.preventDefault();
         };
 }
 

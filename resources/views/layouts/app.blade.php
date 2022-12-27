@@ -33,6 +33,7 @@
     <link href="{{ asset('css/tmp.css') }}" rel="stylesheet">
     <link href="{{ asset('css/filter_panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/search_page.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
     <script type="text/javascript" src={{ asset('js/app.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/faq.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/user_profile.js') }} defer></script>
@@ -50,7 +51,7 @@
             <a class="logo" href="{{ url('/') }}"><img src={{ asset('img/infinityauctions_logo.png') }} alt="InfinityAuctions logo"></a>
             <div class="categories">
               <div class="cat-button">
-                Categories<img src={{ asset('img/downarrow.svg')}}>
+                Categories<img src={{ asset('img/downarrow.svg')}} alt="Categories down arrow">
               </div>
               @include('partials.categories', ['categories' => $categories])
             </div>
@@ -61,7 +62,7 @@
             </div>
             <a class="faq" href="{{ url('/faq') }}">FAQ</a>
             <a class="faq" href="{{ url('/users') }}">Users</a>
-            
+
             @if (Auth::check())
                 <a class="sell-button" href="{{ url('/sell') }}">Sell</a>
                 <div class="notification-box">
@@ -83,8 +84,8 @@
       </section>
       <footer>
         <section class="left">
-          <ul class="links">
             <h3>Links</h3>
+          <ul class="links">
             <li><a href="{{ url('/about-us') }}">About Us</a></li>
             <li><a href="{{ url('/faq') }}">FAQ</a></li>
             <li><a href="{{ url('/services') }}">Services</a></li>
@@ -93,23 +94,23 @@
           <section class="socials">
             <h3>Our Socials</h3>
             <ul class="link">
-              <li><a href="https://instagram.com"><img src={{ asset("img/instagram.svg") }}></a></li>
-              <li><a href="https://facebook.com"><img src={{ asset("img/facebook.svg") }}></a></li>
-              <li><a href="https://twitter.com"><img src={{ asset("img/twitter.svg") }}></a></li>
+              <li><a href="https://instagram.com"><img src={{ asset("img/instagram.svg") }} alt="Instagram Icon"></a></li>
+              <li><a href="https://facebook.com"><img src={{ asset("img/facebook.svg") }} alt="Facebook Icon"></a></li>
+              <li><a href="https://twitter.com"><img src={{ asset("img/twitter.svg") }} alt="Twitter Icon"></a></li>
             </ul>
           </section>
         </section>
-        <section class="right">
+        <div class="right">
           <section class="sponsors">
             <h3>Our Sponsors</h3>
             <div class="images">
-              <img src={{ asset('img/auction_tmp.png') }}>
-              <img src={{ asset('img/auction_tmp.png') }}>
-              <img src={{ asset('img/auction_tmp.png') }}>
-              <img src={{ asset('img/auction_tmp.png') }}>
+              <img src={{ asset('img/auction_tmp.png') }} alt = "Logo of sponsor 1">
+              <img src={{ asset('img/auction_tmp.png') }} alt = "Logo of sponsor 2">
+              <img src={{ asset('img/auction_tmp.png') }} alt = "Logo of sponsor 3">
+              <img src={{ asset('img/auction_tmp.png') }} alt = "Logo of sponsor 4">
             </div>
           </section>
-        </section>
+        </div>
       </footer>
     </main>
     <p class="copyright">InfinityAuctions ©</p>

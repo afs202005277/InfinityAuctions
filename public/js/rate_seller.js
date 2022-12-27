@@ -19,7 +19,7 @@ function rateAdded() {
 if (document.querySelector('#rateSellerButton') !== null) {
     document.querySelector('#rateSellerButton').addEventListener('click', function (event) {
         document.querySelector('#popup').style.display = "block";
-        let stars = document.querySelectorAll('#in_stars svg');
+        let stars = document.querySelectorAll('.in_stars svg');
         for (let star of stars) {
             star.addEventListener('mouseover', function (event) {
                 paintStars(parseInt(star.id.charAt(star.id.length - 1)));

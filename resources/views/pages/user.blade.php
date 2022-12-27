@@ -7,7 +7,7 @@
 
         <div class= "bio">
             <div>
-                <img src="{{ asset($image) }}" alt="">
+                <img src="{{ asset($image) }}" alt="profile picture">
             </div>
         </div>
         <div class="bio2">
@@ -24,7 +24,7 @@
         <h4 class="info_bar_4"> Bidding Auction </h4>
         <h4 class="info_bar_5"> Following Auction</h4>
     </div>
-    <hr/>
+    <hr>
     <!-- Change Data -->
     <div class="change_data">
         @include('partials.edit_profile')
@@ -71,7 +71,6 @@
             <p> This user doesn't follow any Auction ! </p>
         @endif
     </div>
-
     <!-- Wishlist -->
     <div class="wishlist_list">
         @if(!$user->wishlist()->get()->isEmpty())
@@ -82,7 +81,5 @@
             <p> This user doesn't have anything on his Wishlist! </p>
         @endif
     </div>
-
- 
 
 @endsection
