@@ -1,17 +1,18 @@
 address:
-pattern="^[a-zA-Z0-9\s,]{1,}$"
-title="An address can only contain spaces, commas, numbers and alphabetic characters"
+pattern="^[a-zA-Z0-9\s,]{1,}$" title="An address can only contain spaces, commas, numbers and alphabetic characters"
 
 
 cellphone:
-pattern="^[0-9]{10}$"
+pattern="^[0-9]{9}$"
 title="The phone number can only contain 9 digits."
 
 email:
-pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
-title="The email address can only contain letters, numbers and dots. The '@' sign is mandatory"
+pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$" title="The email address can only contain letters, numbers and dots. The '@' sign is mandatory"
 
 name:
 pattern="^[a-zA-Z\s]{1,255}$" title="Only letters and white spaces are allowed"
+
+search:
+pattern="^[a-zA-Z\s0-9]$" title="Only letters, white spaces and digits are allowed"
 
 
