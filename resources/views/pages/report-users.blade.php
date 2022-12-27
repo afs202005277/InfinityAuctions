@@ -28,7 +28,6 @@
             <input type="text" name="reported_user_name" value="{{$to_use['name']}}">
             <fieldset class="option">
                 <legend>Options</legend>
-                <br>
                 @foreach ($options as $option)
                     @php $id = str_replace(' ', '', $option->name);
                     @endphp

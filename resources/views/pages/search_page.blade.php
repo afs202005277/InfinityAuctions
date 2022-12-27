@@ -3,6 +3,7 @@
 @section('title', 'Search Page')
 
 @section('content')
+    <h2>Search Results</h2>
     @if ( isset($search) )
         <div>
             <p id="you-searched-for">You searched for "{{$search}}"</p>

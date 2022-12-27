@@ -41,7 +41,7 @@
     border-radius: 1em;
     padding: 0.5em 1.5em;
     border: none;
-    
+
     font-weight: 800;
 }
 
@@ -149,7 +149,7 @@
   font-size: 18px;
   background-color: var(--ten);
   color: #fff;
-  content: 'x'; 
+  content: 'x';
   box-shadow: 0 12px 25px 0 rgba(16,39,112,.25);
   transition: all 200ms linear;
   opacity: 0;

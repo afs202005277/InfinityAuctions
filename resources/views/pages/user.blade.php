@@ -24,7 +24,7 @@
         <h4 class="info_bar_4"> Bidding Auction </h4>
         <h4 class="info_bar_5"> Following Auction</h4>
     </div>
-    <hr/>
+    <hr>
     <!-- Change Data -->
     <div class="change_data">
         @include('partials.edit_profile')

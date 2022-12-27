@@ -1,12 +1,10 @@
-
-
 <div class="pagination p1">
   <p hidden id="pageNumberUsers">{{$paginator->currentPage()}}</p>
   <ul>
-    <li><</li>
+    <li>&lt;</li>
     @for ($i = 1; $i < $paginator->lastItem(); $i++)
-      <a href="{{url($paginator->url($i))}}"><li >{{$i}}</li></a>
+      <a href="{{url($paginator->url($i))}}"><li>{{$i}}</li></a>
     @endfor
-    <li>></li>
+    <li>&gt;</li>
   </ul>
 </div>

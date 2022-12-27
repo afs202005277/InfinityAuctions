@@ -32,9 +32,9 @@
             @if(Auth::user()!=null)
                 @if(Auth::user()->id==$user->id)
                     <div>
-                        <a class="edit" href="{{ url('/logout') }}">
-                            <button> Logout</button>
-                        </a>
+                        <form class="edit" action="{{url('/logout')}}" method="get">
+                            <button type="submit">Logout</button>
+                        </form>
                         @if(Auth::user()->is_admin)
                             <a class="manage_btn" href="{{ url('/manage') }}">
                                 <button> Admin Panel</button>
@@ -56,9 +56,9 @@
 
             @if(Auth::user()!=null && !Auth::user()->is_admin)
                 @if (Auth::user()->id!=$user->id)
-                    <a class="report_btn" href="{{ url('/users/report/' . $user->id) }}">
-                        <button> Report</button>
-                    </a>
+                    <form class="report_btn" action="{{ url('/users/report/' . $user->id) }}">
+                        <button type="submit">Report</button>
+                    </form>
                     <button id="rateSellerButton">Rate this seller</button>
                 @endif
             @endif
@@ -76,7 +76,7 @@
             <h4 class="info_bar_6"> Wishlist</h4>
             <h4 class="info_bar_7"> Woned Auction</h4>
         </div>
-        <hr/>
+        <hr>
 
         <!-- Users Data -->
         <div class="change_data">
@@ -149,7 +149,7 @@
 
     @else
         <h4 id="info_bar_2"> Owned Auctions </h4>
-        <hr/>
+        <hr>
         <div class="auctions_owned">
             @if(!$user->ownedAuctions()->get()->isEmpty())
                 @foreach ($user->ownedAuctions as $auction)
