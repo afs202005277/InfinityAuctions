@@ -167,12 +167,16 @@ class User extends Authenticatable
 
     public static function heldBalance($user_id) {
         $value = DB::select(DB::raw('SELECT SUM(max) 
-                                    FROM (  SELECT auction_id, user_id, MAX(amount) 
-                                            FROM BID 
+                                    FROM (  SELECT BID.auction_id, BID.user_id, MAX(BID.amount) 
+                                            FROM BID, AUCTION
+                                            WHERE AUCTION.state = \'Running\'
                                             GROUP BY auction_id, user_id 
                                          ) top_bids 
                                     WHERE user_id = ' . $user_id . ' GROUP BY user_id;'));
 
+        if (empty($value)) {
+            return 0;
+        }
         return $value[0]->sum;
     }
 }

@@ -32,7 +32,10 @@
             @if(Auth::user()!=null)
                 @if(Auth::user()->id==$user->id)
                     <div>
-                        <a class="edit" href="{{ url('/logout') }}">
+                        <a class="edit"href="{{ url('/balance') }}">
+                            <button> Balance</button>
+                        </a>
+                        <a href="{{ url('/logout') }}">
                             <button> Logout</button>
                         </a>
                         @if(Auth::user()->is_admin)
