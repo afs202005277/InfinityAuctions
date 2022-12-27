@@ -31,26 +31,26 @@
                         <dt>Name</dt>
                         <dd><h5> {{$auction->name}} </h5></dd>
                         <dt>Price</dt>
-                        <dd>69.99€ </dd>
+                        <dd>{{$auction->getWinnerPrice()}}€ </dd>
                     </dl>
                 </div>
-                <form action="">
+                <form method="get" action="/auctions/checkout/{{$auction->id}}/success">
                     <div id="contactInfo">
                         <label for="">First</label>
                         <label for="">Last</label>
-                        <input type="text" placeholder="">
-                        <input type="text" placeholder="">
+                        <input type="text" value="{{(explode(' ', Auth::user()->name))[0]}}">
+                        <input type="text" value="{{(explode(' ', Auth::user()->name))[1]}}">
                     </div>
                     <div id="adressInfo">
                         <label for="">Street</label>
-                        <input type="text" placeholder="">
+                        <input type="text" value="{{Auth::user()->address}}">
                     </div>
                     <div id="securityInfo">
                         <label for="">City</label>
                         <label for="">State</label>
                         <label for="">Zip</label>
-                        <input type="text" placeholder="">
-                        <input type="text" placeholder="">
+                        <input type="text" placeholder="Manhattan">
+                        <input type="text" placeholder="New York">
                         <input type="text" placeholder="XXXX-XXX">
                     </div>
 

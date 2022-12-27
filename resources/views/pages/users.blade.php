@@ -74,7 +74,7 @@
             <h4 class="info_bar_4"> Bidding Auction </h4>
             <h4 class="info_bar_5"> Following Auction</h4>
             <h4 class="info_bar_6"> Wishlist</h4>
-            <h4 class="info_bar_7"> Woned Auction</h4>
+            <h4 class="info_bar_7"> Won Auction</h4>
         </div>
         <hr/>
 
@@ -138,12 +138,12 @@
 
         <!-- Woned Auction -->
         <div class="woned_auctions">
-            @if(!$user->followingAuctions()->get()->isEmpty())
-                @foreach ($user->followingAuctions as $auction)
+            @if(count($user->wonAuctions())!=0)
+                @foreach ($user->wonAuctions as $auction)
                     @include('partials.woned_auction', compact('auction'))
                 @endforeach
             @else
-                <p> This user hasn't woned any Auction ! </p>
+                <p> This user hasn't won any Auction ! </p>
             @endif
         </div>
 

@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS auction (
 	end_date TIMESTAMP WITH TIME ZONE NOT NULL,
 	buy_now REAL,
 	state auction_possible_state NOT NULL,
+	checkout BOOLEAN NOT NULL DEFAULT FALSE,
 	auction_owner_id INTEGER REFERENCES general_user ON UPDATE CASCADE NOT NULL,
 	CONSTRAINT valid_dates CHECK (start_date < end_date)
 );

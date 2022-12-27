@@ -31,28 +31,15 @@
                         <dt>Name</dt>
                         <dd><h5> {{$auction->name}} </h5></dd>
                         <dt>Price</dt>
-                        <dd>69.99€ </dd>
+                        <dd>{{$auction->getWinnerPrice()}}€</dd>
                     </dl>
                 </div>
                 <form action="">
-                    <div id="contactInfo">
-                        <label for="">First</label>
-                        <label for="">Last</label>
-                        <input type="text" placeholder="">
-                        <input type="text" placeholder="">
-                    </div>
-                    <div id="adressInfo">
-                        <label for="">Street</label>
-                        <input type="text" placeholder="">
-                    </div>
-                    <div id="securityInfo">
-                        <label for="">City</label>
-                        <label for="">State</label>
-                        <label for="">Zip</label>
-                        <input type="text" placeholder="">
-                        <input type="text" placeholder="">
-                        <input type="text" placeholder="XXXX-XXX">
-                    </div>
+                    <br>
+                    <br>
+                    <p> Your product is now being shipped and should arrive in less than <strong> 15 days </strong>! If you have any problem please contact the seller at <strong> {{$auction->owner()->value("cellphone")}} </strong> or our help center at +351 222 124 4352. </p>
+                    <br>
+                    <br>
                 </form>
             </article>
         </section>

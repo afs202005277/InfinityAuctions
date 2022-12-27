@@ -74,6 +74,16 @@ class AuctionController extends Controller
         return view('pages.checkout', compact('auction'));
     }
 
+    public function showAuctionCheckoutSuccess($auction_id)
+    {
+        $auction = Auction::find($auction_id);
+        $auction->checkout = True;
+        $auction->save();
+        return view('pages.checkout_success', compact('auction'));
+    }
+
+    
+
     /**
      * Display the specified resource.
      *

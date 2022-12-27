@@ -17,14 +17,6 @@
     background: var(--sixty);
 }
 
-#logo {
-	align-self: flex-end;
-}
-
-#logo img{
-	width: 100%;
-	height: auto;
-}
 
 #cart{
     width: 150px;
@@ -56,14 +48,14 @@
     grid-column: d;
 }
 
-label{
+.container label{
     text-transform: uppercase;
     font-size: 16px;
     color: rgb(0, 0, 0);
     font-weight: bold;
 }
 
-input{
+.container input{
     color: #000;
     border: 1px solid rgb(226, 225, 232);
     border-radius: 5px;
@@ -188,16 +180,16 @@ input{
 }
 
 
-form {
+.container form {
 padding-top: 1em;
 }
 
-form > * {
+.container form > * {
 padding: 0 0.8em;
 margin-bottom: 1.5em;
 }
 
-form > :last-child {
+.container form > :last-child {
 margin:0em;
 }
 
@@ -321,7 +313,7 @@ If the elements were spans instead of inputs this wouldn't be necessary.
 		width: auto;
 		height: auto;
 		margin: 0 0 1em 0;
-		border-radius: 0;
+		border-radius: 1em;
 		display: block;
 	}
 	

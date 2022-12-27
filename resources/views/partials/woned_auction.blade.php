@@ -14,7 +14,12 @@
         <div class="sizeAuction">
             <h3> End Date: <strong> {{$auction->end_date}} </strong> </h3>
         </div>
-            <a href="{{ url('/auctions/checkout/' . $auction->id) }}">Checkout</a>
+            @if(!$auction->checkout)
+                <a href="{{ url('/auctions/checkout/' . $auction->id) }}">Checkout</a>
+            @else
+                <a href="{{ url('/auctions/checkout/' . $auction->id) . '/success'}}">Details</a>
+            @endif
+            
         </div>
     </div>
 </div>
