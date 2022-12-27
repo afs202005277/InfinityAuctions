@@ -325,6 +325,7 @@
 
 .bid2 {
     width: 60%;
+    height: 10em;
     border-radius: 1em;
     background-color: #fff3f3;
     display: flex;
@@ -335,7 +336,7 @@
 
 .bid2 > img {
     border-radius: 1em;
-    width: 10em;
+    width: auto;
     height: auto;
     margin: 1em;
 }

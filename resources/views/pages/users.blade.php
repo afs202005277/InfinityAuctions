@@ -162,7 +162,7 @@
 
     @endif
     @if(Auth::user()!==null && (Auth::id()===$user->id || Auth::user()->is_admin))
-        <button class="delete_account"> Delete</button>
+        @include('partials.delete_confirmation')
     @endif
 
 @endsection
