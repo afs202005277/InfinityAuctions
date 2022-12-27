@@ -35,23 +35,8 @@
                         <a class="edit" href="{{ url('/logout') }}">
                             <button> Logout</button>
                         </a>
-                        @if(Auth::user()->is_admin)
-                            <a class="manage_btn" href="{{ url('/manage') }}">
-                                <button> Admin Panel</button>
-                            </a>
-                        @endif
-                    </div>
-                @elseif(Auth::user()->is_admin)
-                    <div>
-                        <a class="edit" href="{{ url('/user/' . Auth::user()->id) }}">
-                            <button> Edit Profile</button>
-                        </a>
-                        <a class="manage_btn" href="{{ url('/manage') }}">
-                            <button> Admin Panel</button>
-                        </a>
                     </div>
                 @endif
-
             @endif
 
             @if(Auth::user()!=null && !Auth::user()->is_admin)
@@ -66,7 +51,7 @@
     </div>
 
 
-    @if(Auth::user()!=null && Auth::user()->id==$user->id)
+    @if( Auth::user()!=null && (Auth::user()->id==$user->id || Auth::user()->is_admin))
         <div class="row">
             <h4 class="info_bar_1"> User Info </h4>
             <h4 class="info_bar_2"> Owned Auctions </h4>
@@ -135,10 +120,6 @@
                 <p> This user doesn't own any Auctions </p>
             @endif
         </div>
-
-    @endif
-    @if(Auth::user()!==null && (Auth::id()===$user->id || Auth::user()->is_admin))
-        <button class="delete_account"> Delete</button>
     @endif
 
 @endsection

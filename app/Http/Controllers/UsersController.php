@@ -55,11 +55,12 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $image = Image::find($user->profile_image)->path;
+        $ban_opts = User::getBanStates();
 
         if($user->is_admin) {
             $usrReports = $user->pendingUsrReports()->get();
             $aucReports = $user->pendingAucReports()->get();
-            return view('pages.admin', compact('user', 'image', 'usrReports', 'aucReports'));
+            return view('pages.admin', compact('user', 'image', 'usrReports', 'aucReports', 'ban_opts'));
         } 
         
         $ratingDetails = $user->getRatingDetails();

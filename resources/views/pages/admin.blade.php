@@ -28,38 +28,40 @@
 
 
     @if( Auth::user()!=null && Auth::user()->id==$user->id && Auth::user()->is_admin )
-        <div class="row">
-            <h4 class="info_bar_1"> User Info </h4>
-            <h4 class="info_bar_2"> Reported Auctions </h4>
-            <h4 class="info_bar_3"> Reported Users </h4>
-        </div>
-        <hr/>
+        <div class="admin-panel">
+            <div class="row">
+                <h4 class="info_bar_admin"> Admin Info </h4>
+                <h4 class="info_bar_auc"> Reported Auctions </h4>
+                <h4 class="info_bar_usr"> Reported Users </h4>
+            </div>
+            <hr/>
 
-        <!-- Users Data -->
-        <div class="change_data">
-            @include('partials.edit_profile', compact('user'))
-        </div>
+            <!-- Users Data -->
+            <div class="change_data_admin">
+                @include('partials.edit_profile', compact('user'))
+            </div>
 
-        <!-- Reported Auctions -->
-        <div class="auc-report">
-            @if(!$aucReports->isEmpty())
-                @foreach ($aucReports as $auction)
-                    @include('partials.auction', compact('auction'))
-                @endforeach
-            @else
-                <p> No reported auctions! </p>
-            @endif
-        </div>
+            <!-- Reported Auctions -->
+            <div class="auc-report">
+                @if(!$aucReports->isEmpty())
+                    @foreach ($aucReports as $report)
+                        @include('partials.report', compact('report', 'ban_opts'))
+                    @endforeach
+                @else
+                    <p> No reported auctions! </p>
+                @endif
+            </div>
 
-        <!-- Reported Users -->
-        <div class="usr-report">
-            @if(!$usrReports->isEmpty())
-                @foreach ($usrReports as $usrReport)
-                    <p> {{$usrReport->id}} </p>
-                @endforeach
-            @else
-                <p> No reported users! </p>
-            @endif
+            <!-- Reported Users -->
+            <div class="usr-report">
+                @if(!$usrReports->isEmpty())
+                    @foreach ($usrReports as $report)
+                        @include('partials.report', compact('report'))
+                    @endforeach
+                @else
+                    <p> No reported users! </p>
+                @endif
+            </div>
         </div>
     @endif
 @endsection

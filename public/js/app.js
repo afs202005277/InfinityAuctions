@@ -30,6 +30,11 @@ function sendAjaxRequest(method, url, data, handler) {
     request.send(encodeForAjax(data));
 }
 
+function sendBanRequest(event) {
+    let user_id = 
+    event.preventDefault();
+}
+
 function sendCreateBidRequest(event) {
     let amount = document.querySelector('#bid_amount').value;
     let user_id = document.querySelector('#user_id').value;

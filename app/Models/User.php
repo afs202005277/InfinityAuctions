@@ -90,16 +90,28 @@ class User extends Authenticatable
     }
 
     public function pendingAucReports() {
-        return $this->reportsHandled()->whereNotNull('auction_reported')->whereNull('penalty');
+        return $this->reportsHandled()
+                ->whereNotNull('report.auction_reported')
+                ->whereNull('report.penalty')
+                ->selectRaw("report.reporter as reporter, users.id as auction_owner, 
+                            report.auction_reported as auction_reported,
+                            report.date as date, ARRAY_AGG(report_option.name) as reasons")
+                ->groupBy('report.id');
     }
 
     public function pendingUsrReports() {
-        return $this->reportsHandled()->whereNotNull('reported_user')->whereNull('penalty');
+        return $this->reportsHandled()
+                ->whereNotNull('report.reported_user')
+                ->whereNull('report.penalty')
+                ->selectRaw("report.reporter as reporter, report.reported_user as reported_user, report.date as date, ARRAY_AGG(report_option.name) as reasons")
+                ->groupBy('report.id');
     }
 
     public function reportsHandled()
     {
-        return $this->hasMany(Report::class, 'admin_id');
+        return $this->hasMany(Report::class, 'admin_id')
+                ->join('report_reasons', 'report.id', '=', 'report_reasons.id_report')
+                ->join('report_option', 'report_reasons.id_report_option', '=', 'report_option.id');
     }
 
     public function profileImage(){
@@ -150,5 +162,11 @@ class User extends Authenticatable
         return DB::table('users')
             ->join('image', 'users.profile_image', '=', 'image.id')
             ->select('*');
+    }
+
+    public static function getBanStates() {
+        $states = DB::select(DB::raw("SELECT unnest(enum_range(NULL::penalty_type))::text AS type;"));
+
+        return $states;
     }
 }
