@@ -119,7 +119,6 @@ class Auction extends Model
         }
 
         $values = $query->paginate(10);
-
         return $values;
     }
 
