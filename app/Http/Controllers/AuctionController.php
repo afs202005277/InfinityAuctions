@@ -68,6 +68,12 @@ class AuctionController extends Controller
         return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails'));
     }
 
+    public function showAuctionCheckout($auction_id)
+    {
+        $auction = Auction::find($auction_id);
+        return view('pages.checkout', compact('auction'));
+    }
+
     /**
      * Display the specified resource.
      *

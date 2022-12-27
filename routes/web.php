@@ -78,7 +78,9 @@ Route::get('sell', 'AuctionController@showSellForm')->name('sell');
 Route::post('sell', 'AuctionController@sell');
 Route::get('search', 'SearchPageController@show');
 Route::get('auctions/report/{id}', 'ReportController@showAuctionReport');
+Route::get('auctions/checkout/{auction_id}', 'AuctionController@showAuctionCheckout');
 Route::post('auctions/report', 'ReportController@report')->name('reportAuction');
+
 
 //Notifications
 Route::delete('api/notifications/delete/{id}', 'NotificationController@destroy');

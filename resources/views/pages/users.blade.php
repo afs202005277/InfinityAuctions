@@ -138,9 +138,9 @@
 
         <!-- Woned Auction -->
         <div class="woned_auctions">
-            @if(!$user->wonedAuctions()->get()->isEmpty())
-                @foreach ($user->wonedAuctions as $auction)
-                    @include('partials.auction', compact('auction'))
+            @if(!$user->followingAuctions()->get()->isEmpty())
+                @foreach ($user->followingAuctions as $auction)
+                    @include('partials.woned_auction', compact('auction'))
                 @endforeach
             @else
                 <p> This user hasn't woned any Auction ! </p>
