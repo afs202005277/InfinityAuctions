@@ -19,6 +19,11 @@ class Auction extends Model
         return $this->hasMany(Bid::class);
     }
 
+    public function getWinnerPrice(){
+        $maxAmount = $this->bids()->max('amount');
+        return $maxAmount;
+    }
+
     public function getWinnerID(){
         $maxAmount = $this->bids()->max('amount');
         return $this->bids()->where('amount', $maxAmount)->value('user_id');

@@ -32,9 +32,13 @@
             @if(Auth::user()!=null)
                 @if(Auth::user()->id==$user->id)
                     <div>
+                        <a class="edit"href="{{ url('/balance') }}">
+                            <button> Balance</button>
+                        </a>
                         <form class="edit" action="{{url('/logout')}}" method="get">
                             <button type="submit">Logout</button>
                         </form>
+
                         @if(Auth::user()->is_admin)
                             <a class="manage_btn" href="{{ url('/manage') }}">
                                 <button> Admin Panel</button>
@@ -74,7 +78,7 @@
             <h4 class="info_bar_4"> Bidding Auction </h4>
             <h4 class="info_bar_5"> Following Auction</h4>
             <h4 class="info_bar_6"> Wishlist</h4>
-            <h4 class="info_bar_7"> Woned Auction</h4>
+            <h4 class="info_bar_7"> Won Auction</h4>
         </div>
         <hr>
 
@@ -138,12 +142,12 @@
 
         <!-- Woned Auction -->
         <div class="woned_auctions">
-            @if(!$user->wonedAuctions()->get()->isEmpty())
-                @foreach ($user->wonedAuctions as $auction)
-                    @include('partials.auction', compact('auction'))
+            @if(count($user->wonAuctions())!=0)
+                @foreach ($user->wonAuctions as $auction)
+                    @include('partials.woned_auction', compact('auction'))
                 @endforeach
             @else
-                <p> This user hasn't woned any Auction ! </p>
+                <p> This user hasn't won any Auction ! </p>
             @endif
         </div>
 

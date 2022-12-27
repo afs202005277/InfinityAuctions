@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -63,12 +64,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Auction::Class, 'auction_owner_id');
     }
-    
-    public function wonedAuctions()
-    {
-        //return bidding auctinons where the first bidder has the user_id
-        return $this->hasMany(Auction::Class, 'auction_owner_id');
-    }
 
     public function biddingAuctions($user_id)
     {
@@ -79,6 +74,23 @@ class User extends Authenticatable
         ->distinct()
         ->get();
     }
+
+        
+    public function wonAuctions()
+    {
+        $array = [];
+        $bidding = $this->biddingAuctions($this->id);
+        foreach($bidding as $auction) {
+            $maxAmount = $auction->bids()->max('amount');
+            $winnerId = $auction->bids()->where('amount', $maxAmount)->value('user_id');
+            if($this->id == $winnerId){
+                array_push($array, $auction);
+            }
+        }
+
+        return $array;
+    }
+
 
     public function reportsMade()
     {
@@ -168,12 +180,16 @@ class User extends Authenticatable
 
     public static function heldBalance($user_id) {
         $value = DB::select(DB::raw('SELECT SUM(max) 
-                                    FROM (  SELECT auction_id, user_id, MAX(amount) 
-                                            FROM BID 
+                                    FROM (  SELECT BID.auction_id, BID.user_id, MAX(BID.amount) 
+                                            FROM BID, AUCTION
+                                            WHERE AUCTION.state = \'Running\'
                                             GROUP BY auction_id, user_id 
                                          ) top_bids 
                                     WHERE user_id = ' . $user_id . ' GROUP BY user_id;'));
 
+        if (empty($value)) {
+            return 0;
+        }
         return $value[0]->sum;
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Auction;
+use App\Models\User;
 use Log;
 use DateTime;
 
@@ -33,6 +34,12 @@ class BidController extends Controller
 
             $auction = Auction::find($validated['auction_id']);
 
+            if (User::getBalance($validated['user_id']) - User::heldBalance($validated['user_id']) < $validated['amount']) {
+                return response()->json([
+                    'ms' => 'Not enough balance.'
+                ], 403);
+            } 
+
             $bid->amount = $validated['amount'];
             $bid->auction_id = $validated['auction_id'];
             $bid->user_id = $validated['user_id'];
@@ -44,7 +51,6 @@ class BidController extends Controller
 
             if ($auction->buy_now) {
                 if ($auction->buy_now <= $validated['amount']) {
-                    $auction->state = "Ended";
                     $d = new DateTime('now');
                     $dstr = $d->format('Y-m-d H:i:s');
                     $auction->end_date = $dstr;

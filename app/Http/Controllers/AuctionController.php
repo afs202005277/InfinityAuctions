@@ -6,6 +6,8 @@ use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Notification;
+use App\Models\User;
+use App\Models\Bid;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\QueryException;
@@ -15,6 +17,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
+use Log;
 
 class AuctionController extends Controller
 {
@@ -67,6 +71,22 @@ class AuctionController extends Controller
         $ratingDetails = $owner->getRatingDetails();
         return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails'));
     }
+
+    public function showAuctionCheckout($auction_id)
+    {
+        $auction = Auction::find($auction_id);
+        return view('pages.checkout', compact('auction'));
+    }
+
+    public function showAuctionCheckoutSuccess($auction_id)
+    {
+        $auction = Auction::find($auction_id);
+        $auction->checkout = True;
+        $auction->save();
+        return view('pages.checkout_success', compact('auction'));
+    }
+
+    
 
     /**
      * Display the specified resource.
@@ -282,8 +302,15 @@ class AuctionController extends Controller
 
     public static function updateAuctionsState(){
         $auctionsToEnd = Auction::toEndAuctions();
-        foreach ($auctionsToEnd as $auction){
+        foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
+            $all_bids = Bid::all_bids($auction->id);
+            $max_bid = $all_bids[0];
+            $amount = $max_bid->amount;
+            $user_id = $max_bid->user_id;
+            User::removeBalance($user_id, (float) $amount);
+            User::addBalance($auction->auction_owner_id, $amount*0.95);
+            User::addBalance(1003, $amount*0.05);
         }
         $auctionsEnding = Auction::nearEndAuctions();
         foreach ($auctionsEnding as $auction){

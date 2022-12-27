@@ -27,7 +27,7 @@
     <div class="toparea">
         <div class="images">
             <div class="container">
-                <img id="expandedImg" style="width:100%" alt="expanded auction image">
+                <img id="expandedImg" src="{{ asset($images[0]['path']) }}" style="width:100%" alt="expanded auction image">
             </div>
             @include('partials.auction_images', ['images' => $images])
         </div>
