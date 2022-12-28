@@ -89,13 +89,7 @@
 
         <!-- Owned Auctions -->
         <div class="auctions_owned">
-            @if(!$user->ownedAuctions()->get()->isEmpty())
-                @foreach ($user->ownedAuctions as $auction)
-                    @include('partials.auction', compact('auction'))
-                @endforeach
-            @else
-                <p> This user doesn't own any Auction ! </p>
-            @endif
+            @each('partials.auction', $user->ownedAuctions, 'auction', 'partials.no_items')
         </div>
 
         <!-- Bids Placed -->
@@ -109,59 +103,29 @@
 
         <!-- Bidding Auction -->
         <div class="bidding_auctions">
-            @if(!$user->biddingAuctions($user->id)->isEmpty())
-                @foreach ($user->biddingAuctions($user->id) as $auction)
-                    @include('partials.auction', compact('auction'))
-                @endforeach
-            @else
-                <p> This user hasn't placed any bids ! </p>
-            @endif
+            @each('partials.auction', $user->biddingAuctions($user->id), 'auction', 'partials.no_items')
         </div>
 
         <!-- Following Auction -->
         <div class="following_auctions">
-            @if(!$user->followingAuctions()->get()->isEmpty())
-                @foreach ($user->followingAuctions as $auction)
-                    @include('partials.auction', compact('auction'))
-                @endforeach
-            @else
-                <p> This user doesn't follow any Auction ! </p>
-            @endif
+            @each('partials.auction', $user->followingAuctions, 'auction', 'partials.no_items')
         </div>
 
         <!-- Wishlist -->
         <div class="wishlist_list">
-            @if(!$user->wishlist()->get()->isEmpty())
-                @foreach ($user->wishlist as $item)
-                    <p>{{$item->name}}</p>
-                @endforeach
-            @else
-                <p> This user doesn't have anything on his Wishlist! </p>
-            @endif
+            @each('partials.wishlist_item', $user->wishlist, 'item', 'partials.no_items')
         </div>
 
         <!-- Woned Auction -->
         <div class="woned_auctions">
-            @if(count($user->wonAuctions())!=0)
-                @foreach ($user->wonAuctions as $auction)
-                    @include('partials.woned_auction', compact('auction'))
-                @endforeach
-            @else
-                <p> This user hasn't won any Auction ! </p>
-            @endif
+            @each('partials.woned_auction', $user->wonAuctions(), 'auction', 'partials.no_items')
         </div>
 
     @else
         <h4 id="info_bar_2"> Owned Auctions </h4>
         <hr>
         <div class="auctions_owned">
-            @if(!$user->ownedAuctions()->get()->isEmpty())
-                @foreach ($user->ownedAuctions as $auction)
-                    @include('partials.auction', compact('auction'))
-                @endforeach
-            @else
-                <p> This user doesn't own any Auctions </p>
-            @endif
+            @each('partials.auction', $user->ownedAuctions, 'auction', 'partials.no_items')
         </div>
 
     @endif

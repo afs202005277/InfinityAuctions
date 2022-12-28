@@ -36,61 +36,13 @@
     <span class="error" style="font-size: larger"></span>
     <div class="price-suggestions">
         @if ($bids->max())
-            {{-- Price Suggest 1 --}}
-            <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount"
-                       value="{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}">
-                <button
-                    type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}
-                    €
-                </button>
-            </form>
-            {{-- Price Suggest 2 --}}
-            <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount"
-                       value="{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}">
-                <button
-                    type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}
-                    €
-                </button>
-            </form>
-            {{-- Price Suggest 3 --}}
-            <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount"
-                       value="{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}">
-                <button
-                    type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}
-                    €
-                </button>
-            </form>
+            @include('partials.bid_suggestions', ['increase'=>1.10, 'baseValue'=>$bids->max()->amount, 'state'=>$details->state])
+            @include('partials.bid_suggestions', ['increase'=>1.25, 'baseValue'=>$bids->max()->amount, 'state'=>$details->state])
+            @include('partials.bid_suggestions', ['increase'=>1.50, 'baseValue'=>$bids->max()->amount, 'state'=>$details->state])
         @else
-            {{-- Price Suggest 1 --}}
-            <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount"
-                       value="{{number_format((float)$details->base_price, 2, '.', '')}}">
-                <button type="submit"
-                        disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1, 2, '.', '')}}
-                    €
-                </button>
-            </form>
-            {{-- Price Suggest 2 --}}
-            <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount"
-                       value="{{number_format((float)$details->base_price*1.10, 2, '.', '')}}">
-                <button type="submit"
-                        disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1.10, 2, '.', '')}}
-                    €
-                </button>
-            </form>
-            {{-- Price Suggest 3 --}}
-            <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount"
-                       value="{{number_format((float)$details->base_price*1.25, 2, '.', '')}}">
-                <button type="submit"
-                        disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1.25, 2, '.', '')}}
-                    €
-                </button>
-            </form>
+            @include('partials.bid_suggestions', ['increase'=>1, 'baseValue'=>$details->base_price, 'state'=>$details->state])
+            @include('partials.bid_suggestions', ['increase'=>1.10, 'baseValue'=>$details->base_price, 'state'=>$details->state])
+            @include('partials.bid_suggestions', ['increase'=>1.25, 'baseValue'=>$details->base_price, 'state'=>$details->state])
         @endif
     </div>
     @if ($details->buy_now)

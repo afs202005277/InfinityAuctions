@@ -42,7 +42,6 @@
             </span>
             @endif
             <button type="submit">SUBMIT</button>
-
         </form>
     @endif
 @endsection
