@@ -94,10 +94,9 @@ class AuctionController extends Controller
             );
 
             $validator = Validator::make($fileArray, $rules);
-
             $validated = $request->validate([
-                'title' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
-                'desc' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
+                'title' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/]*$/',
+                'desc' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/]*$/',
                 'images' => 'required|array|min:3',
                 'baseprice' => 'required|numeric|gt:0',
                 'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
@@ -174,8 +173,8 @@ class AuctionController extends Controller
             $auction = Auction::find($id);
             $this->authorize('update', $auction);
             $validated = $request->validate([
-                'title' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
-                'desc' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
+                'title' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/]*$/',
+                'desc' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/]*$/',
                 'baseprice' => 'required|numeric|gt:0',
                 'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
                 'enddate' => 'required|date|after:startdate',
@@ -210,7 +209,7 @@ class AuctionController extends Controller
             }
 
             return redirect('auctions/' . $auction->id);
-        } catch (AuthorizationException $exception) {
+        } catch (AuthorizationException) {
             return redirect()->back()->withErrors("You don't have permissions to edit this auction!");
         }
     }
@@ -253,7 +252,7 @@ class AuctionController extends Controller
 
             AuctionController::addNotificationsAuction($auction->id, 'Auction Canceled');
             return redirect('/');
-        } catch (AuthorizationException $exception) {
+        } catch (AuthorizationException) {
             return redirect('auctions/' . $id)->withErrors("You don't have permissions to cancel this auction! ");
         }
     }

@@ -28,6 +28,7 @@
         </label>
 
         <button type="submit">LOGIN</button>
+        <a href="/forgot-password">Forgot password?</a>
         <p>Don't have an account yet?</p>
         <a class="button button-outline" href="{{ route('register') }}">SIGN UP</a>
     </form>

@@ -1,4 +1,4 @@
-set search_path to lbaw2271;
+--set search_path to lbaw2271;
 ALTER TABLE users
     ADD COLUMN remember_token CHAR(100);
 
