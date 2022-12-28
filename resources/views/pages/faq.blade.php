@@ -9,7 +9,8 @@
             <h3 class="faq-page">What are the benefits of Infinity Auctions?</h3>
             <div class="faq-body">
                 <p>
-                    Put simply, our service will enable you to reach buyers irrespective of their geographic or personal limitations.
+                    Put simply, our service will enable you to reach buyers irrespective of their geographic or personal
+                    limitations.
                 </p>
             </div>
         </div>
@@ -18,7 +19,8 @@
             <h3 class="faq-page">Will online auctions help me achieve higher sale prices?</h3>
             <div class="faq-body">
                 <p>
-                    In almost every case, online auctions result in higher prices. And the reason is simle; more bidders, more bids!
+                    In almost every case, online auctions result in higher prices. And the reason is simle; more
+                    bidders, more bids!
                 </p>
             </div>
         </div>
@@ -29,7 +31,8 @@
             </h3>
             <div class="faq-body">
                 <p>
-                    Infinity Auctions adds value to the following industries: - Collectables, Automotive, Plant and machinery, Livestock, Marine, etc;
+                    Infinity Auctions adds value to the following industries: - Collectables, Automotive, Plant and
+                    machinery, Livestock, Marine, etc;
                 </p>
             </div>
         </div>
@@ -51,7 +54,8 @@
             </h3>
             <div class="faq-body">
                 <p>
-                    We believe that delays must be kept to an absolute minimum - which is why we've spent so many years testing and refining our infrastructure technology.
+                    We believe that delays must be kept to an absolute minimum - which is why we've spent so many years
+                    testing and refining our infrastructure technology.
                 </p>
             </div>
         </div>
@@ -106,7 +110,8 @@
             </h3>
             <div class="faq-body">
                 <p>
-                    You can sell anything that fits into our categories. If we find an item innapropriate we will remove it and give you a strike. If such action repeats, you will have your account banned.
+                    You can sell anything that fits into our categories. If we find an item innapropriate we will remove
+                    it and give you a strike. If such action repeats, you will have your account banned.
                 </p>
             </div>
         </div>

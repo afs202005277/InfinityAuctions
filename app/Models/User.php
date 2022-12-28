@@ -12,10 +12,10 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    // Don't add create and update timestamps in database.
     public $timestamps = false;
 
-    public function getEmailForPasswordReset(){
+    public function getEmailForPasswordReset()
+    {
         return $this->email;
     }
 
@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'gender', 'cellphone', 'email', 'birth_date', 'address', 'password', 'rate', 'credits', 'wishlist', 'is_admin', 'profile_image'
+        'name', 'gender', 'cellphone', 'email', 'birth_date', 'address', 'password', 'credits', 'is_admin', 'profile_image'
     ];
 
     /**
@@ -52,12 +52,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Auction::class, 'following');
     }
 
-    public function ownedToBeStartedAuctions(){
-        return $this->ownedAuctions()->where('state', '=','To be started');
+    public function ownedToBeStartedAuctions()
+    {
+        return $this->ownedAuctions()->where('state', '=', 'To be started');
     }
 
-    public function ownedRunningAuctions(){
-        return $this->ownedAuctions()->where('state','=','Running');
+    public function ownedRunningAuctions()
+    {
+        return $this->ownedAuctions()->where('state', '=', 'Running');
     }
 
     public function ownedAuctions()
@@ -68,14 +70,13 @@ class User extends Authenticatable
     public function biddingAuctions($user_id)
     {
         return DB::table('bid')
-        ->join('auction', 'bid.auction_id', '=', 'auction.id')
-        ->where('bid.user_id', '=', $user_id)
-        ->select('auction.*')
-        ->distinct()
-        ->get();
+            ->join('auction', 'bid.auction_id', '=', 'auction.id')
+            ->where('bid.user_id', '=', $user_id)
+            ->select('auction.*')
+            ->distinct()
+            ->get();
     }
 
-        
     public function wonAuctions()
     {
         $array = [];
@@ -83,14 +84,12 @@ class User extends Authenticatable
         foreach($bidding as $auction) {
             $maxAmount = Bid::all_bids($auction->id)[0]->amount;
             $winnerId = $auction->bids()->where('amount', $maxAmount)->value('user_id');
-            if($this->id == $winnerId){
-                array_push($array, $auction);
+            if ($this->id == $winnerId) {
+                $array[] = $auction;
             }
         }
-
         return $array;
     }
-
 
     public function reportsMade()
     {
@@ -112,7 +111,8 @@ class User extends Authenticatable
         return $this->hasMany(Report::class, 'admin_id');
     }
 
-    public function profileImage(){
+    public function profileImage()
+    {
         return $this->belongsTo(Image::class, 'profile_image');
     }
 
@@ -139,52 +139,61 @@ class User extends Authenticatable
     }
 
     // retorna todos os users que avaliaram o user atual
-    public function rate_bidders(){
+    public function rate_bidders()
+    {
         return $this->belongsToMany(User::class, 'rates', 'id_seller', 'id_bidder');
     }
 
     // retorna todos os users avaliados pelo current user
-    public function rate_sellers(){
+    public function rate_sellers()
+    {
         return $this->belongsToMany(User::class, 'rates', 'id_bidder', 'id_seller');
     }
 
-    public function getRatingDetails(){
+    public function getRatingDetails()
+    {
         return ["rate" => round($this->rate_bidders()->average('rate'), 2), "numberOfRatings" => $this->rate_bidders()->count()];
     }
 
-    public function hasPendingMaxBids(){
+    public function hasPendingMaxBids()
+    {
         return DB::select(DB::raw('select has_max_bid(' . Auth::id() . ');'))[0];
     }
 
-    public static function getUsersWithImages(){
+    public static function getUsersWithImages()
+    {
         return DB::table('users')
             ->join('image', 'users.profile_image', '=', 'image.id')
             ->select('*');
     }
-    
-    public static function addBalance($id, $amount) {
+
+    public static function addBalance($id, $amount)
+    {
         $user = User::find($id);
-        $user->credits = User::getBalance($id)+$amount;
+        $user->credits = User::getBalance($id) + $amount;
         return $user->save();
     }
 
-    public static function removeBalance($id, $amount) {
+    public static function removeBalance($id, $amount)
+    {
         $user = User::find($id);
-        $user->credits = User::getBalance($id)-$amount;
+        $user->credits = User::getBalance($id) - $amount;
         return $user->save();
     }
 
-    public static function getBalance($id) {
+    public static function getBalance($id)
+    {
         return User::find($id)->credits;
     }
 
-    public static function heldBalance($user_id) {
-        $value = DB::select(DB::raw('SELECT SUM(max) 
-                                    FROM (  SELECT BID.auction_id, BID.user_id, MAX(BID.amount) 
+    public static function heldBalance($user_id)
+    {
+        $value = DB::select(DB::raw('SELECT SUM(max)
+                                    FROM (  SELECT BID.auction_id, BID.user_id, MAX(BID.amount)
                                             FROM BID, AUCTION
                                             WHERE AUCTION.state = \'Running\'
-                                            GROUP BY auction_id, user_id 
-                                         ) top_bids 
+                                            GROUP BY auction_id, user_id
+                                         ) top_bids
                                     WHERE user_id = ' . $user_id . ' GROUP BY user_id;'));
 
         if (empty($value)) {

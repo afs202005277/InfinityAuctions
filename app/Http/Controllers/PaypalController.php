@@ -1,25 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Srkmlive\Payments\Facades\Payment;
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
-
-use DateTime;
-use Log;
 
 class PayPalController extends Controller
-
 {
-/**
- * Responds with a welcome message with instructions
- *
- * @return \Illuminate\Http\Response
- */
-
+    /**
+     * Responds with a welcome message with instructions
+     *
+     * @return Application|Factory|View|RedirectResponse|Redirector
+     */
     public function show()
     {
         if (!Auth::id()) {
@@ -38,23 +40,18 @@ class PayPalController extends Controller
         }
 
         try {
-
             $validated = $request->validate([
                 'deposit' => 'required|min:5|numeric|max:9999999.99',
-                ]);
-
-            $provider = new PayPalClient;
-
-            // Through facade. No need to import namespaces
+            ]);
             $provider = \PayPal::setProvider();
             $provider->getAccessToken();
 
             $data = [
-                "intent"              => "CAPTURE",
-                "purchase_units"      => [
+                "intent" => "CAPTURE",
+                "purchase_units" => [
                     [
                         "amount" => [
-                            "value"         => $validated['deposit'],
+                            "value" => $validated['deposit'],
                             "currency_code" => "EUR",
                         ],
                     ],
@@ -64,7 +61,7 @@ class PayPalController extends Controller
                     "return_url" => route('deposit.success'),
                 ],
             ];
-            
+
             $order = $provider->createOrder($data);
 
             return redirect($order['links'][1]['href']);
@@ -77,9 +74,8 @@ class PayPalController extends Controller
     /**
      * Responds with a welcome message with instructions
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-
     public function cancel()
     {
         $cancel = "Order cancelled.";
@@ -89,12 +85,11 @@ class PayPalController extends Controller
     /**
      * Responds with a welcome message with instructions
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View|void
      */
-
     public function success(Request $request)
     {
-        $provider = new PayPalClient;      // To use express checkout.
+        $provider = new PayPalClient;
         $provider->getAccessToken();
         $token = $request->get('token');
 
@@ -108,27 +103,21 @@ class PayPalController extends Controller
         }
 
         if ($response["purchase_units"][0]["payments"]["captures"][0]["amount"]["value"]) {
-            User::addBalance(Auth::id(), (float) $response["purchase_units"][0]["payments"]["captures"][0]["amount"]["value"]);
+            User::addBalance(Auth::id(), (float)$response["purchase_units"][0]["payments"]["captures"][0]["amount"]["value"]);
             $balance = User::getBalance(Auth::id());
             $succ = "Credits successfully added.";
             return view('pages.balance', compact('balance', 'succ'));
         }
-        
     }
 
-    private function generatePayoutID() {
-        // generate 32 random bytes
+    /**
+     * @throws Exception
+     */
+    private function generatePayoutID()
+    {
         $bytes = random_bytes(8);
-
-        // convert the bytes to a hexadecimal string
-        $hex = bin2hex($bytes);
-
-        Log::info($hex);
-        // return the string as the random ID
-        return $hex;
+        return bin2hex($bytes);
     }
-
-
 
     public function withdraw(Request $request)
     {
@@ -140,21 +129,18 @@ class PayPalController extends Controller
         $heldBalance = User::heldBalance(Auth::id());
 
         try {
-
             $validated = $request->validate([
                 'withdraw' => 'required|min:5|numeric|max:9999999.99',
             ]);
-
             if ($balance - $heldBalance - $validated['withdraw'] < 0) {
                 $cancel = "Not enough available capital.";
                 $balance = User::getBalance(Auth::id());
                 $heldBalance = User::heldBalance(Auth::id());
                 return view('pages.balance', compact('balance', 'heldBalance', 'cancel'));
             }
-            
+
             $provider = new PayPalClient;
 
-            // Through facade. No need to import namespaces
             $provider = \PayPal::setProvider();
             $token = $provider->getAccessToken();
 
@@ -167,10 +153,10 @@ class PayPalController extends Controller
                 "items" => [
                     [
                         "recipient_type" => "EMAIL",
-                        "amount"    => [
-                            "value"         => $validated['withdraw'],
+                        "amount" => [
+                            "value" => $validated['withdraw'],
                             "currency" => "EUR"
-                            ],
+                        ],
                         "receiver" => User::find(Auth::id())->email,
                         "sender_item_id" => "696980085"
                     ],
@@ -181,11 +167,7 @@ class PayPalController extends Controller
                 ],
             ];
 
-            Log::info($data);
-
             $payout = $provider->createBatchPayout($data);
-
-            Log::info($payout);
 
             if (isset($payout['links'][0]['href'])) {
                 return $this->withdrawSuccess($validated['withdraw']);
@@ -193,8 +175,6 @@ class PayPalController extends Controller
                 return $this->withdrawCancel();
             }
 
-            return redirect($payout['links'][0]['href'])->header('content-type', 'application/json')->header('authorization', 'Bearer ' . $token['access_token']);
-            
         } catch (QueryException $sqlExcept) {
             return redirect()->back()->withErrors("Invalid database parameters!");
         }
@@ -203,9 +183,8 @@ class PayPalController extends Controller
     /**
      * Responds with a welcome message with instructions
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-
     public function withdrawCancel()
     {
         $balance = User::getBalance(Auth::id());
@@ -217,9 +196,8 @@ class PayPalController extends Controller
     /**
      * Responds with a welcome message with instructions
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-
     public function withdrawSuccess($amount)
     {
         User::removeBalance(Auth::id(), $amount);
@@ -227,6 +205,5 @@ class PayPalController extends Controller
         $heldBalance = User::heldBalance(Auth::id());
         $succ = "Mail was sent confirming withdrawal. Credits successfully withdrawn.";
         return view('pages.balance', compact('balance', 'heldBalance', 'succ'));
-        
     }
 }

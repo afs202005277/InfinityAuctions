@@ -14,6 +14,6 @@
             illegal items using our platform. </p>
     </div>
     <div style="text-align: center">
-    <i><b>Bidding the future and Selling the past.</b></i>
+        <i><b>Bidding the future and Selling the past.</b></i>
     </div>
 @endsection

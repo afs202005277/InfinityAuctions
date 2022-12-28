@@ -25,7 +25,8 @@
         <form method="POST" class="sell" action="{{$to_use['route']}}">
             {{ csrf_field() }}
             <input type="text" name="{{$to_use['input_name']}}" value="{{$to_use['reported']}}" hidden>
-            <input type="text" name="reported_user_name" value="{{$to_use['name']}}">
+            <input type="text" name="reported_user_name" pattern="^[a-zA-Z\s0-9,;'.:\/]{1,}$"
+                   title="Invalid characters detected!" value="{{$to_use['name']}}">
             <fieldset class="option">
                 <legend>Options</legend>
                 @foreach ($options as $option)

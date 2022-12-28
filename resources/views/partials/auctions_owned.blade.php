@@ -7,9 +7,9 @@
         </div>
         <div class="contentBxAuction">
             <h2>{{$auction->name}}</h2>
-        <div class="sizeAuction">
-            <h3> End Date: <strong> {{$auction->end_date}} </strong> </h3>
-        </div>
+            <div class="sizeAuction">
+                <h3> End Date: <strong> {{$auction->end_date}} </strong></h3>
+            </div>
             <a href="{{ url('/auctions/' . $auction->id) }}">Bid</a>
         </div>
     </div>

@@ -25,7 +25,7 @@ streets = pd.read_csv('streetnames.csv')
 collections = ["vinyl", "records", "antique", "furniture", "antique furniture", "vinyl records", "comics", "comic", "comic book", "coin", "coins", "currency", "car", "cars", "classic", "classic cars", "cards", "trading cards", "pokemon", "baseball cards", "dolls", "toys", "doll", "toy", "stamps", "wine", "dom perignon", "art", "mozart", "jewelery", "collectible", "cheese", "watch", "watches", "rolex", "pens", "louis vitton", "sneakers", "nb550", "diamond", "diamonds", "emerald"]
 auctions = pd.read_csv("auctions.csv")
 auctions = auctions.sample(frac=1).reset_index(drop=True)
-type_ban = ['3 day ban', '5 day ban', '10 day ban', '1 month ban', 'Banned for life']
+type_ban = ['3 day ban', '5 day ban', '10 day ban', '1 month ban']
 notification_type = ['Outbid', 'New Auction', 'Report', 'Wishlist Targeted', 'Auction Ending', 'New Bid', 'Auction Ended', 'Auction Won', 'Auction Canceled']
 categories = ["Panini", "Banknotes", "Fine Art", "Oil", "Wine", "Comic Books", "Fashion", "Watches", "Coins", "Stamps"]
 report_option = ["Counterfeit", "Duplicate listings", "Fradulent", "Innapropriate Description", "Stolen property", "Adult material", "Wildlife", "Drugs, Alcohol or Tobacco", "Offensive and violent materials"]
@@ -106,9 +106,9 @@ class Auction:
 
         self.id = auction_id
 
-        self.name = auctions['DESCRIPTION LINE 1'][auction_id]
+        self.name = auctions['DESCRIPTION LINE 1'][auction_id].replace("'", "")
 
-        self.description = auctions['DESCRIPTION LINE 2'][auction_id]
+        self.description = auctions['DESCRIPTION LINE 2'][auction_id].replace("'", "")
 
         self.base_price = (int(auctions['SALE PRICE'][auction_id]*random.random()*0.3) % 10) * 10
 
@@ -178,6 +178,8 @@ class Report:
             self.date = random_date(d1, d2)
 
             self.reported_auction = auction.id
+
+            self.reported_user = auction.user_id
 
             self.reporter = random.randint(1, user_id-1)
         
@@ -378,14 +380,10 @@ with open("instructions.txt", "w") as instr:
         instr.write(f"INSERT INTO rates(id_bidder, id_seller, rate) VALUES ({bidder_id}, {seller_id}, {random.randint(10, 50)/10});\n")
     
     instr.write("\n")
-    id=0
     for auction_id in range(100):
-            instr.write(f"INSERT INTO image(id, path, auction_id) VALUES ({id}, 'AuctionImages/default_auction.png', {auction_id});\n")
-            id+=1
-            instr.write(f"INSERT INTO image(id, path, auction_id) VALUES ({id}, 'AuctionImages/default_auction.png', {auction_id});\n")
-            id+=1
-            instr.write(f"INSERT INTO image(id, path, auction_id) VALUES ({id}, 'AuctionImages/default_auction.png', {auction_id});\n")
-            id+=1
+            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id+1});\n")
+            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id+1});\n")
+            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id+1});\n")
     
     
 

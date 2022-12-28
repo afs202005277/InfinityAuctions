@@ -11,15 +11,18 @@ class Image extends Model
 
     public $timestamps = false;
 
-    public function user(){
+    public function user()
+    {
         return $this->hasOne(User::class, 'profile_image');
     }
 
-    public function auction(){
+    public function auction()
+    {
         return $this->belongsTo(Auction::class, 'auction_id');
     }
 
-    public static function getDefaultUser(){
+    public static function getDefaultUser()
+    {
         return DB::table('image')->where('path', 'like', '%default_user%')->get('id');
     }
 }
