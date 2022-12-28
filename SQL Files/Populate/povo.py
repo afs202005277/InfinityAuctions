@@ -381,9 +381,9 @@ with open("instructions.txt", "w") as instr:
     
     instr.write("\n")
     for auction_id in range(100):
-            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id});\n")
-            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id});\n")
-            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id});\n")
+            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id+1});\n")
+            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id+1});\n")
+            instr.write(f"INSERT INTO image(path, auction_id) VALUES ('AuctionImages/default_auction.png', {auction_id+1});\n")
     
     
 
