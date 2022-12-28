@@ -58,7 +58,7 @@
         </div>
         <div class="search">
             <form action="{{url('/search')}}" method="GET" role="search">
-                <input class="search-text" type="text" pattern="^[a-zA-Z\s0-9]$"
+                <input class="search-text" type="text" pattern="^[a-zA-Z\s0-9]*$"
                        title="Only letters, white spaces and digits are allowed" placeholder="Search.." name="search"
                        required>
             </form>
