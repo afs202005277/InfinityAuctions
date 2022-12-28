@@ -162,13 +162,10 @@
                 <p> This user doesn't own any Auctions </p>
             @endif
         </div>
-<<<<<<< HEAD
 
     @endif
     @if(Auth::user()!==null && (Auth::id()===$user->id || Auth::user()->is_admin))
         @include('partials.delete_confirmation')
-=======
->>>>>>> origin/admin_manage
     @endif
 
 @endsection
