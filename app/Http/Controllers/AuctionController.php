@@ -233,6 +233,10 @@ class AuctionController extends Controller
             $notification->auction_id = $auction_id;
             $notification->save();
         }
+
+
+
+        
     }
 
     /**
@@ -250,12 +254,23 @@ class AuctionController extends Controller
             $auction->state = 'Cancelled';
 
             $auction->save();
-
+            AuctionController::addNotificationCanceledOwner($auction->id,'Auction Canceled');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Canceled');
+            
             return redirect('/');
         } catch (AuthorizationException $exception) {
             return redirect('auctions/' . $id)->withErrors("You don't have permissions to cancel this auction! ");
         }
+    }
+
+    public function addNotificationOwner($auction_id,$type){
+        $owner = Auction::find($auction_id)->seller()->get();
+        
+        $notification = new Notification();
+        $notification->type = $type;
+        $notification->user_id = $owner->id;
+        $notification->auction_id = $auction_id;
+        $notification->save();
     }
 
     public function selectedAuctions()
@@ -279,6 +294,8 @@ class AuctionController extends Controller
 
     public static function updateAuctionsState()
     {
+      
+        
         $auctionsToEnd = Auction::toEndAuctions();
         foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
@@ -289,9 +306,12 @@ class AuctionController extends Controller
             User::removeBalance($user_id, (float)$amount);
             User::addBalance($auction->auction_owner_id, $amount * 0.95);
             User::addBalance(1003, $amount * 0.05);
+            AuctionController::addNotificationCanceledOwner($auction->id,'Auction Ended');
         }
+
         $auctionsEnding = Auction::nearEndAuctions();
         foreach ($auctionsEnding as $auction) {
+            AuctionController::addNotificationCanceledOwner($auction->id,'Auction Ending');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ending');
         }
         Auction::updateStates();
