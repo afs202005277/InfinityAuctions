@@ -48,6 +48,7 @@ class BidController extends Controller
             $bid->name = DB::table('users')->find($bid->user_id)->name;
             $bid->date = DB::table('bid')->find($bid->id)->date;
 
+            $this->addNewBidNotification($auction->id);
             if ($auction->buy_now) {
                 if ($auction->buy_now <= $validated['amount']) {
                     $d = new DateTime('now');
@@ -79,5 +80,15 @@ class BidController extends Controller
                 $notification->save();
             }
         }
+    }
+
+    public function addNewBidNotification($auction_id){
+        $owner = Auction::find($auction_id)->seller()->get();
+    
+        $notification = new Notification();
+        $notification->type = 'New Bid';
+        $notification->user_id = $owner->id;
+        $notification->auction_id = $auction_id;
+        $notification->save();
     }
 }
