@@ -55,8 +55,6 @@
               </div>
               @include('partials.categories', ['categories' => $categories])
             </div>
-            @include('partials.categories', ['categories' => $categories])
-        </div>
         <div class="search">
             <form action="{{url('/search')}}" method="GET" role="search">
                 <input class="search-text" type="text" pattern="^[a-zA-Z\s0-9]*$"
