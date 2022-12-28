@@ -19,6 +19,9 @@ class Wishlist extends Model
 
     public static function follows($search) {
         $wishlist_id = Wishlist::getIdForSearch($search);
+        if (!Auth::id()) {
+            return False;
+        }
         $user_id = Auth::id();
         $check = DB::select(DB::raw("SELECT * FROM users_wishlist WHERE users_id = " . $user_id . " AND wishlist_id = " . $wishlist_id . ";"));
         return !empty($check);

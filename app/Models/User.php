@@ -81,7 +81,7 @@ class User extends Authenticatable
         $array = [];
         $bidding = $this->biddingAuctions($this->id);
         foreach($bidding as $auction) {
-            $maxAmount = $auction->bids()->max('amount');
+            $maxAmount = Bid::all_bids($auction->id)[0]->amount;
             $winnerId = $auction->bids()->where('amount', $maxAmount)->value('user_id');
             if($this->id == $winnerId){
                 array_push($array, $auction);
