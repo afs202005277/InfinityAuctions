@@ -69,8 +69,8 @@ class User extends Authenticatable
 
     public function biddingAuctions($user_id)
     {
-        return DB::table('bid')
-            ->join('auction', 'bid.auction_id', '=', 'auction.id')
+        return DB::table('auction')
+            ->join('bid', 'bid.auction_id', '=', 'auction.id')
             ->where('bid.user_id', '=', $user_id)
             ->select('auction.*')
             ->distinct()
@@ -82,8 +82,9 @@ class User extends Authenticatable
         $array = [];
         $bidding = $this->biddingAuctions($this->id);
         foreach($bidding as $auction) {
+            $auction_model = Auction::find($auction->id);
             $maxAmount = Bid::all_bids($auction->id)[0]->amount;
-            $winnerId = $auction->bids()->where('amount', $maxAmount)->value('user_id');
+            $winnerId = $auction_model->bids()->where('amount', $maxAmount)->value('user_id');
             if ($this->id == $winnerId) {
                 $array[] = $auction;
             }
