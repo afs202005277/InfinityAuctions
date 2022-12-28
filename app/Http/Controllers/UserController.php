@@ -65,7 +65,7 @@ class UserController extends Controller
                 ]);
 
                 if (isset($validated['profile_image'])){
-                    (new ImageController())->deleteUserImage($user->profile_image);
+                    ImageController::deleteUserImage($user->profile_image);
                     $user->profile_image = ImageController::store($validated['profile_image'], 'UserImages/', NULL);
                 }
 
@@ -159,4 +159,3 @@ class UserController extends Controller
         return response('Review added successfully!', 200);
     }
 }
-

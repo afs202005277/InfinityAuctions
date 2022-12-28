@@ -31,7 +31,7 @@ class ReportController extends Controller
         return view('pages.report-users', compact('auction', 'options', 'isUserReport'));
     }
 
-    public function createReport($reportedUserId = NULL, $reportedAuctionId = NULL){
+    public function createReport($reportedUserId, $reportedAuctionId = NULL){
         $report = new Report();
         $report->reported_user = $reportedUserId;
         $report->reporter = Auth::id();
@@ -58,7 +58,7 @@ class ReportController extends Controller
                 $validated = $request->validate([
                     'reported_auction' => 'required|numeric|min:1',
                 ]);
-                $validated['reported_user'] = NULL;
+                $validated['reported_user'] = Auction::find($validated['reported_auction'])->auction_owner_id;
             } else {
                 throw ValidationException::withMessages(['Missing parameters in request!']);
             }

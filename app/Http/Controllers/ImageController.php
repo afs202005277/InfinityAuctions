@@ -80,7 +80,7 @@ class ImageController extends Controller
         return $image;
     }
 
-    public function deleteUserImage($imageID){
+    public static function deleteUserImage($imageID){
         $image = Image::find($imageID);
         if (!str_contains($image->path, 'default')){
             File::delete($image->path);

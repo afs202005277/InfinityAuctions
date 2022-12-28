@@ -40,7 +40,7 @@
             <h3>{{$pageTitle}}</h3>
 
             <label for="title">Title</label>
-            <input id="title" placeholder="Name your auction" type="text" pattern="^[a-zA-Z\s0-9]$" title="Only letters, white spaces and digits are allowed" name="title" value="{{ $to_use['title'] }}"
+            <input id="title" placeholder="Name your auction" type="text" pattern="^[a-zA-Z\s0-9,;'.:\/]{1,}$" title="Invalid characters detected!" name="title" value="{{ $to_use['title'] }}"
                    required autofocus>
             @if ($errors->has('title'))
                 <span class="error">
