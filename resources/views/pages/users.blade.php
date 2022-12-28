@@ -126,13 +126,11 @@
         <div class="auctions_owned">
             @each('partials.auction', $user->ownedAuctions, 'auction', 'partials.no_items')
         </div>
-<<<<<<< HEAD
 
     @endif
     @if(Auth::user()!==null && (Auth::id()===$user->id || Auth::user()->is_admin))
         @include('partials.delete_confirmation')
-=======
->>>>>>> origin/admin_manage
+
     @endif
 
 @endsection
