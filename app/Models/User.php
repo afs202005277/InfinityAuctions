@@ -222,6 +222,8 @@ class User extends Authenticatable
         }
         return $value[0]->sum;
     
+    }
+    
     public static function getBanStates() {
         $states = DB::select(DB::raw("SELECT unnest(enum_range(NULL::penalty_type))::text AS type;"));
 
