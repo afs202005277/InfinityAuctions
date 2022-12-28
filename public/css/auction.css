@@ -432,4 +432,18 @@
     align-items: center;
 }
 
+@media only screen and (max-width: 740px) {
+    .toparea, .below {
+        display: block;
+    }
+    
+    .toparea > .images {
+        width: 100%;
+        position: static;
+    }
 
+    .toparea > .details, .below > .left, .below > .right {
+        width: 100%;
+    }
+
+}

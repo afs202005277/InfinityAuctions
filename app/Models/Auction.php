@@ -115,7 +115,8 @@ class Auction extends Model
             $query->havingRaw('MAX(bid.amount) < ?', [$filters['maxPrice']]);
         }
 
-        return $query->paginate(10);
+        $values = $query->paginate(10);
+        return $values;
     }
 
     public static function newAuctions()
