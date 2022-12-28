@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Auction;
 use App\Models\Category;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use App\Http\Controllers\SearchController;
 use App\Models\Wishlist;
 
 class SearchPageController extends Controller
@@ -13,8 +15,8 @@ class SearchPageController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|Factory|View
      */
     public function show(Request $request)
     {
@@ -35,11 +37,11 @@ class SearchPageController extends Controller
         if(!isset($order)) {
             $order = 1;
         }
-        
+
         $auctions = (new SearchController())->search($request);
 
         $categories = Category::all();
-        $states = (new Auction())->returnStates();
+        $states = Auction::returnStates();
 
         $follows = Wishlist::follows($search);
 

@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Auction;
 use App\Models\Category;
-use App\Models\Image;
 use App\Models\Notification;
+use App\Models\User;
+use App\Models\Bid;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
@@ -19,41 +22,10 @@ use Illuminate\Support\Facades\DB;
 class AuctionController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param \App\Models\Auction $auction
-     * @return \Illuminate\Http\Response
+     * @param $auction_id
+     * @return Application|Factory|View
      */
     public function show($auction_id)
     {
@@ -62,16 +34,23 @@ class AuctionController extends Controller
         $name = $owner->name;
         $auctions = $owner->ownedAuctions()->where('auction.id', '<>', $auction_id)->get();
         $bids = $details->bids()->orderBy('amount')->get();
-        $mostActive = (new Auction())->mostActive();
+        $mostActive = Auction::mostActive();
         $images = $details->images()->get('path');
         $ratingDetails = $owner->getRatingDetails();
-        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails'));
+        $superUserMode = Auth::check() && Auth::user()->is_admin || $details->auction_owner_id === Auth::user()->id;
+        $followingAuctions = Auth::user()->followingAuctions()->get();
+        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode', 'followingAuctions'));
     }
 
     public function showAuctionCheckout($auction_id)
     {
         $auction = Auction::find($auction_id);
-        return view('pages.checkout', compact('auction'));
+        $user = Auth::user();
+        $exploded = explode(' ', $user->name);
+        $firstName = $exploded[0];
+        $lastName = end($exploded);
+        $address = $user->address;
+        return view('pages.checkout', compact('auction', 'firstName', 'lastName', 'address'));
     }
 
     public function showAuctionCheckoutSuccess($auction_id)
@@ -79,16 +58,15 @@ class AuctionController extends Controller
         $auction = Auction::find($auction_id);
         $auction->checkout = True;
         $auction->save();
-        return view('pages.checkout_success', compact('auction'));
+        $cellphone = $auction->owner()->value("cellphone");
+        return view('pages.checkout_success', compact('auction', 'cellphone'));
     }
-
-    
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Auction $auction
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function showSellForm()
     {
@@ -115,14 +93,16 @@ class AuctionController extends Controller
             $validator = Validator::make($fileArray, $rules);
 
             $validated = $request->validate([
-                'title' => 'required|min:1|max:255',
-                'desc' => 'required|min:1|max:255',
+                'title' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
+                'desc' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
                 'images' => 'required|array|min:3',
                 'baseprice' => 'required|numeric|gt:0',
                 'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
                 'enddate' => 'required|date|after:startdate',
                 'buynow' => 'nullable|numeric|gt:baseprice'
-            ], [ 'buynow.gt' => 'The "buy now" value must be greater than the base price.']);
+            ], ['buynow.gt' => 'The "buy now" value must be greater than the base price.',
+                'title.regex' => 'Invalid characters detected.',
+                'desc.regex' => 'Invalid characters detected.']);
 
             $auction->name = $validated['title'];
             $auction->description = $validated['desc'];
@@ -131,17 +111,14 @@ class AuctionController extends Controller
             $auction->end_date = $validated['enddate'];
             $auction->buy_now = $validated['buynow'];
             $auction->state = "To be started";
-            $auction->auction_owner_id = Auth::user()->id;
-
-            $id = DB::table('auction')->max('id');
-            $auction->id = $id + 1;
+            $auction->auction_owner_id = Auth::id();
 
             $auction->save();
 
             foreach (Category::all() as $key => $category) {
                 $cat = str_replace(' ', '', $category->name);
                 if ($request->has($cat)) {
-                    Auction::find($id + 1)->categories()->attach($key + 1);
+                    $auction->categories()->attach($key + 1);
                 }
             }
 
@@ -160,8 +137,9 @@ class AuctionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Auction $auction
-     * @return Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param $id
+     * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function edit($id)
     {
@@ -169,6 +147,7 @@ class AuctionController extends Controller
         $this->authorize('update', $auction);
         return view('pages.sell')
             ->with('title', $auction->name)
+            ->with('images', $auction->images()->get())
             ->with('desc', $auction->description)
             ->with('baseprice', $auction->base_price)
             ->with('startdate', $auction->start_date)
@@ -182,8 +161,8 @@ class AuctionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Auction $auction
+     * @param Request $request
+     * @param $id
      * @return RedirectResponse
      */
     public function update(Request $request, $id)
@@ -192,13 +171,15 @@ class AuctionController extends Controller
             $auction = Auction::find($id);
             $this->authorize('update', $auction);
             $validated = $request->validate([
-                'title' => 'required|min:1|max:255',
-                'desc' => 'required|min:1|max:255',
+                'title' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
+                'desc' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
                 'baseprice' => 'required|numeric|gt:0',
-                'startdate' => 'required|date|after:now',
+                'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
                 'enddate' => 'required|date|after:startdate',
-                'buynow' => 'nullable|numeric|gt:baseprice',
-            ]);
+                'buynow' => 'nullable|numeric|gt:baseprice'
+            ], ['buynow.gt' => 'The "buy now" value must be greater than the base price.',
+                'title.regex' => 'Invalid characters detected.',
+                'desc.regex' => 'Invalid characters detected.']);
 
             $auction->name = $validated['title'];
             $auction->description = $validated['desc'];
@@ -219,7 +200,7 @@ class AuctionController extends Controller
             if (count($ids) > 0)
                 $auction->categories()->sync($ids);
 
-            if ($request->file('images') !== null){
+            if ($request->file('images') !== null) {
                 foreach ($request->file('images') as $image) {
                     ImageController::store($image, 'AuctionImages/', $auction->id);
                 }
@@ -231,17 +212,16 @@ class AuctionController extends Controller
         }
     }
 
-    public static function addNotificationsAuction($auction_id, $type){
+    public static function addNotificationsAuction($auction_id, $type)
+    {
         $auction = Auction::find($auction_id);
         if ($type === 'Auction Canceled')
-            $biddingUsers =  $auction->biddersAndFollowers()->get();
+            $biddingUsers = $auction->biddersAndFollowers()->get();
         else
             $biddingUsers = $auction->biddingUsers()->get();
 
-        $id = DB::table('notification')->max('id')+1;
-        foreach ($biddingUsers as $biddingUser){
+        foreach ($biddingUsers as $biddingUser) {
             $notification = new Notification();
-            $notification->id = $id;
             if ($type == 'Auction Ended' && $auction->getWinnerID() == $biddingUser->id)
                 $notification->type = 'Auction Won';
             else
@@ -249,15 +229,13 @@ class AuctionController extends Controller
             $notification->user_id = $biddingUser->id;
             $notification->auction_id = $auction_id;
             $notification->save();
-            $id++;
         }
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Auction $auction
+     * @param $id
      * @return Application|RedirectResponse|Redirector
      */
     public function cancel($id)
@@ -296,13 +274,21 @@ class AuctionController extends Controller
         $auction->save();
     }
 
-    public static function updateAuctionsState(){
+    public static function updateAuctionsState()
+    {
         $auctionsToEnd = Auction::toEndAuctions();
-        foreach ($auctionsToEnd as $auction){
+        foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
+            $all_bids = Bid::all_bids($auction->id);
+            $max_bid = $all_bids[0];
+            $amount = $max_bid->amount;
+            $user_id = $max_bid->user_id;
+            User::removeBalance($user_id, (float)$amount);
+            User::addBalance($auction->auction_owner_id, $amount * 0.95);
+            User::addBalance(1003, $amount * 0.05);
         }
         $auctionsEnding = Auction::nearEndAuctions();
-        foreach ($auctionsEnding as $auction){
+        foreach ($auctionsEnding as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ending');
         }
         Auction::updateStates();

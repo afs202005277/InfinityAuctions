@@ -6,7 +6,9 @@
 
         <h3>Sign Up</h3>
         <label for="name">Name</label>
-        <input id="name" placeholder="Type your name" type="text" name="name" value="{{ old('name') }}" required
+        <input id="name" placeholder="Type your name" type="text" pattern="^[a-zA-Z\s]{1,30}$"
+               title="The name field must consist of only letters and whitespaces, and must have a length between 1 and 30 characters (inclusive)."
+               name="name" value="{{ old('name') }}" required
                autofocus>
         @if ($errors->has('name'))
             <span class="error">
@@ -29,6 +31,8 @@
 
         <label for="cellphone">Mobile Phone number</label>
         <input id="cellphone" placeholder="Type your mobile phone number" type="tel" name="cellphone"
+               pattern="^[0-9]{9}$"
+               title="The phone number can only contain 9 digits."
                value="{{ old('cellphone') }}" required autofocus>
         @if ($errors->has('cellphone'))
             <span class="error">
@@ -37,7 +41,9 @@
         @endif
 
         <label for="email">E-Mail Address</label>
-        <input id="email" placeholder="Type your email" type="email" name="email" value="{{ old('email') }}" required>
+        <input id="email" placeholder="Type your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+               title="The email address can only contain letters, numbers and dots. The '@' sign is mandatory"
+               type="email" name="email" value="{{ old('email') }}" required>
         @if ($errors->has('email'))
             <span class="error">
           {{ $errors->first('email') }}
@@ -54,7 +60,9 @@
         @endif
 
         <label for="address">Address</label>
-        <input id="address" placeholder="Type your address" type="text" name="address" value="{{ old('address') }}"
+        <input id="address" placeholder="Type your address" pattern="^[a-zA-Z0-9\s,]{1,}$"
+               title="An address can only contain spaces, commas, numbers and alphabetic characters" type="text"
+               name="address" value="{{ old('address') }}"
                required>
         @if ($errors->has('address'))
             <span class="error">

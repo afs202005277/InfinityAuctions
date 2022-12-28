@@ -4,7 +4,7 @@
 
 ## A9: Product
 
-Our website is designed to be a comprehensive information system that supports the buying and selling of a variety of items through a user-friendly web interface. Registered users can easily place items up for auction or bid on existing items that are available for auction. The system automatically manages the bidding process, including enforcing deadlines and determining the winning bid in a fair and transparent manner.
+Our website is designed to be a comprehensive information system that supports buying and selling a variety of items through a user-friendly web interface. Registered users can easily place items up for auction or bid on existing items that are available for auction. The system automatically manages the bidding process, including enforcing deadlines and determining the winning bid in a fair and transparent manner.
 
 In addition to facilitating the auction process, our website also offers a range of tools and features to enhance the user experience. System administrators have the ability to stop auctions, block user accounts, or delete content as necessary to maintain the integrity and safety of the platform. We are dedicated to providing a reliable and enjoyable auction experience for all of our users.
 
@@ -87,55 +87,54 @@ openapi: 3.0.0
 > The owner of the user story should have the name in **bold**.
 > This table should be updated when a user story is completed and another one started. 
 
-| US Identifier | Name    | Module | Priority                       | Team Members               | State  |
-| ------------- | ------- | ------ | ------------------------------ | -------------------------- | ------ |
-|  US36 | View Users profile | M04: Users | High | **Pedro Moreira** | 100% |
-|  US32 | Bid an auction | M05: Auctions | High | **André Sousa** | 100% |
-|  US51 | Update bid | M05: Auctions | High | **André Sousa** | 100% |
-|  US02 | Sign-up | M01: Registration and authentication | High | **André Sousa**, Pedro Fonseca |   100%  | 
-|  US01 | Sign-in | M01: Registration and authentication | High | **André Sousa**, Pedro Fonseca |   100%  |
-|  US34 | Edit account | M04: Users | High | **Pedro Moreira** | 100% |
-|  US63 | Cancel auction | M05: Auctions | High | **André Sousa** | 100% |
-|  US71 | Manage auctions | M05: Auctions VERIFICAR | High | **Pedro Moreira** | 100% |
-|  US16 | Search | M05: Auctions | High | **Vitor Cavaleiro** | 100% |
-|  US72 | Cancel auctions | M03: Platform administration | High | **Pedro Moreira** | 100% |
-|  US31 | Create auctions | M05: Auctions | High | **Pedro Fonseca** | 100% |
-|  US21 | Most active auctions | M05: Auctions | Medium | **André Sousa** | 100% |
-|  US22 | New auctions | M05: Auctions | Medium | **André Sousa** | 100% |
-|  US23 | Social networks | M05: Auctions | Low | **André Sousa** | 100% |
-|  US24 | More from this seller | M05: Auctions | Low | **André Sousa** | 100% |
-|  US21 | Most active auctions | M05: Auctions | Medium | **André Sousa** | 100% |
-|  US22 | New auctions | M05: Auctions | Medium | **André Sousa** | 100% |
-|  US35 | Bidding history | M05: Auctions | High | **André Sousa** | 100% |
-|  US14 | Consult FAQ | M02: Home page and Static pages | High | **Pedro Fonseca** | 100% |
-|  US11 | Home Page | M02: Home page and Static pages | High | **Pedro Fonseca**, André Sousa | 100% |
-|  US62 | Manage auction status | M05: Auctions | High | **André Sousa** | 100% |
-|  US61 | Edit auctions | M05: Auctions | High | **André Sousa** | 100% |
-|  US15 | Consult Contacts | M02: Home page and Static pages | High | **Pedro Fonseca** | 100% |
-|  US13 | Consult Services | M02: Home page and Static pages | High | **Pedro Fonseca** | 100% |
-|  US12 | See About page | M02: Home page and Static pages | High | **Pedro Fonseca** | 100% |
-|  US38 | Delete account | M04: Users | Medium | **André Sousa** | 100% |
-|  US19 | Report users | M06: Reports | Medium | **Pedro Moreira** | 100% |
-|  US69 | Buy it now | M05: Auctions | Medium | **Pedro Fonseca** | 100% |
-|  US58 | Buy now | M05: Auctions | Medium | **Pedro Fonseca** | 100% |
-|  US17 | Filters | M05: Auctions | Medium | **Vitor Cavaleiro** | 100% |
-|  US57 | Rate a seller | M04: Users | Medium | **André Sousa** | 100% |
-POLICIES
-|  US39 | Follow auctions | M05: Auctions | Medium | **Pedro Moreira** | 100% |
-|  US18 | Report auctions | M06: Reports | Medium | **André Sousa** | 100% |
-AUTOMATE AUCTIONS
-|  US52 | Notified on new bid on participating auction | M07: Notifications | Medium | **André Sousa** | 100% |
-|  US53 | Notified on participating auction ended | M07: Notifications | Medium | **André Sousa** | 100% |
-|  US54 | Notified on participating auction winner | M07: Notifications | Medium | **André Sousa** | 100% |
-|  US55 | Notified on followed auction canceled | M07: Notifications | Medium | **André Sousa** | 100% |
-|  US56 | Notified on participating auction ending | M07: Notifications | Medium | **André Sousa** | 100% |
-|  US20 | Featured items | M05: Auctions | Medium | **Pedro Moreira** | 100% |
-|  US37 | Add funds to account | M04: Users | Medium | **Pedro Fonseca** | 100% |
-USER PROFILE PIC
-ORDENAR RESULTADOS PESQUISA
-|  US59 | Max bid | M05: Auctions | Low | **Pedro Fonseca** | 100% |
-|  US43 | Withdraw funds | M04: Users | Low | **Pedro Fonseca** | 100% |
-|  US41 | Notification | M07: Notifications | Medium | **André Sousa** | 100% |
+| US Identifier | Name                                         | Module                               | Priority | Team Members                   | State |
+|---------------|----------------------------------------------|--------------------------------------|----------|--------------------------------|-------|
+| US36          | View Users profile                           | M04: Users                           | High     | **Pedro Moreira**              | 100%  |
+| US32          | Bid an auction                               | M05: Auctions                        | High     | **André Sousa**                | 100%  |
+| US51          | Update bid                                   | M05: Auctions                        | High     | **André Sousa**                | 100%  |
+| US02          | Sign-up                                      | M01: Registration and authentication | High     | **André Sousa**, Pedro Fonseca | 100%  | 
+| US01          | Sign-in                                      | M01: Registration and authentication | High     | **André Sousa**, Pedro Fonseca | 100%  |
+| US37          | Logout                                       | M01: Registration and authentication | High     | **André Sousa**, Pedro Fonseca | 100%  |
+| US34          | Edit account                                 | M04: Users                           | High     | **Pedro Moreira**              | 100%  |
+| US63          | Cancel auction                               | M05: Auctions                        | High     | **André Sousa**                | 100%  |
+| US71          | Manage auctions                              | M03: Platform administration         | High     | **Pedro Moreira**              | 100%  |
+| US16          | Search                                       | M05: Auctions                        | High     | **Vitor Cavaleiro**            | 100%  |
+| US72          | Cancel auctions                              | M03: Platform administration         | High     | **Pedro Moreira**              | 100%  |
+| US31          | Create auctions                              | M05: Auctions                        | High     | **Pedro Fonseca**              | 100%  |
+| US21          | Most active auctions                         | M05: Auctions                        | Medium   | **André Sousa**                | 100%  |
+| US24          | Social networks                              | M05: Auctions                        | Low      | **André Sousa**                | 100%  |
+| US25          | More from this seller                        | M05: Auctions                        | Low      | **André Sousa**                | 100%  |
+| US21          | Most active auctions                         | M05: Auctions                        | Medium   | **André Sousa**                | 100%  |
+| US22          | New auctions                                 | M05: Auctions                        | Medium   | **André Sousa**                | 100%  |
+| US35          | Bidding history                              | M05: Auctions                        | High     | **André Sousa**                | 100%  |
+| US14          | Consult FAQ                                  | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
+| US11          | Home Page                                    | M02: Home page and Static pages      | High     | **Pedro Fonseca**, André Sousa | 100%  |
+| US62          | Manage auction status                        | M05: Auctions                        | High     | **André Sousa**                | 100%  |
+| US61          | Edit auctions                                | M05: Auctions                        | High     | **André Sousa**, Pedro Fonseca | 100%  |
+| US15          | Consult Contacts                             | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
+| US13          | Consult Services                             | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
+| US12          | See About page                               | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
+| US39          | Delete account                               | M04: Users                           | Medium   | **André Sousa**                | 100%  |
+| US19          | Report users                                 | M06: Reports                         | Medium   | **Pedro Moreira**              | 100%  |
+| US69          | Buy it now                                   | M05: Auctions                        | Medium   | **Pedro Fonseca**              | 100%  |
+| US58          | Buy now                                      | M05: Auctions                        | Medium   | **Pedro Fonseca**              | 100%  |
+| US23          | Recover Password                             | M04: Users                           | Medium   | **André Sousa**                | 100%  |
+| US17          | Filters                                      | M05: Auctions                        | Medium   | **Vitor Cavaleiro**            | 100%  |
+| US57          | Rate a seller                                | M04: Users                           | Medium   | **André Sousa**                | 100%  |
+| US40          | Follow auctions                              | M05: Auctions                        | Medium   | **Pedro Moreira**              | 100%  |
+| US18          | Report auctions                              | M06: Reports                         | Medium   | **André Sousa**                | 100%  |
+| US52          | Notified on new bid on participating auction | M07: Notifications                   | Medium   | **André Sousa**                | 100%  |
+| US53          | Notified on participating auction ended      | M07: Notifications                   | Medium   | **André Sousa**                | 100%  |
+| US54          | Notified on participating auction winner     | M07: Notifications                   | Medium   | **André Sousa**                | 100%  |
+| US55          | Notified on followed auction canceled        | M07: Notifications                   | Medium   | **André Sousa**                | 100%  |
+| US56          | Notified on participating auction ending     | M07: Notifications                   | Medium   | **André Sousa**                | 100%  |
+| US20          | Featured items                               | M05: Auctions                        | Medium   | **Pedro Moreira**              | 100%  |
+| US38          | Add funds to account                         | M04: Users                           | Medium   | **Pedro Fonseca**              | 100%  |
+| US43          | Profile Picture                              | M04: Users                           | Medium   | **André Sousa**                | 100%  |
+| US26          | Order search results                         | M04: Users                           | Low      | **Vitor Cavaleiro**            | 100%  |
+| US59          | Max bid                                      | M05: Auctions                        | Low      | **Pedro Fonseca**              | 100%  |
+| US45          | Withdraw funds                               | M04: Users                           | Low      | **Pedro Fonseca**              | 100%  |
+| US42          | Notification                                 | M07: Notifications                   | Medium   | **André Sousa**                | 100%  |
 ---
 
 

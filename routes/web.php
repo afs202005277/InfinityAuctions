@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 // Home
 use App\Http\Controllers\MainPageController;
 use Illuminate\Auth\Events\PasswordReset;

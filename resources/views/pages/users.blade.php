@@ -32,9 +32,13 @@
             @if(Auth::user()!=null)
                 @if(Auth::user()->id==$user->id)
                     <div>
+                        <a class="edit"href="{{ url('/balance') }}">
+                            <button> Balance</button>
+                        </a>
                         <form class="edit" action="{{url('/logout')}}" method="get">
                             <button type="submit">Logout</button>
                         </form>
+
                         @if(Auth::user()->is_admin)
                             <a class="manage_btn" href="{{ url('/manage') }}">
                                 <button> Admin Panel</button>

@@ -17,7 +17,7 @@ header > .logo {
 }
 
 header > .logo > img {
-    height: 6rem;
+    height: clamp(3rem, 7vw, 6rem);
     width: auto;
 }
 
@@ -55,7 +55,7 @@ header > .search {
 }
 
 header > .search > form > .search-text {
-    height: 4rem;
+    height: clamp(2rem, 7vw, 4rem);
     border: 1px solid #AAAAAA;
     padding: 0.5em;
     border-radius: 5px;
@@ -92,7 +92,22 @@ header > .log-in:hover, header > .sign-up:hover, header > .faq:hover {
     font-size: 1.7rem;
 }
 
-header > .notifications, header > .user, header > .user > img {
-    height: 3rem;
+header .notifications, header > .user, header > .user > img {
+    height: clamp(1.5rem, 6vw, 3rem);
 }
 
+@media only screen and (max-width: 860px) {
+    header > .categories {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 560px) {
+    header > .faq {
+        display: none;
+    }
+
+    header > .logo {
+        margin: 0;
+    }
+}

@@ -1,12 +1,11 @@
 <div>
-
     <h4 class="name">{{$details->name}}</h4>
     <h5 class="desc">{{$details->description}}</h5>
     <h1 id="user_id_details" hidden>{{Auth::id()}}</h1>
     <h1 id="auction_id_details" hidden>{{$details->id}}</h1>
     @if(Auth::user()!==NULL)
         @php $found = false @endphp
-        @foreach (Auth::user()->followingAuctions()->get() as $auc)
+        @foreach ($followingAuctions as $auc)
             @if($auc->id == $details->id)
                 @php $found = true @endphp
                 <button id="follow_auction">Following</Button>
@@ -39,34 +38,58 @@
         @if ($bids->max())
             {{-- Price Suggest 1 --}}
             <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount" value="{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}">
-                <button type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}€</button>
+                <input type="number" hidden name="amount" placeholder="Bid Amount"
+                       value="{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}">
+                <button
+                    type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.10, 2, '.', '')}}
+                    €
+                </button>
             </form>
             {{-- Price Suggest 2 --}}
             <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount" value="{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}">
-                <button type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}€</button>
+                <input type="number" hidden name="amount" placeholder="Bid Amount"
+                       value="{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}">
+                <button
+                    type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.25, 2, '.', '')}}
+                    €
+                </button>
             </form>
             {{-- Price Suggest 3 --}}
             <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount" value="{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}">
-                <button type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}€</button>
+                <input type="number" hidden name="amount" placeholder="Bid Amount"
+                       value="{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}">
+                <button
+                    type="submit" @php if ($details->state !== "Running") { echo "disabled"; } @endphp>{{number_format((float)$bids->max()->amount*1.50, 2, '.', '')}}
+                    €
+                </button>
             </form>
         @else
             {{-- Price Suggest 1 --}}
             <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount" value="{{number_format((float)$details->base_price, 2, '.', '')}}">
-                <button type="submit" disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1, 2, '.', '')}}€</button>
+                <input type="number" hidden name="amount" placeholder="Bid Amount"
+                       value="{{number_format((float)$details->base_price, 2, '.', '')}}">
+                <button type="submit"
+                        disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1, 2, '.', '')}}
+                    €
+                </button>
             </form>
             {{-- Price Suggest 2 --}}
             <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount" value="{{number_format((float)$details->base_price*1.10, 2, '.', '')}}">
-                <button type="submit" disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1.10, 2, '.', '')}}€</button>
+                <input type="number" hidden name="amount" placeholder="Bid Amount"
+                       value="{{number_format((float)$details->base_price*1.10, 2, '.', '')}}">
+                <button type="submit"
+                        disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1.10, 2, '.', '')}}
+                    €
+                </button>
             </form>
             {{-- Price Suggest 3 --}}
             <form>
-                <input type="number" hidden name="amount" placeholder="Bid Amount" value="{{number_format((float)$details->base_price*1.25, 2, '.', '')}}">
-                <button type="submit" disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1.25, 2, '.', '')}}€</button>
+                <input type="number" hidden name="amount" placeholder="Bid Amount"
+                       value="{{number_format((float)$details->base_price*1.25, 2, '.', '')}}">
+                <button type="submit"
+                        disabled="@php if ($details->state != "Running") { echo "disabled"; } @endphp">{{number_format((float)$details->base_price*1.25, 2, '.', '')}}
+                    €
+                </button>
             </form>
         @endif
     </div>
@@ -76,7 +99,9 @@
         </form>
     @endif
     <div class="autobid">
+        <label for="autobuymaxvalue" hidden>Max value for auto bid</label>
         <input type="number" id="autobuymaxvalue" placeholder="Auto Bidder">
+        <label for="autobuycheckbox" hidden>Checkbox of auto bid</label>
         <input type="checkbox" id="autobuycheckbox">
         @if (Auth::user())
             <p id="autobuyuser" hidden>{{Auth::user()->name}}</p>

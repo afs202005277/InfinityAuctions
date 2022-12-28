@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function search(Request $request)
     {
         $search = $request->input('search');
@@ -26,7 +21,7 @@ class SearchController extends Controller
         if(!isset($filters['state'])) {
             $filters['state'] = [];
         }
-        
+
         $order = $request->input('order');
         if(!isset($order)) {
             $order = 1;
@@ -35,8 +30,6 @@ class SearchController extends Controller
         $filters['maxPrice'] = $request->input('filter.maxPrice');
         $filters['buyNow'] = $request->input('filter.buyNow');
 
-        $auctions = (new Auction())->searchResults($search, $filters, $order);
-
-        return $auctions;
+        return Auction::searchResults($search, $filters, $order);
     }
 }
