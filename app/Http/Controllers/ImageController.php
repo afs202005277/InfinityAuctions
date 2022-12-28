@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
-use Illuminate\Http\Request;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 
 class ImageController extends Controller
@@ -33,44 +34,11 @@ class ImageController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Image $image)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Image $image)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Image $image)
-    {
-        //
-    }
-
-    /**
      * Deletes an individual item.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
+     * @throws AuthorizationException
      */
     public function delete($id)
     {

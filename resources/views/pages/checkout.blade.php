@@ -3,8 +3,8 @@
 @section('title', 'About Page')
 
 @section('content')
-   <!-- Font Awesome -->
-   <script src="https://use.fontawesome.com/2d1c7583b1.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/2d1c7583b1.js"></script>
 
     <section class="container">
         <section class="content">
@@ -22,36 +22,39 @@
                     </li>
                 </ul>
             </article>
-            <article id="product" class="shadow"><img src="https://thinsoldier.com/wip/nike-grid/images/lunar2_full.jpg" alt="Lunar 2"></article>
+            <article id="product" class="shadow"><img src="https://thinsoldier.com/wip/nike-grid/images/lunar2_full.jpg"
+                                                      alt="Lunar 2"></article>
             <article id="checkoutCard" class="shadow">
                 <div id="details">
                     <dl class="">
                         <dt>Product</dt>
-                        <dd> <img id="thumbnail" src="http://thinsoldier.com/wip/nike-grid/images/nike_luna_thumbnail.png" alt="Lunar 2"></dd>
+                        <dd><img id="thumbnail"
+                                 src="http://thinsoldier.com/wip/nike-grid/images/nike_luna_thumbnail.png"
+                                 alt="Lunar 2"></dd>
                         <dt>Name</dt>
                         <dd><h5> {{$auction->name}} </h5></dd>
                         <dt>Price</dt>
-                        <dd>{{$auction->getWinnerPrice()}}€ </dd>
+                        <dd>{{$auction->getWinnerPrice()}}€</dd>
                     </dl>
                 </div>
                 <form method="get" action="/auctions/checkout/{{$auction->id}}/success">
                     <div id="contactInfo">
-                        <label for="">First</label>
-                        <label for="">Last</label>
-                        <input type="text" value="{{(explode(' ', Auth::user()->name))[0]}}">
-                        <input type="text" value="{{(explode(' ', Auth::user()->name))[1]}}">
+                        <label for="first_name">First</label>
+                        <label for="last_name">Last</label>
+                        <input placeholder="First name" id="first_name" type="text" value="{{$firstName}}">
+                        <input placeholder="Last name" id="last_name" type="text" value="{{$lastName}}">
                     </div>
                     <div id="adressInfo">
-                        <label for="">Street</label>
-                        <input type="text" value="{{Auth::user()->address}}">
+                        <label for="address">Address</label>
+                        <input id="address" type="text" value="{{$address}}">
                     </div>
                     <div id="securityInfo">
-                        <label for="">City</label>
-                        <label for="">State</label>
-                        <label for="">Zip</label>
-                        <input type="text" placeholder="Manhattan">
-                        <input type="text" placeholder="New York">
-                        <input type="text" placeholder="XXXX-XXX">
+                        <label for="city">City</label>
+                        <label for="state">State</label>
+                        <label for="zip">Zip</label>
+                        <input id="city" type="text" placeholder="City">
+                        <input id="state" type="text" placeholder="State">
+                        <input id="zip" type="text" placeholder="XXXX-XXX">
                     </div>
 
                     <input type="submit" value="Check out" id="btnSubmit">

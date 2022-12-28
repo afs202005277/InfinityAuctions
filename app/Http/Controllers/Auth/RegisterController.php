@@ -46,13 +46,13 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:30',
+            'name' => 'required|string|max:30|regex:/^[a-zA-Z\s]{1,30}$/',
             'gender' => ['required', Rule::in(['M', 'F', 'NB', 'O'])],
             'cellphone' => 'required|numeric|digits:9|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
@@ -60,25 +60,25 @@ class RegisterController extends Controller
             'address' => ['required', 'unique:users', new IsValidAddress],
             'password' => 'required|string|min:6|confirmed',
             'profile_picture' => 'mimes:jpeg,jpg,png,gif'],
-            ['birth_date.before' => "You need to be, at least, 18 years old to sign up in our website."]
+            ['birth_date.before' => "You need to be, at least, 18 years old to sign up in our website.",
+                'name.regex' => "The name field must consist of only letters and whitespaces, and must have a length between 1 and 30 characters (inclusive).",]
         );
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \App\Models\User
      */
     protected function create(array $data)
     {
-        if (isset($data['profile_picture'])){
+        if (isset($data['profile_picture'])) {
             $imageId = ImageController::store($data['profile_picture'], 'UserImages/', NULL);
         } else {
             $imageId = Image::getDefaultUser()->value('id');
         }
         return User::create([
-            'id' => User::max('id') + 1,
             'name' => $data['name'],
             'gender' => $data['gender'],
             'cellphone' => $data['cellphone'],
@@ -87,7 +87,6 @@ class RegisterController extends Controller
             'address' => $data['address'],
             'password' => bcrypt($data['password']),
             'credits' => 0,
-            'wishlist' => NULL,
             'is_admin' => FALSE,
             'profile_image' => $imageId
         ]);

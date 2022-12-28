@@ -11,15 +11,15 @@
         </div>
         <div class="contentBxAuction">
             <h2>{{$auction->name}}</h2>
-        <div class="sizeAuction">
-            <h3> End Date: <strong> {{$auction->end_date}} </strong> </h3>
-        </div>
+            <div class="sizeAuction">
+                <h3> End Date: <strong> {{$auction->end_date}} </strong></h3>
+            </div>
             @if(!$auction->checkout)
                 <a href="{{ url('/auctions/checkout/' . $auction->id) }}">Checkout</a>
             @else
                 <a href="{{ url('/auctions/checkout/' . $auction->id) . '/success'}}">Details</a>
             @endif
-            
+
         </div>
     </div>
 </div>
