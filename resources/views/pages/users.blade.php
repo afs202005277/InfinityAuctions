@@ -130,7 +130,6 @@
     @endif
     @if(Auth::user()!==null && (Auth::id()===$user->id || Auth::user()->is_admin))
         @include('partials.delete_confirmation')
-
     @endif
 
 @endsection
