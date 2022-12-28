@@ -17,7 +17,6 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AuctionController extends Controller
 {
@@ -37,10 +36,14 @@ class AuctionController extends Controller
         $mostActive = Auction::mostActive();
         $images = $details->images()->get('path');
         $ratingDetails = $owner->getRatingDetails();
-        $superUserMode = Auth::check() && Auth::user()->is_admin || $details->auction_owner_id === Auth::user()->id;
-        $followingAuctions = Auth::user()->followingAuctions()->get();
-        return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode', 'followingAuctions'));
-    }
+        $superUserMode = Auth::check() && (Auth::user()->is_admin || $details->auction_owner_id === Auth::user()->id);
+        if (Auth::check()){
+            $followingAuctions = Auth::user()->followingAuctions()->get();
+            return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode', 'followingAuctions'));
+        }
+        else
+            return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode'));
+        }
 
     public function showAuctionCheckout($auction_id)
     {

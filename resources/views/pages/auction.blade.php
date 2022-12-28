@@ -32,7 +32,11 @@
         </div>
         <div class="details">
             <p id="timer"></p>
-            @include('partials.auction_details', ['details' => $details, 'followingAuctions' => $followingAuctions])
+            @if(isset($followingAuctions))
+                @include('partials.auction_details', ['details' => $details, 'followingAuctions' => $followingAuctions])
+            @else
+                @include('partials.auction_details', ['details' => $details])
+            @endif
             <div class="confident">
                 <img src={{ asset('img/protection_shield.svg')}} alt="Protection shield symbol">
                 <p>Bid with confidence</p>
