@@ -143,7 +143,7 @@
         <!-- Woned Auction -->
         <div class="woned_auctions">
             @if(count($user->wonAuctions())!=0)
-                @foreach ($user->wonAuctions as $auction)
+                @foreach ($user->wonAuctions() as $auction)
                     @include('partials.woned_auction', compact('auction'))
                 @endforeach
             @else

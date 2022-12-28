@@ -212,6 +212,7 @@
   transform: translateY(-0.075em);
 
   display: grid;
+  position: static;
   place-content: center;
 }
 

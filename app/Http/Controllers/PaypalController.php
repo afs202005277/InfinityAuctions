@@ -30,7 +30,14 @@ class PayPalController extends Controller
 
         $balance = User::getBalance(Auth::id());
         $heldBalance = User::heldBalance(Auth::id());
-        return view('pages.balance', compact('balance', 'heldBalance'));
+        if ($balance == 0 || $heldBalance == 0) {
+            $x_degree = 150.0;
+            $y_degree = 20.0;
+        } else {
+            $x_degree = 150.0 + 130.0 * cos(deg2rad(-$heldBalance / $balance * 360.0));
+            $y_degree = 150.0 + 130.0 * sin(deg2rad(-$heldBalance / $balance * 360.0));
+        }
+        return view('pages.balance', compact('balance', 'heldBalance', 'x_degree', 'y_degree'));
     }
 
     public function payment(Request $request)
@@ -98,15 +105,31 @@ class PayPalController extends Controller
 
         if (!($response["purchase_units"][0]["payments"]["captures"][0]["amount"]["value"] ?? null)) {
             $balance = User::getBalance(Auth::id());
+            $heldBalance = User::heldBalance(Auth::id());
+            if ($balance == 0 || $heldBalance == 0) {
+                $x_degree = 150.0;
+                $y_degree = 20.0;
+            } else {
+                $x_degree = 150.0 + 130.0 * cos(deg2rad(-$heldBalance / $balance * 360.0));
+                $y_degree = 150.0 + 130.0 * sin(deg2rad(-$heldBalance / $balance * 360.0));
+            }
             $fail = "Order was not completed. Please try again.";
-            return view('pages.balance', compact('balance', 'fail'));
+            return view('pages.balance', compact('balance', 'heldBalance', 'x_degree', 'y_degree', 'fail'));
         }
 
         if ($response["purchase_units"][0]["payments"]["captures"][0]["amount"]["value"]) {
             User::addBalance(Auth::id(), (float)$response["purchase_units"][0]["payments"]["captures"][0]["amount"]["value"]);
             $balance = User::getBalance(Auth::id());
+            $heldBalance = User::heldBalance(Auth::id());
+            if ($balance == 0 || $heldBalance == 0) {
+                $x_degree = 150.0;
+                $y_degree = 20.0;
+            } else {
+                $x_degree = 150.0 + 130.0 * cos(deg2rad(-$heldBalance / $balance * 360.0));
+                $y_degree = 150.0 + 130.0 * sin(deg2rad(-$heldBalance / $balance * 360.0));
+            }
             $succ = "Credits successfully added.";
-            return view('pages.balance', compact('balance', 'succ'));
+            return view('pages.balance', compact('balance', 'heldBalance', 'x_degree', 'y_degree', 'succ'));
         }
     }
 
@@ -189,8 +212,15 @@ class PayPalController extends Controller
     {
         $balance = User::getBalance(Auth::id());
         $heldBalance = User::heldBalance(Auth::id());
+        if ($balance == 0 || $heldBalance == 0) {
+            $x_degree = 150.0;
+            $y_degree = 20.0;
+        } else {
+            $x_degree = 150.0 + 130.0 * cos(deg2rad(-$heldBalance / $balance * 360.0));
+            $y_degree = 150.0 + 130.0 * sin(deg2rad(-$heldBalance / $balance * 360.0));
+        }
         $cancel = "Payout failed.";
-        return view('pages.balance', compact('balance', 'heldBalance', 'cancel'));
+        return view('pages.balance', compact('balance', 'heldBalance', 'x_degree', 'y_degree', 'cancel'));
     }
 
     /**
@@ -203,7 +233,14 @@ class PayPalController extends Controller
         User::removeBalance(Auth::id(), $amount);
         $balance = User::getBalance(Auth::id());
         $heldBalance = User::heldBalance(Auth::id());
+        if ($balance == 0 || $heldBalance == 0) {
+            $x_degree = 150.0;
+            $y_degree = 20.0;
+        } else {
+            $x_degree = 150.0 + 130.0 * cos(deg2rad(-$heldBalance / $balance * 360.0));
+            $y_degree = 150.0 + 130.0 * sin(deg2rad(-$heldBalance / $balance * 360.0));
+        }
         $succ = "Mail was sent confirming withdrawal. Credits successfully withdrawn.";
-        return view('pages.balance', compact('balance', 'heldBalance', 'succ'));
+        return view('pages.balance', compact('balance', 'heldBalance', 'x_degree', 'y_degree', 'succ'));
     }
 }
