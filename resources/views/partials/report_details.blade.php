@@ -5,7 +5,6 @@
         <a href="{{ url('/users/' . $report->reported_user) }}" target="_blank">Reported user</a>
     @else
         <a href="{{ url('/auctions/' . $report->auction_reported) }}" target="_blank">Reported auction</a><br>
-        <a href="{{ url('/users/' . $report->auction_owner) }}" target="_blank">Auction owner</a>
     @endif
     <div id="report-reasons">
         {{ $report->reasons }}
