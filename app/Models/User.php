@@ -106,9 +106,30 @@ class User extends Authenticatable
         return $this->hasMany(Report::class, 'reported_user');
     }
 
+    public function pendingAucReports() {
+        return $this->reportsHandled()
+                ->whereNotNull('report.auction_reported')
+                ->whereNull('report.penalty')
+                ->selectRaw("report.reporter as reporter,
+                            report.auction_reported as auction_reported,
+                            report.date as date, ARRAY_AGG(report_option.name) as reasons")
+                ->groupBy('report.id');
+    }
+
+    public function pendingUsrReports() {
+        return $this->reportsHandled()
+                ->whereNotNull('report.reported_user')
+                ->whereNull('report.penalty')
+                ->selectRaw("report.reporter as reporter, report.reported_user as reported_user, 
+                            report.date as date, ARRAY_AGG(report_option.name) as reasons")
+                ->groupBy('report.id');
+    }
+
     public function reportsHandled()
     {
-        return $this->hasMany(Report::class, 'admin_id');
+        return $this->hasMany(Report::class, 'admin_id')
+                ->join('report_reasons', 'report.id', '=', 'report_reasons.id_report')
+                ->join('report_option', 'report_reasons.id_report_option', '=', 'report_option.id');
     }
 
     public function profileImage()
@@ -200,5 +221,10 @@ class User extends Authenticatable
             return 0;
         }
         return $value[0]->sum;
+    
+    public static function getBanStates() {
+        $states = DB::select(DB::raw("SELECT unnest(enum_range(NULL::penalty_type))::text AS type;"));
+
+        return $states;
     }
 }

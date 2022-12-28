@@ -55,7 +55,6 @@
                         </a>
                     </div>
                 @endif
-
             @endif
 
             @if(Auth::user()!=null && !Auth::user()->is_admin)
@@ -70,7 +69,7 @@
     </div>
 
 
-    @if(Auth::user()!=null && Auth::user()->id==$user->id)
+    @if( Auth::user()!=null && (Auth::user()->id==$user->id || Auth::user()->is_admin))
         <div class="row">
             <h4 class="info_bar_1"> User Info </h4>
             <h4 class="info_bar_2"> Owned Auctions </h4>
@@ -163,10 +162,13 @@
                 <p> This user doesn't own any Auctions </p>
             @endif
         </div>
+<<<<<<< HEAD
 
     @endif
     @if(Auth::user()!==null && (Auth::id()===$user->id || Auth::user()->is_admin))
         @include('partials.delete_confirmation')
+=======
+>>>>>>> origin/admin_manage
     @endif
 
 @endsection

@@ -37,7 +37,13 @@ class ReportController extends Controller
         $report->reporter = Auth::id();
         $report->penalty = NULL;
         $report->auction_reported = $reportedAuctionId;
+<<<<<<< HEAD
         $report->admin_id = NULL;
+=======
+        $report->admin_id = Report::getEvaluator();
+        $id = DB::table('report')->max('id');
+        $report->id = $id + 1;
+>>>>>>> origin/admin_manage
         return $report;
     }
 

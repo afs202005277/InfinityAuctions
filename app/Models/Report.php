@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Report extends Model
 {
@@ -32,5 +33,34 @@ class Report extends Model
 
     public function handledBy(){
         return $this->belongsTo(User::class, 'admin_id');
+    }
+
+    public static function getEvaluator() {
+        $assignedAdmins = DB::select(DB::raw(
+            'SELECT users.id AS "id"
+            FROM (SELECT users.id
+                  FROM users
+                  WHERE users.is_admin = \'true\') AS "users"
+            INNER JOIN report ON report.admin_id = users.id
+            GROUP BY users.id
+            ORDER BY COUNT(users.id) ASC;'
+        ));
+        
+        $admins = DB::select(DB::raw(
+            'SELECT users.id AS id
+            FROM users
+            WHERE users.is_admin = \'true\''
+        ));
+
+        $assigAdminsArray = array_column($assignedAdmins, 'id');
+        $diff = array_diff(array_column($admins, 'id'), $assigAdminsArray);
+
+        if( !empty($diff) ){
+            $id = $diff[0];
+            return $id;
+        }
+        
+        $id = $assigAdminsArray[0];
+        return $id;
     }
 }
