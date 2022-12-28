@@ -124,7 +124,11 @@ class Auction:
         self.buy_now = -1
 
         if (random.random() < 0.2):
-            self.buy_now = (int(auctions['SALE PRICE'][auction_id]*(1+random.random())) % 10) * 10 * 100
+            if (int(auctions['SALE PRICE'][auction_id] == 0)):
+                bn = 1
+            else:
+                bn = int(auctions['SALE PRICE'][auction_id])
+            self.buy_now = (bn*(1+random.random())) % 10 * 10 * 100
         
         self.state = "Cancelled"
 
@@ -266,7 +270,10 @@ with open("instructions.txt", "w") as instr:
         instr.write("insert into users(name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values('" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
 
     instr.write("\n")
-
+    instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values(1002, 'Conta teste', 'F', '918499953', 'teste@fe.up.pt', '1994-03-01', '623 Vicksburg st', '$2y$10$RvtBy53fupDC6lKaKwt.a.cqtpr59.vEt2xLhXo3ZWSwq.wsZDTP2', 1463, FALSE);\n")
+    instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values(1003, 'Conta teste Admin', 'F', '922978919', 'testeadmin@fe.up.pt', '1994-03-01', '624 Vicksburg st', '$2y$10$RvtBy53fupDC6lKaKwt.a.cqtpr59.vEt2xLhXo3ZWSwq.wsZDTP2', 0, TRUE);\n")
+    instr.write("\n")
+    instr.write("\n")
     max_wishlist_id = 0
     for i in range(len(collections)):
         instr.write(f"insert into wishlist(name) values ('{collections[i]}');\n")
