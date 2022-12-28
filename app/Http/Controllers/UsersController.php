@@ -37,8 +37,16 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $ratingDetails = $user->getRatingDetails();
         $image = Image::find($user->profile_image)->path;
+        $ban_opts = User::getBanStates();
+
+        if($user->is_admin) {
+            $usrReports = $user->pendingUsrReports()->get();
+            $aucReports = $user->pendingAucReports()->get();
+            return view('pages.admin', compact('user', 'image', 'usrReports', 'aucReports', 'ban_opts'));
+        } 
+        
+        $ratingDetails = $user->getRatingDetails();
         return view('pages.users', compact('user', 'ratingDetails', 'image'));
     }
 

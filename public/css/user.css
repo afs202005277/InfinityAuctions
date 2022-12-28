@@ -41,7 +41,7 @@
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-.info_bar_1, .info_bar_2, .info_bar_3, .info_bar_4, .info_bar_5, .info_bar_6{
+.info_bar_1, .info_bar_2, .info_bar_3, .info_bar_4, .info_bar_5, .info_bar_6, .info_bar_admin, .info_bar_auc, .info_bar_usr{
   cursor: pointer;
 }
 
@@ -69,6 +69,9 @@
   justify-items: center;
   grid-template-columns: auto auto;
   min-height: 100vh;
+}
+
+.auc-report, .usr-report {
   display: none;
 }
 
@@ -76,7 +79,7 @@
   display: none;
 }
 
-.info_bar_1 {
+.info_bar_1, .info_bar_admin {
   text-decoration: underline;
 }
 

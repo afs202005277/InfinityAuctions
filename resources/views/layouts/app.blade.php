@@ -31,7 +31,6 @@
     <link href="{{ asset('css/admin_panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction_edit.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tmp.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/filter_panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/search_page.css') }}" rel="stylesheet">
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
     <script type="text/javascript" src={{ asset('js/app.js') }} defer></script>
@@ -44,15 +43,17 @@
     <script type="text/javascript" src={{ asset('js/banner.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/pagination.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/search_page.js') }} defer></script>
-</head>
-<body>
-<main>
-    <header>
-        <a class="logo" href="{{ url('/') }}"><img
-                src={{ asset('img/infinityauctions_logo.png') }} alt="InfinityAuctions logo"></a>
-        <div class="categories">
-            <div class="cat-button">
-                Categories<img src={{ asset('img/downarrow.svg')}} alt="Categories down arrow">
+    <script type="text/javascript" src={{ asset('js/admin_center.js') }} defer></script>
+  </head>
+  <body>
+    <main>
+        <header>
+            <a class="logo" href="{{ url('/') }}"><img src={{ asset('img/infinityauctions_logo.png') }} alt="InfinityAuctions logo"></a>
+            <div class="categories">
+              <div class="cat-button">
+                Categories<img src={{ asset('img/downarrow.svg')}}>
+              </div>
+              @include('partials.categories', ['categories' => $categories])
             </div>
             @include('partials.categories', ['categories' => $categories])
         </div>
