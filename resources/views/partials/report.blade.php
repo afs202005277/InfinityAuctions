@@ -1,10 +1,10 @@
 <div id="report-card">
     @include('partials.report_details', ['report' => $report])
     <div>
-        <div class="manage_btn">
+        <div>
             <button>Ban User</button>
             <button>Dismiss</button>
         </div>
-        @include('partials.ban_card', ['ban_opts' => $ban_opts])
+        @include('partials.ban_form', ['ban_opts' => $ban_opts, 'reportID' => $report->id])
     </div>
 </div>

@@ -73,8 +73,8 @@ class Auction extends Model
             ->selectRaw('auction.*')
             ->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
             ->join('category', 'auction_category.category_id', '=', 'category.id')
-            ->join('rates', 'auction.auction_owner_id', '=', 'rates.id_seller')
-            ->join('bid', 'auction.id', '=', 'bid.auction_id');
+            ->leftJoin('rates', 'auction.auction_owner_id', '=', 'rates.id_seller')
+            ->leftjoin('bid', 'auction.id', '=', 'bid.auction_id');
 
         if (count($filters['category'])) {
             $query->whereIn('category.id', $filters['category']);
@@ -115,7 +115,7 @@ class Auction extends Model
             $query->havingRaw('MAX(bid.amount) < ?', [$filters['maxPrice']]);
         }
 
-        $values = $query->paginate(10);
+        $values = $query->get();
         return $values;
     }
 

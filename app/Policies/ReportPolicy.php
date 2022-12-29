@@ -41,9 +41,9 @@ class ReportPolicy
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user)
+    public function update(User $user, Report $report)
     {
-        return $user->is_admin;
+        return $user->is_admin && ($report->admin_id == $user->id);
     }
 
     /**
@@ -53,8 +53,8 @@ class ReportPolicy
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user)
+    public function delete(User $user, Report $report)
     {
-        return $user->is_admin;
+        return $user->is_admin && ($report->admin_id == $user->id);
     }
 }

@@ -111,8 +111,8 @@ class User extends Authenticatable
         return $this->reportsHandled()
                 ->whereNotNull('report.auction_reported')
                 ->whereNull('report.penalty')
-                ->selectRaw("report.reporter as reporter, report.reported_user as reported_user, 
-                            report.auction_reported as auction_reported,
+                ->selectRaw("report.id as id, report.reporter as reporter, 
+                            report.reported_user as reported_user, report.auction_reported as auction_reported,
                             report.date as date, ARRAY_AGG(report_option.name) as reasons")
                 ->groupBy('report.id');
     }
@@ -121,7 +121,8 @@ class User extends Authenticatable
         return $this->reportsHandled()
                 ->whereNull('report.auction_reported')
                 ->whereNull('report.penalty')
-                ->selectRaw("report.reporter as reporter, report.reported_user as reported_user, 
+                ->selectRaw("report.id as id, report.reporter as reporter, 
+                            report.reported_user as reported_user, 
                             report.date as date, ARRAY_AGG(report_option.name) as reasons")
                 ->groupBy('report.id');
     }

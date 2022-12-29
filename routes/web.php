@@ -69,6 +69,7 @@ Route::post('users/report', 'ReportController@report')->name('reportUser');
 
 //Admin Panel
 Route::get('manage', 'ManageController@show');
+Route::post('api/user/ban', 'ReportController@banUser')->name('banUser');
 
 // Auctions
 Route::post('sell', 'AuctionController@sell');
