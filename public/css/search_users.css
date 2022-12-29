@@ -7,16 +7,15 @@
 
 .search_user{
   padding-top: 5em;
-  display: inline-grid;
-  align-self: center;
-  grid-template-columns: auto auto auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   min-height: 100vh;
-  
 }
 
 .container{
   position: relative;
-  margin: 1em;
+  margin: 0;
 }
 
 .container .card{
