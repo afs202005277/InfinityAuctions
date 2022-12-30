@@ -14,7 +14,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-
 class UsersController extends Controller
 {
     /**
@@ -37,7 +36,8 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        if ($user->isBanned()){
+        $banned = $user->isBanned();
+        if ($banned && (!Auth::check() || Auth::id() != $id)){
             return view('pages.banned_page');
         }
 
@@ -51,7 +51,7 @@ class UsersController extends Controller
         } 
         
         $ratingDetails = $user->getRatingDetails();
-        return view('pages.users', compact('user', 'ratingDetails', 'image'));
+        return view('pages.users', compact('user', 'ratingDetails', 'image', 'banned'));
     }
 
     public function topSellers()

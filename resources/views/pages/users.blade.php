@@ -83,6 +83,9 @@
 
         <!-- Users Data -->
         <div class="change_data">
+            @if($banned)
+                <p> This account has been suspended! </p>
+            @endif
             @include('partials.edit_profile')
         </div>
 

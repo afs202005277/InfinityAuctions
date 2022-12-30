@@ -20,7 +20,13 @@ class ReportController extends Controller
         $user = User::find($id);
         $options = Report_Option::all();
         $isUserReport = True;
-        return view('pages.report-users', compact('user', 'options', 'isUserReport'));
+        $banned = False;
+        if(Auth::check()) {
+            $loggedUser = User::find(Auth::id());
+            $banned = $loggedUser->isBanned();
+        }
+
+        return view('pages.report-users', compact('user', 'options', 'isUserReport', 'banned'));
     }
 
     public function showAuctionReport($id)
@@ -28,7 +34,12 @@ class ReportController extends Controller
         $auction = Auction::find($id);
         $options = Report_Option::all();
         $isUserReport = False;
-        return view('pages.report-users', compact('auction', 'options', 'isUserReport'));
+        $banned = False;
+        if(Auth::check()) {
+            $loggedUser = User::find(Auth::id());
+            $banned = $loggedUser->isBanned();
+        }
+        return view('pages.report-users', compact('auction', 'options', 'isUserReport', 'banned'));
     }
 
     public function createReport($reportedUserId, $reportedAuctionId = NULL)
@@ -46,9 +57,11 @@ class ReportController extends Controller
 
     public function report(Request $request)
     {
-        try {
-            $this->authorize('create', new Report());
+        if (!Auth::id()) {
+            return redirect('/login');
+        }
 
+        try {
             $validated = array();
             if ($request->has('reported_user')) {
                 $validated = $request->validate([
@@ -64,6 +77,7 @@ class ReportController extends Controller
                 throw ValidationException::withMessages(['Missing parameters in request!']);
             }
 
+            $this->authorize('create', Report::class);
             $report = $this->createReport($validated['reported_user'], $validated['reported_auction']);
 
             $report->save();
@@ -81,9 +95,9 @@ class ReportController extends Controller
             return redirect('/');
         } catch (AuthorizationException $exception) {
             if ($validated['reported_user'] !== NULL)
-                return redirect('/users/report/' . $report->reported_user)->withErrors(["error", "You don't have permissions to report this user!"]);
+                return redirect('/users/report/' . $validated['reported_user'])->withErrors(["error", "You don't have permissions to report this user!"]);
             else
-                return redirect('/auctions/report/' . $report->reported_auction)->withErrors(["error", "You don't have permissions to report this auction!"]);
+                return redirect('/auctions/report/' . $validated['reported_auction'])->withErrors(["error", "You don't have permissions to report this auction!"]);
         } catch (QueryException $sqlExcept) {
             return redirect()->back()->withErrors(["error", "Invalid database parameters!"]);
         } catch (\Exception $exception) {

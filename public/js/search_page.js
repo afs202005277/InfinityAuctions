@@ -70,7 +70,7 @@ function modifySearchAttributesRequest() {
         newUrlParams.append(checkedCategory[i].getAttribute("name") + '[' + i + ']', checkedCategory[i].getAttribute("value"));
     }
 
-    let checkedState = document.querySelectorAll('#state-fieldset > ul > div > input[type=checkbox]:checked');
+    let checkedState = document.querySelectorAll('#state-fieldset input[type=checkbox]:checked');
     for (let i = 0; i < checkedState.length; i++) {
         newUrlParams.append(checkedState[i].getAttribute("name") + '[' + i + ']', checkedState[i].getAttribute("value"));
     }
