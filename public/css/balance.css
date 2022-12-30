@@ -1,0 +1,124 @@
+#balance {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#balance h3 {
+    font-weight: 200;
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+#balance .euro {
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+
+#balance .money {
+    font-weight: 500;
+    font-size: 2.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+#balance .orange {
+    color: var(--ten);
+}
+
+#balance .money-title {
+    text-align: center;
+}
+
+#balance > .left-side {
+    width: 280px;
+    align-items: center;
+}
+
+#balance > .left-side > .top-area > .chart {
+    position: relative;
+    width: fit-content;
+}
+
+#balance > .left-side > .top-area > .chart > .money-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#balance > .left-side > .top-area > .bottom {
+    display: flex;
+    display: row;
+    justify-content: space-around;
+    margin-top: 3rem;
+}
+
+#balance > .right-side label {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+#balance > .right-side input {
+    border: none;
+    border-bottom: 1px solid var(--thirty);
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+    width: 24rem;
+}
+
+#balance > .right-side input:read-write {
+    font-family: inherit;
+}
+
+#balance > .right-side button {
+    padding: 0.6rem;
+    background-color: var(--thirty);
+    border: none;
+    font-family: inherit;
+    color: var(--sixty);
+    font-weight: 600;
+    border-radius: 7px;
+    border: 1px solid var(--thirty);
+    cursor: pointer;
+}
+
+#balance > .right-side button:hover {
+    background-color: var(--sixty);
+    color: var(--thirty);
+}
+
+@media only screen and (max-width: 740px) {
+    #balance {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    #balance > .right-side {
+        margin-top: 3rem;
+    }
+}
+
+
+#pie-chart {
+    border-radius: 50%;
+    height: 280px;
+    width: 280px;
+    position: relative;
+    z-index: -1;
+}
+
+#pie-chart > .center {
+    border-radius: 50%;
+    background-color: var(--sixty);
+    height: 260px;
+    width: 260px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

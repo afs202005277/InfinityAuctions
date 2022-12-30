@@ -87,7 +87,7 @@
            placeholder="{{ __('Confirm New Password') }}" value="" required>
 
 
-    <button type="submit" class="btn">{{ __('Change password') }}</button>
+    <button type="submit">{{ __('Change password') }}</button>
 
 </form>
 
