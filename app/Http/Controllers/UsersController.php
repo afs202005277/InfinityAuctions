@@ -37,6 +37,10 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        if ($user->isBanned()){
+            return view('pages.banned_page');
+        }
+
         $image = Image::find($user->profile_image)->path;
         $ban_opts = User::getBanStates();
 

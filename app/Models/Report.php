@@ -35,10 +35,6 @@ class Report extends Model
         return $this->belongsTo(User::class, 'admin_id');
     }
 
-    public function handleReport(Request $request) {
-
-    }
-
     public static function getEvaluator() {
         $assignedAdmins = DB::select(DB::raw(
             'SELECT users.id AS "id"

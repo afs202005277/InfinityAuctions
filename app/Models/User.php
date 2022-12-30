@@ -145,16 +145,16 @@ class User extends Authenticatable
         foreach ($reports as $report) {
             if ($report->penalty == 'Banned for life')
                 return true;
-            if ($report->penalty == '3 day ban' && strtotime(date_add($report->date, date_interval_create_from_date_string("3 days"))) >= date('Y-m-d H:i:s')) {
+            if ($report->penalty == '3 day ban' && date_add(date_create($report->date), date_interval_create_from_date_string("3 days")) >= date('Y-m-d H:i:s')) {
                 return true;
             }
-            if ($report->penalty == '5 day ban' && strtotime(date_add($report->date, date_interval_create_from_date_string("5 days"))) >= date('Y-m-d H:i:s')) {
+            if ($report->penalty == '5 day ban' && date_add(date_create($report->date), date_interval_create_from_date_string("5 days")) >= date('Y-m-d H:i:s')) {
                 return true;
             }
-            if ($report->penalty == '10 day ban' && strtotime(date_add($report->date, date_interval_create_from_date_string("10 days"))) >= date('Y-m-d H:i:s')) {
+            if ($report->penalty == '10 day ban' && date_add(date_create($report->date), date_interval_create_from_date_string("10 days")) >= date('Y-m-d H:i:s')) {
                 return true;
             }
-            if ($report->penalty == '1 month ban' && strtotime(date_add($report->date, date_interval_create_from_date_string("1 months"))) >= date('Y-m-d H:i:s')) {
+            if ($report->penalty == '1 month ban' && date_add(date_create($report->date), date_interval_create_from_date_string("1 months")) >= date('Y-m-d H:i:s')) {
                 return true;
             }
         }
