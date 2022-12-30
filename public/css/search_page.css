@@ -17,9 +17,18 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    max-height: 0;
     overflow: hidden;
+    max-height: 0;
     transition: max-height 0.2s ease-out
+}
+
+@media only screen and (max-width: 800px) {
+    .filter-panel {
+        flex-direction: column;
+        justify-content: center;
+        max-height: 0;
+        transition: max-height 0.2s ease-out
+    }
 }
 
 .filter-panel > div > legend {

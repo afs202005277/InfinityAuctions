@@ -13,10 +13,14 @@
 
 .row {
   display: flex;
-  margin-left: 2em;
-  margin-right: 4em;
-  justify-content: space-between;
-  
+  flex-wrap: wrap;
+  margin-left: 0rem;
+  margin-right: 0rem;
+  justify-content: space-evenly;
+}
+
+.row > h4 {
+  margin: 2.5rem;
 }
 
 .col-md-8 {
@@ -89,4 +93,28 @@
   color:aliceblue;
   cursor: pointer;
   margin: 1em;
+}
+
+@media only screen and (max-width: 750px) {
+
+  .bio > div {
+    margin: auto;
+  }
+
+  .bio img {
+    position: static !important;
+  }
+
+  .bio2 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .user-actions-buttons {
+    text-align: right;
+  }
+
+  .user-actions-buttons > * {
+    margin-top: 1rem;
+  }
 }

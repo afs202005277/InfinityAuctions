@@ -10,7 +10,7 @@
     @endif
 
     @if($superUserMode)
-        <div id="auction_managing_options" style="float: right">
+        <div id="auction_managing_options">
             <form action="{{ url('/auctions/cancel/' . $auction_id ) }}" method="POST" role="auction_delete">
                 {{ csrf_field() }}
                 <button class="cancel_btn"> Cancel</button>
