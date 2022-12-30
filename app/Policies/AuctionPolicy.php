@@ -44,6 +44,6 @@ class AuctionPolicy
      */
     public function delete(User $user, Auction $auction)
     {
-        return Auth::check() && ($user->id == $auction->owner()->value('id') || $user->is_admin);
+        return Auth::check() && ($user->id == $auction->owner()->value('id') || $user->is_admin) && $auction->state !== 'Ended';
     }
 }

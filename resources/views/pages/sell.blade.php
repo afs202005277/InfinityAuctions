@@ -143,7 +143,7 @@
             <div id="currentImages">
                 @foreach($images as $image)
                     <div class="auctionImage">
-                        <img src={{ asset('img/trash.svg')}} alt="Remove image button">
+                        <img class="removeImgButton" src={{ asset('img/trash.svg')}} alt="Remove image button">
                         <img src="{{ asset($image->path) }}" alt="auction image">
                     </div>
                 @endforeach

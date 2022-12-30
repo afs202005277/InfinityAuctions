@@ -8,7 +8,7 @@
         @foreach ($followingAuctions as $auc)
             @if($auc->id == $details->id)
                 @php $found = true @endphp
-                <button id="follow_auction">Following</Button>
+                <button id="follow_auction" style="background-color: rgb(255, 107, 0)">Following</Button>
                 @break
             @endif
         @endforeach

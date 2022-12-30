@@ -37,13 +37,12 @@ class AuctionController extends Controller
         $images = $details->images()->get('path');
         $ratingDetails = $owner->getRatingDetails();
         $superUserMode = Auth::check() && (Auth::user()->is_admin || $details->auction_owner_id === Auth::user()->id);
-        if (Auth::check()){
+        if (Auth::check()) {
             $followingAuctions = Auth::user()->followingAuctions()->get();
             return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode', 'followingAuctions'));
-        }
-        else
+        } else
             return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode'));
-        }
+    }
 
     public function showAuctionCheckout($auction_id)
     {
@@ -104,7 +103,8 @@ class AuctionController extends Controller
                 'buynow' => 'nullable|numeric|gt:baseprice'
             ], ['buynow.gt' => 'The "buy now" value must be greater than the base price.',
                 'title.regex' => 'Invalid characters detected.',
-                'desc.regex' => 'Invalid characters detected.']);
+                'desc.regex' => 'Invalid characters detected.',
+                'images.min' => 'You need to select at least 3 images for your auction.']);
 
             $auction->name = $validated['title'];
             $auction->description = $validated['desc'];
@@ -232,10 +232,6 @@ class AuctionController extends Controller
             $notification->auction_id = $auction_id;
             $notification->save();
         }
-
-
-
-        
     }
 
     /**
@@ -253,18 +249,19 @@ class AuctionController extends Controller
             $auction->state = 'Cancelled';
 
             $auction->save();
-            AuctionController::addNotificationCanceledOwner($auction->id,'Auction Canceled');
+            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Canceled');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Canceled');
-            
+
             return redirect('/');
         } catch (AuthorizationException) {
             return redirect('auctions/' . $id)->withErrors("You don't have permissions to cancel this auction! ");
         }
     }
 
-    public function addNotificationOwner($auction_id,$type){
-        $owner = Auction::find($auction_id)->seller()->get();
-        
+    public function addNotificationOwner($auction_id, $type)
+    {
+        $owner = Auction::find($auction_id)->owner()->get();
+
         $notification = new Notification();
         $notification->type = $type;
         $notification->user_id = $owner->id;
@@ -293,8 +290,6 @@ class AuctionController extends Controller
 
     public static function updateAuctionsState()
     {
-      
-        
         $auctionsToEnd = Auction::toEndAuctions();
         foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
@@ -305,12 +300,12 @@ class AuctionController extends Controller
             User::removeBalance($user_id, (float)$amount);
             User::addBalance($auction->auction_owner_id, $amount * 0.95);
             User::addBalance(1003, $amount * 0.05);
-            AuctionController::addNotificationCanceledOwner($auction->id,'Auction Ended');
+            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ended');
         }
 
         $auctionsEnding = Auction::nearEndAuctions();
         foreach ($auctionsEnding as $auction) {
-            AuctionController::addNotificationCanceledOwner($auction->id,'Auction Ending');
+            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ending');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ending');
         }
         Auction::updateStates();

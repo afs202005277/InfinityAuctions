@@ -319,12 +319,8 @@
     text-decoration: underline;
 }
 
-#bid_list2 {
-
-}
-
 .bid2 {
-    width: 60%;
+    width: 50%;
     height: 10em;
     border-radius: 1em;
     background-color: #fff3f3;
@@ -436,7 +432,7 @@
     .toparea, .below {
         display: block;
     }
-    
+
     .toparea > .images {
         width: 100%;
         position: static;

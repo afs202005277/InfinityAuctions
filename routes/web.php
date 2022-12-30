@@ -128,7 +128,7 @@ Route::post('/reset-password', function (Request $request) {
 })->middleware('guest')->name('password.update');
 
 //Payments
-Route::get('balance', 'PaypalController@show')->name('payments');
+Route::get('balance', 'PayPalController@show')->name('payments');
 
 Route::get('deposit', 'PayPalController@payment')->name('deposit');
 Route::get('deposit/cancel', 'PayPalController@cancel')->name('deposit.cancel');

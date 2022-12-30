@@ -42,7 +42,7 @@ class PayPalController extends Controller
         try {
             $validated = $request->validate([
                 'deposit' => 'required|min:5|numeric|max:9999999.99',
-            ]);
+            ], ['deposit.max' => 'You are not allowed to deposit more than 9999999.99 credits.']);
             $provider = \PayPal::setProvider();
             $provider->getAccessToken();
 

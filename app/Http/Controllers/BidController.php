@@ -83,11 +83,11 @@ class BidController extends Controller
     }
 
     public function addNewBidNotification($auction_id){
-        $owner = Auction::find($auction_id)->seller()->get();
-    
+        $owner = Auction::find(101)->owner()->value('id');;
+
         $notification = new Notification();
         $notification->type = 'New Bid';
-        $notification->user_id = $owner->id;
+        $notification->user_id = $owner;
         $notification->auction_id = $auction_id;
         $notification->save();
     }
