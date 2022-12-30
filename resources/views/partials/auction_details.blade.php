@@ -3,7 +3,7 @@
     <h5 class="desc">{{$details->description}}</h5>
     <h1 id="user_id_details" hidden>{{Auth::id()}}</h1>
     <h1 id="auction_id_details" hidden>{{$details->id}}</h1>
-    @if(Auth::user()!==NULL)
+    @if(Auth::check())
         @php $found = false @endphp
         @foreach ($followingAuctions as $auc)
             @if($auc->id == $details->id)

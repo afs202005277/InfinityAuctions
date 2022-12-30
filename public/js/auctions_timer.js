@@ -40,8 +40,7 @@ function buttonsSuggestionsListener() {
 let x = setInterval(function () {
 
     if (document.getElementById('autobuycheckbox').checked) {
-        if (document.querySelector('p.info-bid > span').textContent != document.getElementById('autobuyuser').textContent && parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) < document.getElementById('autobuymaxvalue').value) {
-            console.log('hello');
+        if (document.querySelector('p.info-bid > span').textContent !== document.getElementById('autobuyuser').textContent && parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) < document.getElementById('autobuymaxvalue').value) {
             if (document.getElementById('autobuymaxvalue').value - parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) > 1) {
                 document.getElementById('bid_amount').value = parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0])+1;
                 document.getElementById('make_bid').click();
@@ -76,11 +75,6 @@ let x = setInterval(function () {
 
     let auction_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
     sendAjaxRequest('get', '/api/auctions/getAllBids/' + auction_id, {}, bidsReceivedHandler);
-
-    let bn = document.querySelector('#buy-now').textContent.split(' ');
-    if (parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) >= parseFloat(bn[bn.length-1].slice(0, -1))) {
-        location.reload();
-    }
 
 }, 1000);
 
