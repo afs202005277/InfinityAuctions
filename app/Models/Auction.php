@@ -70,11 +70,20 @@ class Auction extends Model
     public static function searchResults($search, $filters, $order)
     {
         $query = DB::table('auction')
-            ->selectRaw('auction.*')
+            ->selectRaw('auction.*, 
+                        CASE 
+                            WHEN bool_and(rates.id_seller IS NOT NULL) THEN AVG(rates.rate)::NUMERIC(10,2)
+                            ELSE 0
+                        END AS average_rate,
+                        CASE 
+                            WHEN bool_and(bid.auction_id IS NOT NULL) THEN MAX(bid.amount) 
+                            ELSE auction.base_price
+                        END AS max_price
+                        ')
             ->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
             ->join('category', 'auction_category.category_id', '=', 'category.id')
-            ->join('rates', 'auction.auction_owner_id', '=', 'rates.id_seller')
-            ->join('bid', 'auction.id', '=', 'bid.auction_id');
+            ->leftjoin('rates', 'auction.auction_owner_id', '=', 'rates.id_seller')
+            ->leftjoin('bid', 'auction.id', '=', 'bid.auction_id');
 
         if (count($filters['category'])) {
             $query->whereIn('category.id', $filters['category']);
@@ -84,38 +93,33 @@ class Auction extends Model
             $query->whereIn('auction.state', $filters['state']);
         }
 
-        if (isset($search)) {
-            $query->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
-            if ($order == 1) {
-                $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);
-            }
-        }
-
-        if ($order == 2) {
-            $query->orderByRaw("MAX(bid.amount) DESC");
-        } elseif ($order == 3) {
-            $query->orderByRaw("MAX(bid.amount) ASC");
-        } elseif ($order == 4) {
-            $query->orderByRaw("AVG(rates.rate)::NUMERIC(10,2) DESC");
-            $query->groupBy('rates.id_seller');
-        }
-
         if (isset($filters['buyNow'])) {
             $query->whereRaw("auction.buy_now IS NOT NULL");
         }
 
-        //$values = DB::select(DB::raw("SELECT * FROM auction
-        //       WHERE auction_tokens @@ plainto_tsquery('english', :search)
-        //       ORDER BY ts_rank(auction_tokens, plainto_tsquery('english', :search)) DESC;"),
-        //       array('search' => $search,));
-
-        $query->groupBy('auction.id');
-
-        if (isset($filters['maxPrice'])) {
-            $query->havingRaw('MAX(bid.amount) < ?', [$filters['maxPrice']]);
+        if (isset($search)) {
+            $query->whereRaw("auction_tokens @@ plainto_tsquery('english', ?)", [$search]);
         }
 
-        $values = $query->paginate(10);
+        $query->groupBy('auction.auction_owner_id');
+        $query->groupBy('auction.id');
+
+        if ($order == 1 && isset($search)) {
+            $query->orderByRaw("ts_rank(auction_tokens, plainto_tsquery('english', ?)) DESC", [$search]);
+        } elseif ($order == 2) {
+            $query->orderByRaw('max_price DESC');
+        } elseif ($order == 3) {
+            $query->orderByRaw('max_price ASC');
+        } elseif ($order == 4) {
+            $query->orderByRaw('average_rate DESC');
+        }
+
+        $values = $query->get();
+
+        if (isset($filters['maxPrice'])) {
+            $values = $values->where('max_price', '<=', $filters['maxPrice']);
+        }
+
         return $values;
     }
 
