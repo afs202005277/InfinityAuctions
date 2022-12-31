@@ -10,7 +10,11 @@
                         <h3>BALANCE</h3>
                         <p class="money"><span class="euro">€</span>{{ number_format((float) $balance, 2, '.', '') }}</p>
                     </div>
-                    <div id="pie-chart" style="background: conic-gradient(#FF6B00 0.00% {{ (1 - $heldBalance/$balance) * 100}}%, #424242 {{ (1 - $heldBalance/$balance) * 100}}% 100.00%);"><div class="center"></div></div>
+                    @if ($balance != 0)
+                        <div id="pie-chart" style="background: conic-gradient(#FF6B00 0.00% {{ (1 - $heldBalance/$balance) * 100}}%, #424242 {{ (1 - $heldBalance/$balance) * 100}}% 100.00%);"><div class="center"></div></div>
+                    @else
+                        <div id="pie-chart" style="background: conic-gradient(#FF6B00 0.00% 100.00%);"><div class="center"></div></div>
+                    @endif
                 </div>
                 <div class="bottom">
                     <div class="money-title">

@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Log;
+
 class AuctionController extends Controller
 {
     /**
@@ -299,13 +301,13 @@ class AuctionController extends Controller
             $user_id = $max_bid->user_id;
             User::removeBalance($user_id, (float)$amount);
             User::addBalance($auction->auction_owner_id, $amount * 0.95);
-            User::addBalance(1003, $amount * 0.05);
-            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ended');
+            User::addBalance(2, $amount * 0.05);
+            //AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ended');
         }
 
         $auctionsEnding = Auction::nearEndAuctions();
         foreach ($auctionsEnding as $auction) {
-            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ending');
+            // AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ending');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ending');
         }
         Auction::updateStates();

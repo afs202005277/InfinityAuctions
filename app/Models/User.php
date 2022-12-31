@@ -211,7 +211,8 @@ class User extends Authenticatable
     {
         $value = DB::select(DB::raw('SELECT SUM(max)
                                     FROM (  SELECT BID.auction_id, BID.user_id, MAX(BID.amount)
-                                            FROM BID, AUCTION
+                                            FROM BID
+                                            INNER JOIN AUCTION ON BID.auction_id=AUCTION.id
                                             WHERE AUCTION.state = \'Running\'
                                             GROUP BY auction_id, user_id
                                          ) top_bids
