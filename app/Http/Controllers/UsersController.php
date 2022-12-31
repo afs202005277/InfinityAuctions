@@ -51,7 +51,7 @@ class UsersController extends Controller
     }
 
     public function topSellers()
-    {
-        return User::getUsersWithImages()->paginate(10);
+    {   
+        return User::getUsersWithImages()->get();
     }
 }
