@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Models\User;
 use App\Rules\IsValidAddress;
+use App\Rules\MatchPassword;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -29,7 +31,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $image = Image::find($user->profile_image)->path;
-        return view('pages.user', compact('user', 'image'));
+        return view('pages.users', compact('user', 'image'));
     }
 
     /**
@@ -45,22 +47,18 @@ class UserController extends Controller
             $user = User::find($id);
             $this->authorize('update', $user);
             if ($request->has('old_password')) {
-                $validated = $request->validate(['password' => 'required|string|min:6|confirmed', 'old_password' => 'required|string|min:6']);
-                if (Hash::check($validated['old_password'], $user->password))
-                    $user->password = bcrypt($validated['password']);
-                else {
-                    throw new Exception('Invalid password!');
-                }
+                $validated = $request->validate(['password' => 'required|string|min:6|confirmed', 'old_password' => [new MatchPassword]]);
+                $user->password = bcrypt($validated['password']);
             } else {
                 $validated = $request->validate([
                     'name' => 'required|string|max:30|regex:/^[a-zA-Z\s]{1,30}$/',
-                    'cellphone' => 'required|numeric|digits:9|unique:users',
-                    'email' => 'required|string|email|max:255|unique:users',
+                    'cellphone' => ['required', 'numeric', 'digits:9', Rule::unique('users')->ignore($user->id)],
+                    'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
                     'birth_date' => 'required|date|before:-18 years',
-                    'address' => ['required', 'unique:users', new IsValidAddress],
+                    'address' => ['required', Rule::unique('users')->ignore($user->id), new IsValidAddress],
                     'profile_image' => 'mimes:jpeg,jpg,png,gif'],
                     ['birth_date.before' => "You need to be, at least, 18 years old to sign up in our website.",
-                        'name.regex' => "The name field must consist of only letters and whitespaces, and must have a length between 1 and 30 characters (inclusive)."
+                        'name.regex' => "Only letters and white spaces are allowed. Maximum 30 characters."
                     ]);
 
                 if (isset($validated['profile_image'])) {
@@ -74,13 +72,11 @@ class UserController extends Controller
                 $user->address = $validated['address'];
             }
             $user->save();
-            return redirect('user/' . $user->id);
+            return redirect('users/' . $user->id);
         } catch (AuthorizationException) {
             return redirect()->back()->withErrors("You don't have permissions to edit this user!");
         } catch (QueryException) {
             return redirect()->back()->withErrors("Invalid database parameters!");
-        } catch (Exception $exception) {
-            return redirect()->back()->withErrors(["password", $exception->getMessage()]);
         }
     }
 
@@ -157,6 +153,6 @@ class UserController extends Controller
     }
 
     public function banUser(Request $request) {
-        
+
     }
 }

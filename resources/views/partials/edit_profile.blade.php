@@ -5,13 +5,11 @@
     @csrf
     @method('post')
 
-    @include('alerts.success')
-
     <label>{{ __('Name') }}</label>
-    <input type="text" name="name" pattern="^[a-zA-Z\s]{1,255}$" title="Only letters and white spaces are allowed"
+    <input type="text" name="name" pattern="^[a-zA-Z\s]{1,30}$" title="Only letters and white spaces are allowed. Maximum 30 characters."
            class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
            placeholder="{{ __('Name') }}" value="{{ old('name', auth()->user()->name) }}">
-    @include('alerts.feedback', ['field' => 'name'])
+    @include('alerts.feedback', ['field' => 'name', 'errors' => $errors])
 
 
     <label>{{ __('Email address') }}</label>
@@ -20,7 +18,7 @@
            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
            title="The email address can only contain letters, numbers and dots. The '@' sign is mandatory"
            placeholder="{{ __('Email address') }}" value="{{ old('email', auth()->user()->email) }}">
-    @include('alerts.feedback', ['field' => 'email'])
+    @include('alerts.feedback', ['field' => 'email', 'errors' => $errors])
 
 
     <label>{{ __('Cellphone') }}</label>
@@ -30,7 +28,7 @@
            pattern="^[0-9]{9}$"
            title="The phone number can only contain 9 digits."
            value="{{ old('cellphone', auth()->user()->cellphone) }}">
-    @include('alerts.feedback', ['field' => 'cellphone'])
+    @include('alerts.feedback', ['field' => 'cellphone', 'errors' => $errors])
 
 
     <label>{{ __('Address') }}</label>
@@ -39,21 +37,18 @@
            pattern="^[a-zA-Z0-9\s,]{1,}$"
            title="An address can only contain spaces, commas, numbers and alphabetic characters"
            placeholder="{{ __('Address') }}" value="{{ old('address', auth()->user()->address) }}">
-    @include('alerts.feedback', ['field' => 'address'])
+    @include('alerts.feedback', ['field' => 'address', 'errors' => $errors])
 
 
     <label>{{ __('Birth Date') }}</label>
     <input type="date" name="birth_date"
            class="form-control{{ $errors->has('birth_date') ? ' is-invalid' : '' }}"
            value="{{ old('birth_date', auth()->user()->birth_date) }}">
-    @include('alerts.feedback', ['field' => 'birth_date'])
+    @include('alerts.feedback', ['field' => 'birth_date', 'errors' => $errors])
 
 
     <label for="profile_picture_input">Profile image:</label>
     <input type="file" name="profile_image" id="profile_picture_input">
-
-
-    <span class="error">{{$errors->first()}}</span>
 
     <button type="submit">{{ __('Save') }}</button>
 
@@ -72,14 +67,14 @@
     <input type="password" name="old_password"
            class="form-control{{ $errors->has('old_password') ? ' is-invalid' : '' }}"
            placeholder="{{ __('Current Password') }}" value="" required>
-    @include('alerts.feedback', ['field' => 'old_password'])
+    @include('alerts.feedback', ['field' => 'old_password', 'errors' => $errors])
 
 
     <label>{{ __('New Password') }}</label>
     <input type="password" name="password"
            class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
            placeholder="{{ __('New Password') }}" value="" required>
-    @include('alerts.feedback', ['field' => 'password'])
+    @include('alerts.feedback', ['field' => 'password', 'errors' => $errors])
 
 
     <label>{{ __('Confirm New Password') }}</label>
