@@ -44,6 +44,7 @@ class SearchPageController extends Controller
         $states = Auction::returnStates();
 
         $follows = Wishlist::follows($search);
+        
 
         return view('pages.search_page', compact('auctions', 'states', 'filters', 'order', 'categories', 'search', 'follows'));
     }
