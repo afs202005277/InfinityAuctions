@@ -451,6 +451,7 @@ form > .report_btn {
     padding: 0.4em;
     border: 1px solid var(--ten);
     background: none;
+    color: white;
 }
 
 @media only screen and (max-width: 740px) {
