@@ -52,7 +52,7 @@
             <a class="logo" href="{{ url('/') }}"><img src={{ asset('img/infinityauctions_logo.png') }} alt="InfinityAuctions logo"></a>
             <div class="categories">
               <div class="cat-button">
-                Categories<img src={{ asset('img/downarrow.svg')}}>
+                Categories<img src={{ asset('img/downarrow.svg')}} alt="Drop down categories list">
               </div>
               @include('partials.categories', ['categories' => $categories])
             </div>

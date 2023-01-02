@@ -31,9 +31,9 @@
             @if(Auth::user()!=null)
                 @if(Auth::user()->id==$user->id)
                     <div class="user-actions-buttons">
-                        <a class="edit"href="{{ url('/balance') }}">
-                            <button> Balance</button>
-                        </a>
+                        <form class="edit" action="{{ url('/balance') }}">
+                            <button type="submit"> Balance</button>
+                        </form>
                         <form action="{{url('/logout')}}" method="get">
                             <button type="submit">Logout</button>
                         </form>
