@@ -28,7 +28,7 @@ auctions = auctions.sample(frac=1).reset_index(drop=True)
 type_ban = ['3 day ban', '5 day ban', '10 day ban', '1 month ban']
 notification_type = ['Outbid', 'New Auction', 'Report', 'Wishlist Targeted', 'Auction Ending', 'New Bid', 'Auction Ended', 'Auction Won', 'Auction Canceled']
 categories = ["Panini", "Banknotes", "Fine Art", "Oil", "Wine", "Comic Books", "Fashion", "Watches", "Coins", "Stamps"]
-report_option = ["Counterfeit", "Duplicate listings", "Fradulent", "Innapropriate Description", "Stolen property", "Adult material", "Wildlife", "Drugs, Alcohol or Tobacco", "Offensive and violent materials"]
+report_option = ["Counterfeit", "Duplicate listings", "Fradulent", "Innapropriate Description", "Stolen property", "Adult material", "Wildlife", "Drugs, Alcohol or Tobacco", "Offensive and violent materials", "Offensive profile picture", "Offensive name"]
 
 user_id = 1
 auction_id = 1
@@ -238,10 +238,7 @@ class ReportOption:
 class ReportReasons:
     def __init__(self, report_id):
         self.report_id = report_id
-
         self.report_option_id = random.randint(1, report_option_id-1)
-
-
 
 am_users = 1000
 am_auctions = 100

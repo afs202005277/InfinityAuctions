@@ -17,7 +17,7 @@ class ReportController extends Controller
     public function showUserReport($id)
     {
         $user = User::find($id);
-        $options = Report_Option::all();
+        $options = Report_Option::userOptions()->get();
         $isUserReport = True;
         return view('pages.report-users', compact('user', 'options', 'isUserReport'));
     }
@@ -25,7 +25,7 @@ class ReportController extends Controller
     public function showAuctionReport($id)
     {
         $auction = Auction::find($id);
-        $options = Report_Option::all();
+        $options = Report_Option::auctionOptions()->get();
         $isUserReport = False;
         return view('pages.report-users', compact('auction', 'options', 'isUserReport'));
     }
@@ -38,8 +38,6 @@ class ReportController extends Controller
         $report->penalty = NULL;
         $report->auction_reported = $reportedAuctionId;
         $report->admin_id = Report::getEvaluator();
-        $id = DB::table('report')->max('id');
-        $report->id = $id + 1;
         return $report;
     }
 
