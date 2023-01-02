@@ -84,8 +84,7 @@ Usability: [Report](HTML_Reports/Checklist%20de%20Usabilidade%20-%20SAPO%20UX.pd
 
 ### 7. Revisions to the Project
 
-> Describe the revisions made to the project since the requirements specification stage.  
-
+> Describe the revisions made to the project since the requirements specification stage.
 
 ### 8. Web Resources Specification
 

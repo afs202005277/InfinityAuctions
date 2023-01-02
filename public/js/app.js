@@ -77,7 +77,7 @@ function createBidAmount(bid) {
     let new_bid_amount = document.createElement('p');
     new_bid_amount.className = 'bid-amount';
     let bid_float = parseFloat(bid.amount).toFixed(2);
-    new_bid_amount.innerHTML = `${bid_float}<span> €</span>`;
+    new_bid_amount.innerHTML = `${bid_float}<span>€</span>`;
 
     return new_bid_amount;
 }

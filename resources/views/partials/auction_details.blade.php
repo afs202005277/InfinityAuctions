@@ -21,12 +21,13 @@
         </form>
     @endif
 
-    <h5 id="state">{{strtoupper($details->state)}}</h5>
     @if ($details->state == "Running")
+        <h5 id="state" hidden>RUNNING</h5>
         @php($disabled = "")
         <p class="time-rem">TIME REMAINING</p>
         <h5 id="final-date">{{$details->end_date}}</h5>
     @else
+        <h5 id="state">{{strtoupper($details->state)}}</h5>
         @php($disabled = "disabled")
         @if($details->state === 'To be started')
             <p class="time-rem">Starts in:</p>

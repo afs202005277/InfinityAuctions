@@ -224,6 +224,18 @@ body {
       -ms-flex-flow: row nowrap;
           flex-flow: row nowrap;
 }
+.slider__contents:nth-child(1){
+  background-image: url('../img/fashion.webp');
+}
+.slider__contents:nth-child(2){
+  background-image: url('../img/paris.webp');
+}
+.slider__contents:nth-child(3){
+  background-image: url('../img/pexels-aleksandar-pasaric-325185.jpg');
+}
+.slider__contents:nth-child(4){
+  background-image: url('../img/watch.webp');
+}
 .slider__contents {
   height: 100%;
   padding: 2rem;
@@ -249,11 +261,9 @@ body {
           justify-content: center;
   overflow: hidden;
   background-repeat: no-repeat;
-  background-image: url('../img/pexels-aleksandar-pasaric-325185.jpg');
   background-color: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
   background-size: cover;
   border-radius: 2em;
-
 }
 .slider__image {
   font-size: 2.7rem;

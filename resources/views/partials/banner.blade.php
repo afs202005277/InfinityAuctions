@@ -21,7 +21,7 @@
                 real estate offerings in the world. As one of our largest and most anticipated sales of the year,</p>
         </div>
         <div class="slider__contents"><i class="slider__image fa fa-diamond"></i>
-            <h2 class="slider__caption">Infinity's Holiday 2022</h2>
+            <h2 class="slider__caption">Infinity's Holiday 2023</h2>
             <p class="slider__txt">Discover jewelry and watches, design, wine, spirits and other treasures curated by
                 our specialists for their rarity, craftsmanship and exceptional provenance... whether you are spending
                 $100, $1,000, $1 million or more.</p>

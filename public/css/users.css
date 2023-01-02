@@ -13,8 +13,11 @@
 .bio img {
     top: 8em;
     position: relative;
-    width: 20em;
-    height: auto;
+    width: 18em;
+    height: 18em;
+    object-fit: cover;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 .info {
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
