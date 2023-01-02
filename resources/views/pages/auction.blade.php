@@ -5,9 +5,7 @@
 @section('content')
 
     <script type="text/javascript" src={{ asset('js/auctions_images.js') }} defer></script>
-    @if ($details->state == "Running")
-        <script type="text/javascript" src={{ asset('js/auctions_timer.js') }} defer></script>
-    @endif
+    <script type="text/javascript" src={{ asset('js/auctions_timer.js') }} defer></script>
 
     @if($superUserMode)
         <div id="auction_managing_options">
