@@ -15,8 +15,7 @@ crontab cronfile
 rm cronfile
 
 env >> /var/www/.env
-php-fpm8.0 -D
+php-fpm8.1 -D
 # Start cron
 cron
-php-fpm8.1 -D
 nginx -g "daemon off;"

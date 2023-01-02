@@ -44,14 +44,14 @@ class UsersController extends Controller
             $usrReports = $user->pendingUsrReports()->get();
             $aucReports = $user->pendingAucReports()->get();
             return view('pages.admin', compact('user', 'image', 'usrReports', 'aucReports', 'ban_opts'));
-        } 
-        
+        }
+
         $ratingDetails = $user->getRatingDetails();
         return view('pages.users', compact('user', 'ratingDetails', 'image'));
     }
 
     public function topSellers()
-    {   
-        return User::getUsersWithImages()->get();
+    {
+        return User::getTopSellers();
     }
 }
