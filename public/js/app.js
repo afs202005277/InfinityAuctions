@@ -39,6 +39,11 @@ function sendBanRequest(event) {
 
 function sendCreateBidRequest(event) {
     let amount = document.querySelector('#bid_amount').value;
+    if (!(/^\d*\.?\d+$/).test(amount)){
+        const error = createErrorMessage("Invalid characters detected!");
+        event.parentElement.appendChild(error);
+        return;
+    }
     let user_id = document.querySelector('#user_id').value;
     let auction_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
 

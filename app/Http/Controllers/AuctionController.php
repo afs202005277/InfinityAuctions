@@ -251,7 +251,7 @@ class AuctionController extends Controller
             $auction->state = 'Cancelled';
 
             $auction->save();
-            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Canceled');
+            AuctionController::addNotificationOwner($auction->id, 'Auction Canceled');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Canceled');
 
             return redirect('/');
@@ -304,12 +304,12 @@ class AuctionController extends Controller
                 User::addBalance($auction->auction_owner_id, $amount * 0.95);
                 User::addBalance(2, $amount * 0.05);
             }
-            //AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ended');
+            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ended');
         }
 
         $auctionsEnding = Auction::nearEndAuctions();
         foreach ($auctionsEnding as $auction) {
-            // AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ending');
+            AuctionController::addNotificationOwner($auction->id, 'Auction Ending');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ending');
         }
         Auction::updateStates();

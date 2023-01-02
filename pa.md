@@ -40,18 +40,44 @@ Whether you are looking to sell items or find great deals on a wide range of pro
 
 ### 4. Input Validation
 
-> Describe how input data was validated, and provide examples to scenarios using both client-side and server-side validation.  
+In every form submission, the provided data is validated on the server-side using the built-in validation rules of Laravel. Moreover, we included two custom validation rules to properly validate the content of user's addresses (IsValidAddress) and to match the provided password with the stored one (MatchPassword) (this is required when the user is changing the password in the User page).
+Furthermore, we validate the input in every form's input field using the `pattern` attribute alongside regular expressions. 
+An example of front end input validation (edit profile page):
+`<input type="text" name="name" pattern="^[a-zA-Z\s]{1,30}$" title="Only letters and white spaces are allowed. Maximum 30 characters." class="form-control is-invalid" placeholder="Name"`
+![Front-end input validation](ImagesPA/FrontEndValidation.png)
+If we disable this verification, we obtain the error messages from the server:
+![Back-end input validation](ImagesPA/BackEndValidation.png)
+
+This form's input was validated in the server side using the following code:
+```
+$validated = $request->validate([
+                    'name' => 'required|string|max:30|regex:/^[a-zA-Z\s]{1,30}$/',
+                    'cellphone' => ['required', 'numeric', 'digits:9', Rule::unique('users')->ignore($user->id)],
+                    'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+                    'birth_date' => 'required|date|before:-18 years',
+                    'address' => ['required', Rule::unique('users')->ignore($user->id), new IsValidAddress],
+                    'profile_image' => 'mimes:jpeg,jpg,png,gif'],
+                    ['birth_date.before' => "You need to be, at least, 18 years old to sign up in our website.",
+                        'name.regex' => "Only letters and white spaces are allowed. Maximum 30 characters."
+                    ]);
+```
 
 ### 5. Check Accessibility and Usability
 
-> Provide the results of accessibility and usability tests using the following checklists. Include the results as PDF files in the group's repository. Add individual links to those files here.
->
-> Accessibility: https://ux.sapo.pt/checklists/acessibilidade/  
-> Usability: https://ux.sapo.pt/checklists/usabilidade/  
+Accessibility: [Report](HTML_Reports/Checklist%20de%20Acessibilidade%20-%20SAPO%20UX.pdf)
+Usability: [Report](HTML_Reports/Checklist%20de%20Usabilidade%20-%20SAPO%20UX.pdf)
 
 ### 6. HTML & CSS Validation
 
-> Provide the results of the validation of the HTML and CSS code using the following tools. Include the results as PDF files in the group's repository. Add individual links to those files here.
+- [About us](HTML_Reports/AboutUs.pdf)
+- [Contacts](HTML_Reports/Contacts.pdf)
+- [FAQ](HTML_Reports/FAQ.pdf)
+- [Services](HTML_Reports/Services.pdf)
+- [Create auction](HTML_Reports/sell.pdf)
+- [Edit auction](HTML_Reports/Edit%20Auction.pdf)
+- [Other user page](HTML_Reports/OtherUserPage.pdf)
+- [Self user page](HTML_Reports/SelfUserPage.pdf)
+- [Balance](HTML_Reports/Balance.pdf)
 >   
 > HTML: https://validator.w3.org/nu/  
 > CSS: https://jigsaw.w3.org/css-validator/  
@@ -114,7 +140,7 @@ openapi: 3.0.0
 | US15          | Consult Contacts                             | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
 | US13          | Consult Services                             | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
 | US12          | See About page                               | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
-| US39          | Delete account                               | M04: Users                           | Medium   | **André Sousa**                | 100%  |
+| US39          | Delete account                               | M04: Users                           | Medium   | **André Sousa**, Pedro Moreira | 100%  |
 | US19          | Report users                                 | M06: Reports                         | Medium   | **Pedro Moreira**              | 100%  |
 | US69          | Buy it now                                   | M05: Auctions                        | Medium   | **Pedro Fonseca**              | 100%  |
 | US58          | Buy now                                      | M05: Auctions                        | Medium   | **Pedro Fonseca**              | 100%  |
@@ -135,6 +161,10 @@ openapi: 3.0.0
 | US59          | Max bid                                      | M05: Auctions                        | Low      | **Pedro Fonseca**              | 100%  |
 | US45          | Withdraw funds                               | M04: Users                           | Low      | **Pedro Fonseca**              | 100%  |
 | US42          | Notification                                 | M07: Notifications                   | Medium   | **André Sousa**                | 100%  |
+| US41          | Wishlist                                     | M07: Users                           | Medium   | **Pedro Fonseca**              | 100%  |
+| US74          | Delete user accounts                         | M03: Platform administration         | Medium   | **Vitor Cavaleiro**            | 100%  |
+| US75          | Manage auction reports                       | M03: Platform administration         | Low      | **Vitor Cavaleiro**            | 100%  |
+| US73          | Punish users                                 | M03: Platform administration         | Medium   | **Vitor Cavaleiro**            | 100%  |
 ---
 
 
@@ -144,9 +174,9 @@ openapi: 3.0.0
 
 ### 1. Product presentation
 
-> Our online auction website is a comprehensive information system that aims to support the buying and selling of a variety of items through a web interface. Registered users of the platform can easily place items up for auction or bid on existing items that are available for auction. The system is designed to automatically manage the bidding process, including enforcing deadlines and determining the winning bid in a fair and transparent manner.
-> In addition to facilitating the auction process, our website also offers a range of tools and features to enhance the user experience. System managers have the ability to stop auctions, block user accounts, or delete content as necessary to maintain the integrity and safety of the platform. We strive to provide a reliable and enjoyable auction experience for all of our users.
-> 
+Our online auction website is a comprehensive information system that aims to support the buying and selling of a variety of items through a web interface. Registered users of the platform can easily place items up for auction or bid on existing items that are available for auction. The system is designed to automatically manage the bidding process, including enforcing deadlines and determining the winning bid in a fair and transparent manner.
+In addition to facilitating the auction process, our website also offers a range of tools and features to enhance the user experience. System managers have the ability to stop auctions, block user accounts, or delete content as necessary to maintain the integrity and safety of the platform. We strive to provide a reliable and enjoyable auction experience for all of our users.
+
 > URL to the product: http://lbaw2271.lbaw.fe.up.pt  
 >
 > Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
