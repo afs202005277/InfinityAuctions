@@ -12,6 +12,7 @@
 */
 
 // Home
+use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\MainPageController;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
@@ -44,6 +45,7 @@ Route::get('api/search', 'SearchController@search');
 Route::delete('api/image/{id}', 'ImageController@delete');
 Route::delete('api/users/delete/{id}', 'UserController@destroy');
 Route::post('api/users/addReview', 'UserController@addReview');
+Route::post('api/auctions/update', function (){AuctionController::updateAuctionsState(); return response('Success', 200);});
 
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

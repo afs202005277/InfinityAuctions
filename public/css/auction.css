@@ -57,7 +57,7 @@
     color: var(--ten);
 }
 
-.toparea > .details > div > #final-date {
+.toparea > .details > div > #final-date, .toparea > .details > div > #state {
     margin: 0;
     font-size: 4rem;
     margin-top: -1rem;
@@ -450,8 +450,8 @@ form > .report_btn {
     margin-top: 1em;
     padding: 0.4em;
     border: 1px solid var(--ten);
-    color: var(--ten);
     background: none;
+    color: white;
 }
 
 @media only screen and (max-width: 740px) {
