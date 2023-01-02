@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Log;
+
 class AuctionController extends Controller
 {
     /**
@@ -37,13 +39,12 @@ class AuctionController extends Controller
         $images = $details->images()->get('path');
         $ratingDetails = $owner->getRatingDetails();
         $superUserMode = Auth::check() && (Auth::user()->is_admin || $details->auction_owner_id === Auth::user()->id);
-        if (Auth::check()){
+        if (Auth::check()) {
             $followingAuctions = Auth::user()->followingAuctions()->get();
             return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode', 'followingAuctions'));
-        }
-        else
+        } else
             return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode'));
-        }
+    }
 
     public function showAuctionCheckout($auction_id)
     {
@@ -94,10 +95,9 @@ class AuctionController extends Controller
             );
 
             $validator = Validator::make($fileArray, $rules);
-
             $validated = $request->validate([
-                'title' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
-                'desc' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
+                'title' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/]*$/',
+                'desc' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/]*$/',
                 'images' => 'required|array|min:3',
                 'baseprice' => 'required|numeric|gt:0',
                 'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
@@ -105,7 +105,8 @@ class AuctionController extends Controller
                 'buynow' => 'nullable|numeric|gt:baseprice'
             ], ['buynow.gt' => 'The "buy now" value must be greater than the base price.',
                 'title.regex' => 'Invalid characters detected.',
-                'desc.regex' => 'Invalid characters detected.']);
+                'desc.regex' => 'Invalid characters detected.',
+                'images.min' => 'You need to select at least 3 images for your auction.']);
 
             $auction->name = $validated['title'];
             $auction->description = $validated['desc'];
@@ -174,8 +175,8 @@ class AuctionController extends Controller
             $auction = Auction::find($id);
             $this->authorize('update', $auction);
             $validated = $request->validate([
-                'title' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
-                'desc' => 'required|min:1|max:255, regex:/^[a-zA-Z\s0-9,;\'.:\/]$/',
+                'title' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/]*$/',
+                'desc' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/]*$/',
                 'baseprice' => 'required|numeric|gt:0',
                 'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
                 'enddate' => 'required|date|after:startdate',
@@ -210,7 +211,7 @@ class AuctionController extends Controller
             }
 
             return redirect('auctions/' . $auction->id);
-        } catch (AuthorizationException $exception) {
+        } catch (AuthorizationException) {
             return redirect()->back()->withErrors("You don't have permissions to edit this auction!");
         }
     }
@@ -250,12 +251,24 @@ class AuctionController extends Controller
             $auction->state = 'Cancelled';
 
             $auction->save();
-
+            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Canceled');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Canceled');
+
             return redirect('/');
-        } catch (AuthorizationException $exception) {
+        } catch (AuthorizationException) {
             return redirect('auctions/' . $id)->withErrors("You don't have permissions to cancel this auction! ");
         }
+    }
+
+    public function addNotificationOwner($auction_id, $type)
+    {
+        $owner = Auction::find($auction_id)->owner()->get();
+
+        $notification = new Notification();
+        $notification->type = $type;
+        $notification->user_id = $owner->id;
+        $notification->auction_id = $auction_id;
+        $notification->save();
     }
 
     public function selectedAuctions()
@@ -283,15 +296,20 @@ class AuctionController extends Controller
         foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
             $all_bids = Bid::all_bids($auction->id);
-            $max_bid = $all_bids[0];
-            $amount = $max_bid->amount;
-            $user_id = $max_bid->user_id;
-            User::removeBalance($user_id, (float)$amount);
-            User::addBalance($auction->auction_owner_id, $amount * 0.95);
-            User::addBalance(1003, $amount * 0.05);
+            if (count($all_bids) > 0){
+                $max_bid = $all_bids[0];
+                $amount = $max_bid->amount;
+                $user_id = $max_bid->user_id;
+                User::removeBalance($user_id, (float)$amount);
+                User::addBalance($auction->auction_owner_id, $amount * 0.95);
+                User::addBalance(2, $amount * 0.05);
+            }
+            //AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ended');
         }
+
         $auctionsEnding = Auction::nearEndAuctions();
         foreach ($auctionsEnding as $auction) {
+            // AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ending');
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ending');
         }
         Auction::updateStates();

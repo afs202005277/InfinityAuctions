@@ -3,6 +3,7 @@
 @section('title', 'Services Page')
 
 @section('content')
+    <h2>Services</h2>
     <ul>
         <li> Bid on auctions</li>
         <li> Sell items</li>

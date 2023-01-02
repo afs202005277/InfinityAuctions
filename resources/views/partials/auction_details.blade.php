@@ -3,12 +3,12 @@
     <h5 class="desc">{{$details->description}}</h5>
     <h1 id="user_id_details" hidden>{{Auth::id()}}</h1>
     <h1 id="auction_id_details" hidden>{{$details->id}}</h1>
-    @if(Auth::user()!==NULL)
+    @if(Auth::check())
         @php $found = false @endphp
         @foreach ($followingAuctions as $auc)
             @if($auc->id == $details->id)
                 @php $found = true @endphp
-                <button id="follow_auction">Following</Button>
+                <button id="follow_auction" style="background-color: rgb(255, 107, 0)">Following</Button>
                 @break
             @endif
         @endforeach
@@ -20,11 +20,18 @@
             <input type="submit" value="Report" class="report_btn">
         </form>
     @endif
-    <p class="time-rem">TIME REMAINING</p>
+
+    <h5 id="state">{{strtoupper($details->state)}}</h5>
     @if ($details->state == "Running")
+        @php($disabled = "")
+        <p class="time-rem">TIME REMAINING</p>
         <h5 id="final-date">{{$details->end_date}}</h5>
     @else
-        <h5 id="final-date">{{strtoupper($details->state)}}</h5>
+        @php($disabled = "disabled")
+        @if($details->state === 'To be started')
+            <p class="time-rem">Starts in:</p>
+            <h5 id="final-date">{{$details->start_date}}</h5>
+        @endif
     @endif
     <p class="max-bid">TOP BID</p>
     @include('partials.bid', ['bid' => $bids->max(), 'start_amount' => $details->base_price])
@@ -35,14 +42,15 @@
     </form>
     <span class="error" style="font-size: larger"></span>
     <div class="price-suggestions">
-        @if ($bids->max())
-            @include('partials.bid_suggestions', ['increase'=>1.10, 'baseValue'=>$bids->max()->amount, 'state'=>$details->state])
-            @include('partials.bid_suggestions', ['increase'=>1.25, 'baseValue'=>$bids->max()->amount, 'state'=>$details->state])
-            @include('partials.bid_suggestions', ['increase'=>1.50, 'baseValue'=>$bids->max()->amount, 'state'=>$details->state])
+        @php($max_bid = $bids->max())
+        @if ($max_bid)
+            @include('partials.bid_suggestions', ['increase'=>1.10, 'baseValue'=>$max_bid->amount, 'state'=>$details->state, 'disabled'=>$disabled])
+            @include('partials.bid_suggestions', ['increase'=>1.25, 'baseValue'=>$max_bid->amount, 'state'=>$details->state, 'disabled'=>$disabled])
+            @include('partials.bid_suggestions', ['increase'=>1.50, 'baseValue'=>$max_bid->amount, 'state'=>$details->state, 'disabled'=>$disabled])
         @else
-            @include('partials.bid_suggestions', ['increase'=>1, 'baseValue'=>$details->base_price, 'state'=>$details->state])
-            @include('partials.bid_suggestions', ['increase'=>1.10, 'baseValue'=>$details->base_price, 'state'=>$details->state])
-            @include('partials.bid_suggestions', ['increase'=>1.25, 'baseValue'=>$details->base_price, 'state'=>$details->state])
+            @include('partials.bid_suggestions', ['increase'=>1, 'baseValue'=>$details->base_price, 'state'=>$details->state, 'disabled'=>$disabled])
+            @include('partials.bid_suggestions', ['increase'=>1.10, 'baseValue'=>$details->base_price, 'state'=>$details->state, 'disabled'=>$disabled])
+            @include('partials.bid_suggestions', ['increase'=>1.25, 'baseValue'=>$details->base_price, 'state'=>$details->state, 'disabled'=>$disabled])
         @endif
     </div>
     @if ($details->buy_now)

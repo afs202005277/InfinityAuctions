@@ -1,4 +1,4 @@
-<input class="modal-btn" type="checkbox" id="modal-btn" name="modal-btn">
+<input class="modal-btn" type="checkbox" id="modal-btn" name="modal-btn" hidden>
 <label for="modal-btn"> Delete Account <i></i></label>
 <div class="modal">
     <div class="modal-wrap">

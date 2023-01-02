@@ -16,7 +16,6 @@
         </div>
     </div>
     <div class="info">
-
         <div class="bio">
             <div>
                 <img src="{{ asset($image) }}" alt="profile picture">
@@ -31,11 +30,11 @@
 
             @if(Auth::user()!=null)
                 @if(Auth::user()->id==$user->id)
-                    <div>
+                    <div class="user-actions-buttons">
                         <a class="edit"href="{{ url('/balance') }}">
                             <button> Balance</button>
                         </a>
-                        <form class="edit" action="{{url('/logout')}}" method="get">
+                        <form action="{{url('/logout')}}" method="get">
                             <button type="submit">Logout</button>
                         </form>
 
@@ -96,7 +95,7 @@
 
         <!-- Bids Placed -->
         <div class="bids_placed">
-            @if(!$user->bids()->get()->isEmpty())
+            @if(count($user->bids) !== 0)
                 @include('partials.auction_bids2', ['bids' => $user->bids])
             @else
                 <p> This user hasn't placed any bids! </p>

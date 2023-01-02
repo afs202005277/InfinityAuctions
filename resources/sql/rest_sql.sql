@@ -122,7 +122,10 @@ BEGIN
         WHERE bid.auction_id = NEW.auction_id
           AND bid.amount >= NEW.amount
         ) THEN
-        RAISE EXCEPTION 'Bid is lower than the highest bid.';
+        RAISE EXCEPTION 'Your bid is lower than the highest bid.';
+    END IF;
+    IF ((SELECT base_price FROM auction WHERE auction.id = NEW.auction_id ) > NEW.amount)
+        THEN RAISE EXCEPTION 'Your bid is lower than the starting price.';
     END IF;
     RETURN NEW;
 END

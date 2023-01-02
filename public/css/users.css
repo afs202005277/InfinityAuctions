@@ -88,12 +88,12 @@
 .full-height{
   min-height: 100vh;
 }
-
+/*
 [type="checkbox"]:checked,
 [type="checkbox"]:not(:checked){
   position: absolute;
   left: -9999px;
-}
+}*/
 .modal-btn:checked + label,
 .modal-btn:not(:checked) + label{
   position: relative;
@@ -235,4 +235,8 @@
 	.modal-wrap p {
 	  padding: 15px 20px 0 20px;
 	}
+}
+
+.bio2 button{
+    margin: 0.5em;
 }

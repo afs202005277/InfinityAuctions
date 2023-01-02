@@ -7,6 +7,10 @@ function updateButtons(bid) {
     buttons[2].textContent = ((parseFloat(bid.amount) * 1.50).toFixed(2)).toString() + '€';
 }
 
+async function updateAuctionState() {
+    return await (fetch('/api/auctions/update/'));
+}
+
 function bidsReceivedHandler() {
     let bids = JSON.parse(this.responseText);
     if (bids.length !== 0) {
@@ -29,59 +33,65 @@ function bidsReceivedHandler() {
 
 function buttonsSuggestionsListener() {
     let buttons = document.querySelectorAll('.price-suggestions form button');
+    console.log(buttons);
     for (let button of buttons) {
         button.addEventListener('click', function (event) {
             event.preventDefault();
-            document.querySelector('#bid_amount').value = button.textContent.substring(0, button.textContent.lastIndexOf('€'));
+            document.querySelector('#bid_amount').value = parseFloat(button.textContent.substring(0, button.textContent.lastIndexOf('€')));
         })
     }
 }
 
 let x = setInterval(function () {
-
-    if (document.getElementById('autobuycheckbox').checked) {
-        if (document.querySelector('p.info-bid > span').textContent != document.getElementById('autobuyuser').textContent && parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) < document.getElementById('autobuymaxvalue').value) {
-            console.log('hello');
-            if (document.getElementById('autobuymaxvalue').value - parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) > 1) {
-                document.getElementById('bid_amount').value = parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0])+1;
-                document.getElementById('make_bid').click();
+    let now = new Date().getTime();
+    let state = document.getElementById('state');
+    if (state.textContent === 'RUNNING') {
+        if (document.getElementById('autobuycheckbox').checked) {
+            if (document.querySelector('p.info-bid > span').textContent !== document.getElementById('autobuyuser').textContent && parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) < document.getElementById('autobuymaxvalue').value) {
+                if (document.getElementById('autobuymaxvalue').value - parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) > 1) {
+                    document.getElementById('bid_amount').value = parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) + 1;
+                    document.getElementById('make_bid').click();
+                } else {
+                    document.getElementById('bid_amount').value = document.getElementById('autobuymaxvalue').value;
+                    document.getElementById('make_bid').click();
+                }
             }
-            else {
-                document.getElementById('bid_amount').value = document.getElementById('autobuymaxvalue').value;
-                document.getElementById('make_bid').click();
+
+            if (parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) >= document.getElementById('autobuymaxvalue').value) {
+                document.getElementById('autobuycheckbox').checked = false;
             }
         }
-
-        if (parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) >= document.getElementById('autobuymaxvalue').value) {
-            document.getElementById('autobuycheckbox').checked = false;
-        }
+        let auction_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
+        sendAjaxRequest('get', '/api/auctions/getAllBids/' + auction_id, {}, bidsReceivedHandler);
     }
 
-    let now = new Date().getTime();
-
     let distance = countDownDate - now;
-
-    let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    let difference;
+    if (distance < 0)
+        difference = 0;
+    else
+        difference = distance;
+    let days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
     document.getElementById("final-date").innerHTML = days + "D:" + hours + "H:"
         + minutes + "M:" + seconds + "S";
 
-    if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("final-date").innerHTML = "AUCTION ENDED";
+    if (distance > -1000 && distance < 0) {
+        if (state.textContent === 'TO BE STARTED') {
+            document.getElementById("state").textContent = "RUNNING";
+            sendAjaxRequest('post', '/api/auctions/update', {}, function () {
+                window.location.reload();
+            });
+        } else {
+            document.getElementById("state").textContent = "AUCTION ENDED";
+            sendAjaxRequest('post', '/api/auctions/update', {}, function () {
+                window.location.reload();
+            });
+        }
     }
-
-    let auction_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
-    sendAjaxRequest('get', '/api/auctions/getAllBids/' + auction_id, {}, bidsReceivedHandler);
-
-    let bn = document.querySelector('#buy-now').textContent.split(' ');
-    if (parseFloat(document.querySelector('p.bid-amount').textContent.slice(0, -1).split(' ')[0]) >= parseFloat(bn[bn.length-1].slice(0, -1))) {
-        location.reload();
-    }
-
 }, 1000);
 
 buttonsSuggestionsListener();

@@ -39,7 +39,7 @@ class User extends Authenticatable
 
     public function bids()
     {
-        return $this->hasMany(Bid::class);
+        return $this->hasMany(Bid::class)->orderBy('amount', 'Desc');
     }
 
     public function wishlist()
@@ -86,7 +86,7 @@ class User extends Authenticatable
             $maxAmount = Bid::all_bids($auction->id)[0]->amount;
             $winnerId = $auction_model->bids()->where('amount', $maxAmount)->value('user_id');
             if ($this->id == $winnerId) {
-                $array[] = $auction;
+                $array[] = $auction_model;
             }
         }
         return $array;
@@ -187,7 +187,7 @@ class User extends Authenticatable
     {
         return DB::table('users')
             ->join('image', 'users.profile_image', '=', 'image.id')
-            ->select('*');
+            ->select('users.*', 'image.path');
     }
 
     public static function addBalance($id, $amount)
@@ -213,7 +213,8 @@ class User extends Authenticatable
     {
         $value = DB::select(DB::raw('SELECT SUM(max)
                                     FROM (  SELECT BID.auction_id, BID.user_id, MAX(BID.amount)
-                                            FROM BID, AUCTION
+                                            FROM BID
+                                            INNER JOIN AUCTION ON BID.auction_id=AUCTION.id
                                             WHERE AUCTION.state = \'Running\'
                                             GROUP BY auction_id, user_id
                                          ) top_bids
@@ -223,9 +224,9 @@ class User extends Authenticatable
             return 0;
         }
         return $value[0]->sum;
-    
+
     }
-    
+
     public static function getBanStates() {
         $states = DB::select(DB::raw("SELECT unnest(enum_range(NULL::penalty_type))::text AS type;"));
 

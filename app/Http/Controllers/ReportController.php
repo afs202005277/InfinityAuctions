@@ -126,6 +126,15 @@ class ReportController extends Controller
 
             $report->penalty = $validated['ban_opt'];
             $report->save();
+
+            $reportedUser = User::find($report->reported_user);
+            $reportedUserAuc = $reportedUser->ownedAuctions()->get();
+            $object = new AuctionController();
+            foreach($reportedUserAuc as $auction) {
+                if($auction->state == 'To be started' || $auction->state == 'Running') {
+                    $object->cancel($auction->id);
+                }  
+            }
             
             return redirect('/users/' . Auth::id());
         } catch (AuthorizationException $exception) {

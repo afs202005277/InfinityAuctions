@@ -12,6 +12,7 @@
 */
 
 // Home
+use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\MainPageController;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
@@ -44,6 +45,7 @@ Route::get('api/search', 'SearchController@search');
 Route::delete('api/image/{id}', 'ImageController@delete');
 Route::delete('api/users/delete/{id}', 'UserController@destroy');
 Route::post('api/users/addReview', 'UserController@addReview');
+Route::post('api/auctions/update', function (){AuctionController::updateAuctionsState(); return response('Success', 200);});
 
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -56,7 +58,7 @@ Route::post('register', 'Auth\RegisterController@register');
 Route::post('api/user/follow_auction', 'UserController@follow_auction');
 Route::post('api/user/unfollow_auction', 'UserController@unfollow_auction');
 Route::get('user/{id}', 'UserController@show');
-Route::post('user/{id}', 'UserController@update')->name('editUser');
+Route::post('user/{id}', 'UserController@update')->where('id', '^[0-9]+$')->name('editUser');
 Route::post('api/user/follow_term', 'WishlistController@follow_term');
 Route::post('api/user/unfollow_term', 'WishlistController@unfollow_term');
 Route::post('/api/user/follows_term', 'WishlistController@follows');
@@ -129,7 +131,7 @@ Route::post('/reset-password', function (Request $request) {
 })->middleware('guest')->name('password.update');
 
 //Payments
-Route::get('balance', 'PaypalController@show')->name('payments');
+Route::get('balance', 'PayPalController@show')->name('payments');
 
 Route::get('deposit', 'PayPalController@payment')->name('deposit');
 Route::get('deposit/cancel', 'PayPalController@cancel')->name('deposit.cancel');

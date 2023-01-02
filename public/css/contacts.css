@@ -102,3 +102,17 @@
 #contactarea > #contact > .rightside > a:hover > figure > img {
     filter: invert(63%) sepia(96%) saturate(371%) hue-rotate(346deg) brightness(102%) contrast(99%) !important;
 }
+
+@media only screen and (max-width: 700px) {
+    #contactarea {
+        padding: 0;
+    }
+
+    #contactarea > #contact {
+        flex-direction: column-reverse;
+    }
+
+    #contactarea > #contact > .rightside {
+        margin-top: 1rem;
+    }
+}

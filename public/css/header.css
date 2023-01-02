@@ -100,6 +100,10 @@ header .notifications, header > .user, header > .user > img {
     header > .categories {
         display: none;
     }
+
+    header > .sign-up {
+        padding: 0.4rem;
+    }
 }
 
 @media only screen and (max-width: 560px) {

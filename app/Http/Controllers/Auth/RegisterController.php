@@ -61,7 +61,9 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'profile_picture' => 'mimes:jpeg,jpg,png,gif'],
             ['birth_date.before' => "You need to be, at least, 18 years old to sign up in our website.",
-                'name.regex' => "The name field must consist of only letters and whitespaces, and must have a length between 1 and 30 characters (inclusive).",]
+                'name.regex' => "The name field must consist of only letters and whitespaces, and must have a length between 1 and 30 characters (inclusive).",
+                'address.unique' => "The selected address is already in use by another user.",
+                'cellphone.unique' => "The selected mobile phone number is already in use by another user."]
         );
     }
 

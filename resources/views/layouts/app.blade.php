@@ -33,6 +33,7 @@
     <link href="{{ asset('css/tmp.css') }}" rel="stylesheet">
     <link href="{{ asset('css/search_page.css') }}" rel="stylesheet">
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/balance.css') }}" rel="stylesheet">
     <script type="text/javascript" src={{ asset('js/app.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/faq.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/user_profile.js') }} defer></script>
@@ -110,10 +111,10 @@
             <section class="sponsors">
                 <h3>Our Sponsors</h3>
                 <div class="images">
-                    <img src={{ asset('img/auction_tmp.png') }} alt = "Logo of sponsor 1">
-                    <img src={{ asset('img/auction_tmp.png') }} alt = "Logo of sponsor 2">
-                    <img src={{ asset('img/auction_tmp.png') }} alt = "Logo of sponsor 3">
-                    <img src={{ asset('img/auction_tmp.png') }} alt = "Logo of sponsor 4">
+                    <img style="margin: 0.5em" src={{ asset('img/Laravellogo.png') }} alt = "Logo of sponsor 1">
+                    <img style="margin: 0.5em" src={{ asset('img/Git.png') }} alt = "Logo of sponsor 2">
+                    <img style="margin: 0.5em" src={{ asset('img/github.png') }} alt = "Logo of sponsor 3">
+                    <img style="margin: 0.5em" src={{ asset('img/Postgresql_elephant.png') }} alt = "Logo of sponsor 4">
                 </div>
             </section>
         </div>
