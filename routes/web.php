@@ -46,6 +46,8 @@ Route::delete('api/image/{id}', 'ImageController@delete');
 Route::delete('api/users/delete/{id}', 'UserController@destroy');
 Route::post('api/users/addReview', 'UserController@addReview');
 Route::post('api/auctions/update', function (){AuctionController::updateAuctionsState(); return response('Success', 200);});
+Route::post('api/report/ban/{id}', 'ReportController@banUser');
+Route::delete('api/report/delete/{id}', 'ReportController@destroy');
 
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -71,7 +73,6 @@ Route::post('users/report', 'ReportController@report')->name('reportUser');
 
 //Admin Panel
 Route::get('manage', 'ManageController@show');
-Route::post('api/user/ban', 'ReportController@banUser')->name('banUser');
 
 // Auctions
 Route::post('sell', 'AuctionController@sell');

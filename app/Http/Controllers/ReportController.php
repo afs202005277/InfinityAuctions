@@ -105,23 +105,22 @@ class ReportController extends Controller
         }
     }
 
-    public function banUser(Request $request) {
+    public function banUser(Request $request, $id) {
         if (!Auth::id()) {
             return redirect('/login');
         }
 
         try {
             $validated = array();
-            if ($request->has('reportId') && $request->has('ban_opt')) {
+            if ($request->has('ban_opt')) {
                 $validated = $request->validate([
-                    'reportId' => 'required|numeric|min:1',
                     'ban_opt' => 'required|min:1|max:255',
                 ]);
             } else {
                 throw ValidationException::withMessages(['Missing parameters in request!']);
             }
         
-            $report = Report::find($validated['reportId']);
+            $report = Report::find($id);
             $this->authorize('update', $report);
 
             $report->penalty = $validated['ban_opt'];
@@ -138,12 +137,23 @@ class ReportController extends Controller
             
             return redirect('/users/' . Auth::id());
         } catch (AuthorizationException $exception) {
-            if ($validated['reportId'] !== NULL)
+            if ($id !== NULL)
                 return redirect('/users/' . Auth::id())->withErrors(["error", "You don't have permissions to ban this user!"]);
         } catch (QueryException $sqlExcept) {
             return redirect()->back()->withErrors(["error", "Invalid database parameters!"]);
         } catch (\Exception $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }
+    }
+
+    public function destroy($id) {
+        $report = Report::find($id);
+        try {
+            $this->authorize('delete', $report);
+            $report->delete();
+        } catch (AuthorizationException $exception) {
+            return response($exception->getMessage(), 403);
+        }
+        return $report;
     }
 }

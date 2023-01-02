@@ -119,8 +119,7 @@ class Auction extends Model
         if (isset($filters['maxPrice'])) {
             $values = $values->where('max_price', '<=', $filters['maxPrice']);
         }
-
-        $values = $query->get();
+        
         return $values;
     }
 
