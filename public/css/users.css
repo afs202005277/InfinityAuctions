@@ -243,3 +243,31 @@
 .bio2 button{
     margin: 0.5em;
 }
+
+.activeRateSeller{
+    background-color: white;
+    border-radius: 1em;
+    border: 1px solid var(--ten);
+    padding: 3em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+}
+
+.activeRateSeller .in_stars svg:hover{
+    cursor: pointer;
+}
+
+.activeRateSeller .in_stars img{
+    cursor: pointer;
+    width: 1em;
+}
+
+.activeRateSeller .background{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-color: rgba(var(--thirty), 0.15);
+}

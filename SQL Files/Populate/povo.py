@@ -267,8 +267,8 @@ with open("instructions.txt", "w") as instr:
         instr.write("insert into users(name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values('" + u.name + "', '" + u.gender + "', '" + u.cellphone + "', '" + u.mail + "', '" + u.birth_date + "', '" + u.address + "', '" + str(u.password)[2:-1] + "', " + str(u.credits) + ", " + ("TRUE" if u.is_admin else "FALSE") + ");\n")
 
     instr.write("\n")
-    instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values(1002, 'Conta teste', 'F', '918499953', 'teste@fe.up.pt', '1994-03-01', '623 Vicksburg st', '$2y$10$RvtBy53fupDC6lKaKwt.a.cqtpr59.vEt2xLhXo3ZWSwq.wsZDTP2', 1463, FALSE);\n")
-    instr.write("insert into users(id, name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values(1003, 'Conta teste Admin', 'F', '922978919', 'testeadmin@fe.up.pt', '1994-03-01', '624 Vicksburg st', '$2y$10$RvtBy53fupDC6lKaKwt.a.cqtpr59.vEt2xLhXo3ZWSwq.wsZDTP2', 0, TRUE);\n")
+    instr.write("insert into users(name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values('Conta teste', 'F', '918499953', 'teste@fe.up.pt', '1994-03-01', '623 Vicksburg st', '$2y$10$RvtBy53fupDC6lKaKwt.a.cqtpr59.vEt2xLhXo3ZWSwq.wsZDTP2', 1463, FALSE);\n")
+    instr.write("insert into users(name, gender, cellphone, email, birth_date, address, password, credits, is_admin) values('Conta teste Admin', 'F', '922978919', 'testeadmin@fe.up.pt', '1994-03-01', '624 Vicksburg st', '$2y$10$RvtBy53fupDC6lKaKwt.a.cqtpr59.vEt2xLhXo3ZWSwq.wsZDTP2', 0, TRUE);\n")
     instr.write("\n")
     instr.write("\n")
     max_wishlist_id = 0

@@ -39,6 +39,10 @@ class Wishlist extends Model
         DB::table('users_wishlist')->insert($data);
     }
 
+    public static function removeCompleteUserWishlist($user_id){
+        DB::table('users_wishlist')->where('users_id', $user_id)->delete();
+    }
+
     public static function removeUsersWishlist($user_id, $wishlist_id)
     {
         DB::table('users_wishlist')->where('users_id', $user_id)->where('wishlist_id', $wishlist_id)->delete();

@@ -52,6 +52,7 @@ class ImageController extends Controller
         $image = Image::find($imageID);
         if (!str_contains($image->path, 'default')){
             File::delete($image->path);
+            $image->delete();
         }
     }
 }

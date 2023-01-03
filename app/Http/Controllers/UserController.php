@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use App\Models\User;
+use App\Models\Wishlist;
 use App\Rules\IsValidAddress;
 use App\Rules\MatchPassword;
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -16,8 +16,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -94,6 +94,7 @@ class UserController extends Controller
             $bids = $user->hasPendingMaxBids();
             $runningAuctions = $user->ownedRunningAuctions()->get();
             if ($bids->has_max_bid === NULL && $runningAuctions->isEmpty()) {
+                ImageController::deleteUserImage($user->profile_image);
                 $user->name = 'Deleted Account';
                 $user->email = NULL;
                 $user->gender = NULL;
@@ -101,9 +102,9 @@ class UserController extends Controller
                 $user->birth_date = NULL;
                 $user->address = NULL;
                 $user->credits = NULL;
-                $user->wishlist = NULL;
+                $user->profile_image = NULL;
                 $user->save();
-
+                Wishlist::removeCompleteUserWishlist($id);
                 $toBeStarted = $user->ownedToBeStartedAuctions()->get();
                 foreach ($toBeStarted as $auction) {
                     $auction->state = 'Cancelled';
@@ -152,7 +153,8 @@ class UserController extends Controller
         return response('Review added successfully!', 200);
     }
 
-    public function banUser(Request $request) {
+    public function banUser(Request $request)
+    {
 
     }
 }

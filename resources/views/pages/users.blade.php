@@ -4,6 +4,8 @@
 
 @section('content')
     <div id="popup" style="display: none">
+        <img src="{{asset('img/close.png')}}" alt="Close popup button">
+        <div class="background"></div>
         <h1>Place your rate: </h1>
         <div class="in_stars">
             @for ($i = 0; $i < 5; $i++)
