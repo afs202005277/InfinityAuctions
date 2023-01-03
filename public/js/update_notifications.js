@@ -5,6 +5,6 @@ function updateNotifs() {
     }
 }
 
-let x = setInterval(function () {
+let y = setInterval(function () {
     sendAjaxRequest('post', '/api/notifications/get', {}, updateNotifs);
 }, 5000);
