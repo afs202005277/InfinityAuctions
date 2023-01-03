@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Validation\ValidationException;
 use Log;
 
 class AuctionController extends Controller
@@ -184,7 +185,7 @@ class AuctionController extends Controller
                 'desc.regex' => 'Invalid characters detected.']);
 
             if ($validated['startdate'] != substr($auction->start_date, 0, 10) && $auction->state == 'Running') {
-                return redirect()->back()->withErrors("You can't change the start date on a running auction");
+                throw ValidationException::withMessages(["message" => "You can't change the start date on a running auction"]);
             }
 
             $auction->name = $validated['title'];

@@ -84,7 +84,11 @@
             <label for="startdate">Start Date</label>
             <input id="startdate" type="date" name="startdate"
                    value="{{(new DateTime($to_use['startdate']))->format('Y-m-d')}}" required>
-            @if ($errors->has('startdate'))
+            @if(isset($errors->all()[0]))
+                <span class="error">
+                {{ $errors->all()[0] }}
+            </span>
+            @elseif ($errors->has('startdate'))
                 <span class="error">
                 {{ $errors->first('startdate') }}
             </span>
