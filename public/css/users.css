@@ -19,6 +19,17 @@
     margin-left: 1rem;
     margin-right: 1rem;
 }
+
+.bio2 .report_btn button, .bio2 #rateSellerButton{
+    width: 10em;
+    height: fit-content;
+}
+
+.bio2 .report_btn button, .bio2 #rateSellerButton{
+    background-color: var(--ten);
+    color: white;
+}
+
 .info {
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
     border-radius: 2em;

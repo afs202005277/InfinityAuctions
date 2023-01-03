@@ -34,7 +34,7 @@ class AuctionController extends Controller
         $owner = $details->owner()->first();
         $name = $owner->name;
         $auctions = $owner->ownedAuctions()->where('auction.id', '<>', $auction_id)->get();
-        $bids = $details->bids()->orderBy('amount')->get();
+        $bids = $details->bids()->orderBy('amount', 'desc')->get();
         $mostActive = Auction::mostActive();
         $images = $details->images()->get('path');
         $ratingDetails = $owner->getRatingDetails();

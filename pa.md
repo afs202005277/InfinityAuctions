@@ -21,7 +21,7 @@ URL to the product: http://lbaw2271.lbaw.fe.up.pt
 
 #### 2.1. Administration Credentials
 
-> Administration URL: URL  
+Administration URL: http://lbaw2271.lbaw.fe.up.pt/users/1002
 
 | Email | Password |
 | -------- | -------- |
@@ -29,10 +29,10 @@ URL to the product: http://lbaw2271.lbaw.fe.up.pt
 
 #### 2.2. User Credentials
 
-| Type          | Username  | Password |
-| ------------- | --------- | -------- |
-| basic account | user 1    | password |
-| news editor   | user 1    | password |
+| Type           | Username            | Password |
+|----------------|---------------------|----------|
+| Banned Account | banned@fe.up.pt     | 123456   |
+| Regular user   | regular@fe.up.pt    | 123456   |
 
 ### 3. Application Help
 
@@ -204,8 +204,8 @@ URL to the product: http://lbaw2271.lbaw.fe.up.pt
 
 Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
 
-> URL to the product: http://lbaw2271.lbaw.fe.up.pt  
->
+URL to the product: http://lbaw2271.lbaw.fe.up.pt  
+
 > Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
 
 
