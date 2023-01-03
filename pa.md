@@ -190,8 +190,6 @@ In addition to facilitating the auction process, our website also offers a range
 
 > - Upload the lbawYYgg.mp4 file to Moodle.
 > - The video must not exceed 2 minutes.
-
-
 ---
 
 
