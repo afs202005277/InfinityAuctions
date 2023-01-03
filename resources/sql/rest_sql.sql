@@ -1,4 +1,4 @@
-set search_path to lbaw2271;
+--set search_path to lbaw2271;
 ALTER TABLE users
     ADD COLUMN remember_token CHAR(100);
 
@@ -17,8 +17,6 @@ $BODY$
 CREATE INDEX IF NOT EXISTS notification_user_id ON notification USING hash (user_id);
 
 CREATE INDEX IF NOT EXISTS bid_auction_id_amount ON bid USING BTREE (auction_id, amount);
-
--- CREATE INDEX IF NOT EXISTS wishlist ON wishlist USING GIN (wishlist_tokens);-- SET search_path TO lbaw2271;
 
 -- Trigger01
 CREATE OR REPLACE FUNCTION bid_owner() RETURNS TRIGGER AS
@@ -220,7 +218,7 @@ CREATE TRIGGER check_wishlist
 EXECUTE PROCEDURE wishlist_targeted();
 
 -- saves current time on report after update
-CREATE OR REPLACE FUNCTION update_date_report() RETURNS TRIGGER AS 
+CREATE OR REPLACE FUNCTION update_date_report() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     NEW.date = now();
@@ -228,13 +226,9 @@ BEGIN
 END;
 $BODY$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS update_report_modtime ON report;
-CREATE TRIGGER update_report_modtime 
-    BEFORE 
-        UPDATE 
-    ON report 
-    FOR EACH ROW 
+CREATE TRIGGER update_report_modtime
+    BEFORE
+        UPDATE
+    ON report
+    FOR EACH ROW
 EXECUTE PROCEDURE  update_date_report();
-
--- INSERT INTO users_wishlist(users_id, wishlist_id) values (1002, 42);
--- insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(101, 'emerald green', 'teste', 50, '2021-09-09', '2022-01-03', NULL, 'Ended', 268);
-
