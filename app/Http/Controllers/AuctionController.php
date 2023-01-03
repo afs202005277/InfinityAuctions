@@ -120,7 +120,10 @@ class AuctionController extends Controller
             $auction->start_date = $validated['startdate'];
             $auction->end_date = $validated['enddate'];
             $auction->buy_now = $validated['buynow'];
-            $auction->state = "To be started";
+            if ($validated['startdate'] == (new \DateTime('now'))->format('Y-m-d'))
+                $auction->state = "Running";
+            else
+                $auction->state = "To be started";
             $auction->auction_owner_id = Auth::id();
 
             $auction->save();
@@ -308,7 +311,7 @@ class AuctionController extends Controller
         foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
             $all_bids = Bid::all_bids($auction->id);
-            if (count($all_bids) > 0){
+            if (count($all_bids) > 0) {
                 $max_bid = $all_bids[0];
                 $amount = $max_bid->amount;
                 $user_id = $max_bid->user_id;
