@@ -38,7 +38,7 @@ class BidController extends Controller
             if (User::getBalance($validated['user_id']) - User::heldBalance($validated['user_id']) < $validated['amount']) {
                 return response()->json([
                     'ms' => 'Not enough balance.'
-                ], 403);
+                ]);
             }
             \Log::info("Controlo");
             $bid->amount = $validated['amount'];
