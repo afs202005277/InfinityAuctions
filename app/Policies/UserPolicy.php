@@ -32,7 +32,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return Auth::check() && (Auth::id() == $model->id || $model->is_admin);
+        return Auth::check() && (Auth::id() == $model->id || $user->is_admin);
     }
 
     public function addReview(User $user, $userToRate){

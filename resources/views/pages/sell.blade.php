@@ -61,19 +61,15 @@
             @if(!$editMode)
                 <label for="images">Images (at least 3)</label>
                 <input id="images" name="images[]" type="file" multiple required>
-                @if ($errors->has('images'))
-                    <span class="error">
-                {{ $errors->first('images') }}
-                </span>
-                @endif
+                @foreach ($errors->get('images.*') as $message)
+                    <span class="error">{{$message[0]}}</span>
+                @endforeach
             @else
                 <label for="images">Add images</label>
                 <input id="images" name="images[]" type="file" multiple>
-                @if ($errors->has('images'))
-                    <span class="error">
-                {{ $errors->first('images') }}
-                </span>
-                @endif
+                @foreach ($errors->get('images.*') as $message)
+                    <span class="error">{{$message[0]}}</span>
+                @endforeach
             @endif
 
             <label for="baseprice">Base Price</label>

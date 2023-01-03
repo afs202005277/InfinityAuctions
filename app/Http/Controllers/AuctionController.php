@@ -86,12 +86,6 @@ class AuctionController extends Controller
 
         try {
             $this->authorize('create', $auction);
-
-
-            $rules = array(
-                'image' => 'mimes:jpeg,jpg,png,gif|required'
-            );
-            //$validator = Validator::make($fileArray, $rules, $messages = ['image.mime' => "The supported file types are jpeg, jpg, png and gif."]);
             $validated = $request->validate([
                 'title' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/()-]*$/',
                 'desc' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/()-]*$/',
@@ -100,11 +94,13 @@ class AuctionController extends Controller
                 'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
                 'enddate' => 'required|date|after:startdate',
                 'buynow' => 'nullable|numeric|gt:baseprice',
-                'categories' => 'required|min:1'
+                'categories' => 'required|min:1',
+                'images.*' => 'image',
             ], ['buynow.gt' => 'The "buy now" value must be greater than the base price.',
                 'title.regex' => 'Invalid characters detected.',
                 'desc.regex' => 'Invalid characters detected.',
                 'images.min' => 'You need to select at least 3 images for your auction.',
+                'images.*' => 'Your file number :position needs to be an image.',
                 'categories.required' => "You need to select at least one category for your auction."]);
 
 
@@ -180,12 +176,14 @@ class AuctionController extends Controller
                 'baseprice' => 'required|numeric|gt:0',
                 'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
                 'enddate' => 'required|date|after:startdate',
-                'buynow' => 'nullable|numeric|gt:baseprice'
+                'buynow' => 'nullable|numeric|gt:baseprice',
+                'images.*' => 'image',
             ], ['buynow.gt' => 'The "buy now" value must be greater than the base price.',
                 'title.regex' => 'Invalid characters detected.',
+                'images.*' => 'Your file number :position needs to be an image.',
                 'desc.regex' => 'Invalid characters detected.']);
 
-            if ($validated['startdate'] != $auction->start_date && $auction->state == 'Running') {
+            if ($validated['startdate'] != substr($auction->start_date, 0, 10) && $auction->state == 'Running') {
                 return redirect()->back()->withErrors("You can't change the start date on a running auction");
             }
 
