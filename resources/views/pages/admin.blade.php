@@ -17,9 +17,12 @@
             </div>
 
             @if( Auth::user()!=null && Auth::user()->id==$user->id && Auth::user()->is_admin )
-                <div>
-                    <form method="get" action="{{ url('/logout') }}" class="edit">
-                        <button type="submit"> Logout</button>
+                <div class="user-actions-buttons">
+                    <form class="edit" action="{{ url('/balance') }}">
+                        <button type="submit"> Balance</button>
+                    </form>
+                    <form action="{{url('/logout')}}" method="get">
+                        <button type="submit">Logout</button>
                     </form>
                 </div>
             @endif
