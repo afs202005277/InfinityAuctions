@@ -1,13 +1,13 @@
 openapi: 3.0.0
 
 info:
- version: '1.0'
- title: 'LBAW Infinity Auction Web API'
- description: 'Web Resources Specification (A7) for Infinity Auction'
+  version: '1.0'
+  title: 'LBAW Infinity Auction Web API'
+  description: 'Web Resources Specification (A7) for Infinity Auction'
 
 servers:
- - url: https://lbaw2271.lbaw.fe.up.pt/
-   description: Production server
+  - url: https://lbaw2271.lbaw.fe.up.pt/
+    description: Production server
 
 externalDocs:
   description: Find more info here.
@@ -155,7 +155,6 @@ paths:
                     - address
                     - password
                     - confirm_password
-
       responses:
         '302':
           description: 'Redirect after processing new user information.'
@@ -181,7 +180,7 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show Forgot-Password UI.'
+          description: 'Ok. Show Forgot-Password UI [UI03].'
 
     post:
       operationId: R107
@@ -215,7 +214,7 @@ paths:
                   description: 'Successfuly sent recover password email. Redirect to Forgot-Password page UI.'
                   value: '/forgot-password'
                 302Failure:
-                  description: 'Failed to setn recover password email. Redirect to Forgot-Password Page UI.'
+                  description: 'Failed to sent recover password email. Redirect to Forgot-Password Page UI.'
                   value: '/forgot-password'
 
     
@@ -285,7 +284,7 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successfuly recovered password. Redirect to login page UI.'
+                  description: 'Successfuly recovered password. Redirect to login page UI [UI02].'
                   value: '/login'
                 302Failure:
                   description: 'Failed to recover password email. Redirect to Reset-Password Page UI.'
@@ -347,17 +346,86 @@ paths:
           description: 'Ok. Show contacts page UI [UI08].'
 
   # M03: Platform administration
-  /manage:
-    get:
-      operationId: R301
-      summary: 'R301: Admin Panel.'
-      description: "Show admin control panel. Access: ADM. NOTE: All the methods the admin uses to cancel or edit auctions are already indicated in M05: Auctions. Due to the reporting module(M06: Reports) not having top priority, we did not include it in the prototype, thus limiting the administrator's ability to manage the platform which depends on reports. Therefore, this module is not as developed as the others."
+  /api/report/ban/{id}:
+    post:
+      operationId: R601
+      summary: 'R601: Issue report penalty.'
+      description: 'Processes the request to update a report with a penalty. Access: ADM.'
       tags:
         - 'M03: Platform administration'
 
+      parameters:
+        - in: path
+          name: report_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                ban_opt:
+                  type: string
+                  enum: ['3 day ban', '5 day ban', '10 day ban', '1 month ban']
+              required:
+                - ban_opt
+
       responses:
-        '200':
-          description: 'Ok. Show Admin Panel UI [UI22].'
+        '302':
+          description: 'Redirect after issuing penalty.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully issued penalty. Redirect to admin center.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed to issue penalty. Redirect to admin center.'
+                  value: '/users/{id}'
+        '403':
+          description: 'Error, user does not have access to the target report.'
+        '500': 
+          description: 'The server has encountered a situation it does not know how to handle. Possibly invalid database parameters.'
+
+  /api/report/delete/{report_id}:
+    delete:
+      operationId: R602
+      summary: 'R602: Dismiss report.'
+      description: 'Processes the request to delete a report from the database. Access: ADM.'
+      tags:
+        - 'M03: Platform administration'
+
+      parameters:
+        - in: path
+          name: report_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+      
+      responses:
+        '302':
+          description: 'Redirect after issuing penalty.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully deleted report. Redirect to admin center.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed to delete report. Redirect to admin center.'
+                  value: '/users/{id}'
+        '403':
+          description: 'Error, user does not have access to the target report.'
   
   # M04: User
   /user/{id}:
@@ -419,6 +487,7 @@ paths:
                 profile_image:
                   type: string
                   format: binary
+                  nullable: true
                   description: 'Can be jpeg, jpg, png and gif'
                 password:
                   type: string
@@ -469,7 +538,7 @@ paths:
     get:
       operationId: R404
       summary: 'R404: View user profile.'
-      description: 'This resource fetchs the user profile page including private and public data. Depending on the role of the user, the resulting page hides sensitive information. The authenticated user that owns the account can see all the information. The admin can see all the information of every user account. Every other role can only see the pubic information. In the case of the admin account, it shows the admin center, containing the admin private info, reported auctions and reported users. This last information can only be consulted by the ADM role. Access: PUB, USR, ADM'
+      description: 'This resource fetchs the user profile page including private and public data. Depending on the role of the user, the resulting page hides sensitive information. The authenticated user that owns the account can see all the information. The admin can see all the information of every user account. Every other role can only see the public information. In the case of the admin account, it shows the admin center, containing the admin private info, reported auctions and reported users. This last information can only be consulted by the ADM role. Access: PUB, USR, ADM'
       tags:
         - 'M04: Users'
 
@@ -483,7 +552,7 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show Profile UI [UI14]. Edit profile section UI [UI18] available for the USR and ADM. Bidding History section UI [UI20] available for the USR and ADM. Bidding auctions section UI available for the USR and ADM. Followed auctions section UI [UI17] available for the USR and ADM roles. Owned auctions section UI [UI09] available for the USR, ADM and PUB roles. Wishlist section UI available for the USR and ADM.  Won auctions section UI available for the USR and ADM. Admin center section UI available for the ADM. Reported users section UI available for the ADM. Reported auctions section UI available for the ADM'
+          description: 'Ok. Show Profile UI [UI14]. Edit profile section UI [UI18] available for the USR and ADM. Bidding History section UI [UI20] available for the USR and ADM. Bidding auctions section UI available for the USR and ADM. Followed auctions section UI [UI17] available for the USR and ADM roles. Owned auctions section UI [UI09] available for the USR, ADM and PUB roles. Wishlist section UI [UI21] available for the USR and ADM.  Won auctions section UI available for the USR and ADM. Admin center section UI[UI22] available for the ADM. Reported users section UI[UI25] available for the ADM. Reported auctions section UI[UI23] available for the ADM'
 
   /api/users/delete/{id}:
     delete:
@@ -645,35 +714,11 @@ paths:
       responses:
         '200':
           description: 'Successfully removed term from wishlist.'
-  
-  /api/user/follows_term:
-    post:
-      operationId: R411
-      summary: 'R411: Remove term from wishlist.'
-      description: 'Proccesses request to unfollow term. Access: USR'
-      tags:
-        - 'M04: Users'
-    
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                search_term:
-                  type: string
-              required:
-                - search_term
-      
-      responses:
-        '200':
-          description: 'Successfully removed term from wishlist.'
 
   /balance:
     get:
-      operationId: R412
-      summary: 'R412: Balance page UI.'
+      operationId: R411
+      summary: 'R411: Balance page UI.'
       description: 'View funds of the account. Access: USR'
       tags:
         - 'M04: Users'
@@ -684,8 +729,8 @@ paths:
 
   /deposit:
     get:
-      operationId: R413
-      summary: 'R413: Paypal redirect.'
+      operationId: R412
+      summary: 'R412: Paypal redirect.'
       description: 'Fetchs paypal API for deposit. Access: USR'
       tags:
         - 'M04: Users'
@@ -710,8 +755,8 @@ paths:
   
   /deposit/cancel:
     get:
-      operationId: R414
-      summary: 'R414: Show Cancelled Deposit page.'
+      operationId: R413
+      summary: 'R413: Show Cancelled Deposit page.'
       description: 'If paypal request was cancelled, this page displays that information. Access: USR'
       tags:
         - 'M04: Users'
@@ -722,20 +767,20 @@ paths:
 
   /deposit/success:
     get:
-      operationId: R415
-      summary: 'R415: Paypal request validator'
+      operationId: R414
+      summary: 'R414: Paypal request validator'
       description: 'Check if the deposit operation was successfull, and display Successfull Deposit page. Access: USR'
       tags:
         - 'M04: Users'
     
       responses:
         '200':
-          description: 'Ok. Show Successfull Deposit page.'
+          description: 'Ok. Show Successfull Deposit page UI[UI19].'
 
   /withdraw:
     get:
-      operationId: R416
-      summary: 'R416: Paypal redirect.'
+      operationId: R415
+      summary: 'R415: Paypal redirect.'
       description: 'Fetchs paypal API for Withdraw. Access: USR'
       tags:
         - 'M04: Users'
@@ -760,8 +805,8 @@ paths:
   
   /withdraw/cancel:
     get:
-      operationId: R417
-      summary: 'R417: Show Cancelled Withdraw page.'
+      operationId: R416
+      summary: 'R416: Show Cancelled Withdraw page.'
       description: 'If paypal request was cancelled, this page displays that information. Access: USR'
       tags:
         - 'M04: Users'
@@ -772,15 +817,15 @@ paths:
   
   /withdraw/success:
     get:
-      operationId: R418
-      summary: 'R418: Paypal request validator'
+      operationId: R417
+      summary: 'R417: Paypal request validator'
       description: 'Check if the withdraw operation was successfull, and display Successfull Withdraw page. Access: USR'
       tags:
         - 'M04: Users'
     
       responses:
         '200':
-          description: 'Ok. Show Successfull Withdraw page.'
+          description: 'Ok. Show Successfull Withdraw page UI UI[UI16].'
       
 
   # M05: Auctions
@@ -1377,13 +1422,15 @@ paths:
       
       responses:
         '200': 
-          description: 'Successfully updated'
+          description: 'Successfully updated auctions.'
 
   /auctions/checkout/{id}:
     get:
       operationId: R513
       summary: 'R513: Auction checkout UI.'
       description: 'Provide auction checkout form UI Access: BDR.'
+      tags:
+        - 'M05: Auctions'
       
       parameters:
         - in: path
@@ -1402,6 +1449,8 @@ paths:
       operationId: R514
       summary: 'R514: Auction checkout success page.'
       description: 'After successfull checkout this page gets fetched, confirming and displaying the checkout information for the user. Access: BDR.'
+      tags:
+        - 'M05: Auctions'
 
       parameters:
         - in: path
@@ -1413,92 +1462,13 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show'
+          description: 'Ok. Show successfull checkout page.'
+
   # M06: Reports
-  /api/report/ban/{id}:
-    post:
-      operationId: R601
-      summary: 'R601: Issue report penalty.'
-      description: 'Processes the request to update a report with a penalty. Access: ADM.'
-      tags:
-        - 'M06: Reports'
-
-      parameters:
-        - in: path
-          name: report_id
-          schema:
-            type: integer
-            minimum: 1
-          required: true
-
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                ban_opt:
-                  type: integer
-              required:
-                - ban_opt
-
-      responses:
-        '302':
-          description: 'Redirect after issuing penalty.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successfully issued penalty. Redirect to admin center.'
-                  value: '/users/{id}'
-                302Failure:
-                  description: 'Failed to issue penalty. Redirect to admin center.'
-                  value: '/users/{id}'
-        '403':
-          description: 'Error, user does not have access to the target report.'
-        '500': 
-          description: 'The server has encountered a situation it does not know how to handle. Possibly invalid database parameters.'
-
-  /api/report/delete/{report_id}:
-    delete:
-      operationId: R602
-      summary: 'R602: Dismiss report.'
-      description: 'Processes the request to delete a report from the database. Access: ADM.'
-      tags:
-        - 'M06: Reports'
-
-      parameters:
-        - in: path
-          name: report_id
-          schema:
-            type: integer
-            minimum: 1
-          required: true
-      
-      responses:
-        '302':
-          description: 'Redirect after issuing penalty.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successfully deleted report. Redirect to admin center.'
-                  value: '/users/{id}'
-                302Failure:
-                  description: 'Failed to delete report. Redirect to admin center.'
-                  value: '/users/{id}'
-        '403':
-          description: 'Error, user does not have access to the target report.'
-  
   /users/report/{id}:
     get:
-      operationId: R603
-      summary: 'R603: Get report form.'
+      operationId: R601
+      summary: 'R601: Get report form.'
       description: 'Provide user report form UI. Access: USR.'
       tags:
         - 'M06: Reports'
@@ -1517,8 +1487,8 @@ paths:
 
   /users/report:
     post:
-      operationId: R604
-      summary: 'R604: Report form submission'
+      operationId: R602
+      summary: 'R602: Report form submission'
       description: 'Processes the user report form submission. Access: USR'
       tags:
         - 'M06: Reports'
@@ -1557,8 +1527,8 @@ paths:
   
   /auctions/report/{id}:
     get:
-      operationId: R605
-      summary: 'R605: Get report form.'
+      operationId: R603
+      summary: 'R603: Get report form.'
       description: 'Provide auction report form UI. Access: USR.'
       tags:
         - 'M06: Reports'
@@ -1577,8 +1547,8 @@ paths:
 
   /auctions/report:
     post:
-      operationId: R606
-      summary: 'R606: Report form submission'
+      operationId: R604
+      summary: 'R604: Report form submission'
       description: 'Processes the auction report form submission. Access: USR'
       tags:
         - 'M06: Reports'
@@ -1650,6 +1620,4 @@ paths:
       responses: 
         '200':
           description: 'Notification were successfully fetched.'
-
-
 
