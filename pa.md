@@ -177,8 +177,11 @@ openapi: 3.0.0
 ### 1. Product presentation
 
 InfinityAuctions is a cutting-edge online auction platform designed to bring users together and streamline the auction process. Whether you're an art collector, phone seller, or vintage enthusiast, our platform has something for everyone. With a user-friendly design and advanced search features, finding and bidding on the items you want has never been easier. Plus, our platform is responsive to all devices, so you can access it from your smartphone, tablet, or desktop.
+
 In addition to making it easy to find and bid on items, InfinityAuctions also offers a range of features to help users manage their auctions and account. After creating an account, authenticated users can create new auctions, follow auctions, view their bidding history, add credit to their account, and report inappropriate users/auctions. Auction owners can edit the details of their auctions, manage their status, and cancel them if necessary. And with our team of administrators working to keep the platform safe and user-friendly through careful evaluation of user reports, you can feel confident using InfinityAuctions for all your auction needs.
+
 URL to the product: http://lbaw2271.lbaw.fe.up.pt
+
 Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
 
 > URL to the product: http://lbaw2271.lbaw.fe.up.pt  
