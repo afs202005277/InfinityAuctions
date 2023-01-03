@@ -19,6 +19,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Validation\ValidationException;
+use App\Models\Image;
+use App\Models\Report;
+use App\Models\Report_Option;
+
+
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+
+
 use Log;
 
 class AuctionController extends Controller
@@ -299,7 +308,7 @@ class AuctionController extends Controller
         foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
             $all_bids = Bid::all_bids($auction->id);
-            if (count($all_bids) > 0) {
+            if (count($all_bids) > 0){
                 $max_bid = $all_bids[0];
                 $amount = $max_bid->amount;
                 $user_id = $max_bid->user_id;
