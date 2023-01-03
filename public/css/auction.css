@@ -365,11 +365,17 @@
     text-decoration: underline;
 }
 
-.below > .left > .report {
-    color: red;
+.below > .left > .categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.below > .left > .categories > p > a {
+    color: var(--thirty);
+    text-decoration: none;
     text-decoration: underline;
-    font-size: 1.5rem;
-    margin: 0;
+    padding: 1rem;
 }
 
 .below > .left > .link {

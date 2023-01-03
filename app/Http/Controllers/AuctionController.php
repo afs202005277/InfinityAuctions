@@ -39,11 +39,12 @@ class AuctionController extends Controller
         $images = $details->images()->get('path');
         $ratingDetails = $owner->getRatingDetails();
         $superUserMode = Auth::check() && (Auth::user()->is_admin || $details->auction_owner_id === Auth::user()->id);
+        $categories = Category::auction_categories($auction_id);
         if (Auth::check()) {
             $followingAuctions = Auth::user()->followingAuctions()->get();
-            return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode', 'followingAuctions'));
+            return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode', 'followingAuctions', 'categories'));
         } else
-            return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode'));
+            return view('pages.auction', compact('auction_id', 'details', 'bids', 'name', 'auctions', 'mostActive', 'images', 'ratingDetails', 'superUserMode', 'categories'));
     }
 
     public function showAuctionCheckout($auction_id)
