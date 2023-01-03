@@ -21,6 +21,10 @@ if (document.querySelector('#rateSellerButton') !== null) {
     document.querySelector('#rateSellerButton').addEventListener('click', function () {
         document.querySelector('#popup').style.display = "block";
         document.querySelector('#popup').className = "activeRateSeller";
+        document.querySelector('.activeRateSeller img').addEventListener('click', function (event){
+            document.querySelector('#popup').className = "";
+            document.querySelector('#popup').style.display = 'none';
+        })
         let stars = document.querySelectorAll('.in_stars svg');
         for (let star of stars) {
             star.addEventListener('mouseover', function (event) {
