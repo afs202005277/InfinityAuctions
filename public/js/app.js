@@ -57,7 +57,7 @@ function sendCreateBidRequest(event) {
 
 function bidAddedHandler() {
     if (this.status === 403){
-        document.querySelector('.error').textContent =  "Banned users cannot bid!";
+        document.querySelector('.error').textContent =  "Banned users or administrators cannot bid!";
     } else if (this.status !== 201) {
         document.querySelector('.error').textContent = this.responseText.substring(this.responseText.indexOf('ERROR:') + "ERROR:".length + 2, this.responseText.indexOf('.') + 1);
     } else {

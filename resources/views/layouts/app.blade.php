@@ -30,7 +30,6 @@
     <link href="{{ asset('css/auction_card.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin_panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction_edit.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/tmp.css') }}" rel="stylesheet">
     <link href="{{ asset('css/search_page.css') }}" rel="stylesheet">
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
     <link href="{{ asset('css/balance.css') }}" rel="stylesheet">
