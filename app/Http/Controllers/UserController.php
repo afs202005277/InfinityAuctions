@@ -51,18 +51,17 @@ class UserController extends Controller
             } else {
                 $validated = $request->validate([
                     'name' => 'required|string|max:30|regex:/^[a-zA-Z\s]{1,30}$/',
-                    'gender' => 'required',
+                    'gender' => [Rule::in(['M', 'F'])],
                     'cellphone' => ['required', 'numeric', 'digits:9', Rule::unique('users')->ignore($user->id)],
                     'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
                     'birth_date' => 'required|date|before:-18 years',
                     'address' => ['required', Rule::unique('users')->ignore($user->id), new IsValidAddress],
-                    'profile_image' => 'mimes:jpeg,jpg,png,gif'],
+                    'profile_image' => 'image'],
                     ['birth_date.before' => "You need to be, at least, 18 years old to sign up in our website.",
                         'name.regex' => "Only letters and white spaces are allowed. Maximum 30 characters."
                     ]);
 
                 if (isset($validated['profile_image'])) {
-                    ImageController::deleteUserImage($user->profile_image);
                     $user->profile_image = ImageController::store($validated['profile_image'], 'UserImages/', NULL);
                 }
                 $user->name = $validated['name'];
@@ -70,7 +69,8 @@ class UserController extends Controller
                 $user->email = $validated['email'];
                 $user->birth_date = $validated['birth_date'];
                 $user->address = $validated['address'];
-                $user->gender = $validated['gender'];
+                if (isset($validated['gender']))
+                    $user->gender = $validated['gender'];
             }
             $user->save();
             return redirect('users/' . $user->id);

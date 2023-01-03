@@ -17,7 +17,7 @@ Whether you are looking to sell items or find great deals on a wide range of pro
 
 ### 2. Usage
 
-URL to the product: http://lbaw2271.lbaw.fe.up.pt 
+URL to the product: http://lbaw2271.lbaw.fe.up.pt
 
 #### 2.1. Administration Credentials
 
@@ -107,7 +107,11 @@ Usability: [Report](HTML_Reports/Checklist%20de%20Usabilidade%20-%20SAPO%20UX.pd
 
 ### 7. Revisions to the Project
 
-> Describe the revisions made to the project since the requirements specification stage.
+Changes made to A2:
+- Added user stories US42 (Notification), US23(Recover password), US26(Order search results) and US37(Logout)
+
+- Regarding the A7 artifact, we made heavy changes (mostly additions to the original artifact) that are now all present in the A9 artifact
+
 
 ### 8. Web Resources Specification
 
@@ -125,7 +129,7 @@ openapi: 3.0.0
 ### 9. Implementation Details
 
 #### 9.1. Libraries Used
-This project was implemented without the usage of any additional libraries or frameworks, besides the ones already specified in the [Computational Resources](https://docs.google.com/document/d/e/2PACX-1vQF1K-fObIOlwh8gLK-NthG6pHMN0fZRYG_RrQ-VUUaDH0gKi0YMH_-jIm-1vmslfRATS47GqaY_DvH/pub) artifact.
+This project was implemented using just one library besides the ones already specified in the [Computational Resources](https://docs.google.com/document/d/e/2PACX-1vQF1K-fObIOlwh8gLK-NthG6pHMN0fZRYG_RrQ-VUUaDH0gKi0YMH_-jIm-1vmslfRATS47GqaY_DvH/pub) artifact: Font Awesome. This library was used to add some icons to the checkout and checkout_success pages.
 
 #### 9.2 User Stories
 

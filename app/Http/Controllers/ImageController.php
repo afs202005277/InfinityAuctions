@@ -20,10 +20,11 @@ class ImageController extends Controller
         // stores an image in the format "ID.EXTENSION"
         $stored_image = new Image();
 
-        $stored_image->id = Image::max('id') + 1;
+        $futureId = Image::max('id') + 1;
+        \Log::info('FUTURE'.$futureId);
 
         $destinationPath = $pathPrefix;
-        $filename = $stored_image->id . '.' . $image->extension();
+        $filename = $futureId . '.' . $image->extension();
         $image->move($destinationPath, $filename);
 
         $stored_image->path = $destinationPath . $filename;
