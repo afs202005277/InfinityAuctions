@@ -41,7 +41,6 @@
     <script type="text/javascript" src={{ asset('js/remove_notification.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/followbtn.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/rate_seller.js') }} defer></script>
-    <script type="text/javascript" src={{ asset('js/banner.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/pagination.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/search_page.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/admin_center.js') }} defer></script>

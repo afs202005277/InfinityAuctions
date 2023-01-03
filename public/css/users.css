@@ -6,7 +6,7 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    border-radius: 2em 2em 0em 0em;
+    border-radius: 2em 2em 0 0;
     background-image: linear-gradient(to right, var(--ten) 0%, #f8d8c4 100%);
 }
 
@@ -25,15 +25,13 @@
 }
 
 .bio2 {
-    padding: 2em;
     display: flex;
     flex-direction: row;
-    padding-right: 2em;
-    padding-left: 20em;
+    padding: 2em 2em 2em 20em;
     left: 30em;
     align-content: space-between;
     justify-content: space-between;
-    border-radius: 0em 0em 2em 2em;
+    border-radius: 0 0 2em 2em;
 }
 
 .bio2 button {
@@ -91,12 +89,7 @@
 .full-height{
   min-height: 100vh;
 }
-/*
-[type="checkbox"]:checked,
-[type="checkbox"]:not(:checked){
-  position: absolute;
-  left: -9999px;
-}*/
+
 .modal-btn:checked + label,
 .modal-btn:not(:checked) + label{
   position: relative;
@@ -268,5 +261,4 @@
     position: absolute;
     right: 4%;
     top: 5%;
-
 }

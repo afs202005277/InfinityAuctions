@@ -17,9 +17,12 @@
             </div>
 
             @if( Auth::user()!=null && Auth::user()->id==$user->id && Auth::user()->is_admin )
-                <div>
-                    <form method="get" action="{{ url('/logout') }}" class="edit">
-                        <button type="submit"> Logout</button>
+                <div class="user-actions-buttons">
+                    <form class="edit" action="{{ url('/balance') }}">
+                        <button type="submit"> Balance</button>
+                    </form>
+                    <form action="{{url('/logout')}}" method="get">
+                        <button type="submit">Logout</button>
                     </form>
                 </div>
             @endif
@@ -43,7 +46,7 @@
 
             <!-- Reported Auctions -->
             <div class="auc-report">
-                @if(!$aucReports->isEmpty())
+                @if(count($aucReports) !== 0)
                     @foreach ($aucReports as $report)
                         @include('partials.report', compact('report', 'ban_opts'))
                     @endforeach
@@ -54,7 +57,7 @@
 
             <!-- Reported Users -->
             <div class="usr-report">
-                @if(!$usrReports->isEmpty())
+                @if(count($aucReports) !== 0)
                     @foreach ($usrReports as $report)
                         @include('partials.report', compact('report'))
                     @endforeach

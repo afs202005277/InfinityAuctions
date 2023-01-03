@@ -19,7 +19,5 @@ class Category extends Model
         return DB::table('auction')->join('auction_category', 'auction.id', '=', 'auction_category.auction_id')
                             ->join('category', 'auction_category.category_id', '=', 'category.id')
                             ->where('auction_category.auction_id', '=', $auction_id)->select('category.name', 'category.id')->get();
-        
-        
     }
 }

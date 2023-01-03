@@ -48,6 +48,13 @@ class UsersController extends Controller
             $usrReports = $user->pendingUsrReports()->get();
 
             $aucReports = $user->pendingAucReports()->get();
+
+            foreach ($usrReports as $key => $report){
+                $usrReports[$key]->reasons = explode(",", str_replace("}", '', str_replace("{", '', str_replace('"', '', $report->reasons))));
+            }
+            foreach ($aucReports as $key => $report){
+                $aucReports[$key]->reasons = explode(",", str_replace("}", '', str_replace("{", '', str_replace('"', '', $report->reasons))));
+            }
             return view('pages.admin', compact('user', 'image', 'usrReports', 'aucReports', 'ban_opts'));
         }
 

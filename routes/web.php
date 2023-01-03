@@ -14,7 +14,6 @@
 // Home
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\MainPageController;
-use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -104,7 +103,7 @@ Route::post('/forgot-password', function (Request $request) {
         $request->only('email')
     );
     return $status === Password::RESET_LINK_SENT
-        ? back()->with(['status' => __($status)])
+        ? back()->withErrors(['status' => __($status)])
         : back()->withErrors(['email' => __($status)]);
 })->middleware('guest')->name('password.email');
 

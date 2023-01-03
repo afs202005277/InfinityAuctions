@@ -1,3 +1,6 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
+
 h2, .ma {
     margin-top: 5rem;
 }
@@ -138,8 +141,6 @@ button:hover{
     display: block;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);
-@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
 *, *:before, *:after {
   box-sizing: border-box;
 }
@@ -224,6 +225,11 @@ body {
       -ms-flex-flow: row nowrap;
           flex-flow: row nowrap;
 }
+
+.slider__contents i{
+  color: var(--ten);
+}
+
 .slider__contents:nth-child(1){
   background-image: url('../img/fashion.webp');
 }
@@ -261,7 +267,6 @@ body {
           justify-content: center;
   overflow: hidden;
   background-repeat: no-repeat;
-  background-color: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
   background-size: cover;
   border-radius: 2em;
 }

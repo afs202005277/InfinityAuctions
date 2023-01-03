@@ -11,6 +11,13 @@
            placeholder="{{ __('Name') }}" value="{{ old('name', auth()->user()->name) }}">
     @include('alerts.feedback', ['field' => 'name', 'errors' => $errors])
 
+    
+    <label>{{ __('Gender') }}</label>
+    <select name="gender" id="lang">
+        <option value="{{ old('name', auth()->user()->gender) }}" selected disabled hidden>{{ old('name', auth()->user()->gender) }}</option>
+        <option value="M">M</option>
+        <option value="F">F</option>
+    </select>
 
     <label>{{ __('Email address') }}</label>
     <input type="email" name="email"

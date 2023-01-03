@@ -12,7 +12,7 @@ class CategoryPolicy
 
     /**
      * Determine whether the user can create models.
-     *
+     * Only admins can create categories.
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
@@ -23,7 +23,7 @@ class CategoryPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
+     * Only admins can delete categories.
      * @param  \App\Models\User  $user
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Auth\Access\Response|bool

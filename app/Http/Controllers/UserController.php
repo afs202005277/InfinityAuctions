@@ -51,6 +51,7 @@ class UserController extends Controller
             } else {
                 $validated = $request->validate([
                     'name' => 'required|string|max:30|regex:/^[a-zA-Z\s]{1,30}$/',
+                    'gender' => 'required',
                     'cellphone' => ['required', 'numeric', 'digits:9', Rule::unique('users')->ignore($user->id)],
                     'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
                     'birth_date' => 'required|date|before:-18 years',
@@ -69,6 +70,7 @@ class UserController extends Controller
                 $user->email = $validated['email'];
                 $user->birth_date = $validated['birth_date'];
                 $user->address = $validated['address'];
+                $user->gender = $validated['gender'];
             }
             $user->save();
             return redirect('users/' . $user->id);

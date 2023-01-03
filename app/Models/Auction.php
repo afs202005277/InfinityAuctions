@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use App\Helpers\PaginationHelper;
 class Auction extends Model
 {
     protected $table = 'auction';
@@ -42,6 +42,7 @@ class Auction extends Model
 
     public static function mostActive()
     {
+        // returns the most active running auctions (the ones with the higher rate of bids per second)
         return DB::select(DB::raw('SELECT duration_table.*, amount.amount_bids, amount_bids::decimal / to_seconds(duration)::decimal as "rate"
                     FROM (SELECT *, auction.end_date - auction.start_date AS "duration"
                           FROM auction
@@ -70,13 +71,13 @@ class Auction extends Model
     public static function searchResults($search, $filters, $order)
     {
         $query = DB::table('auction')
-            ->selectRaw('auction.*, 
-                        CASE 
+            ->selectRaw('auction.*,
+                        CASE
                             WHEN bool_and(rates.id_seller IS NOT NULL) THEN AVG(rates.rate)::NUMERIC(10,2)
                             ELSE 0
                         END AS average_rate,
-                        CASE 
-                            WHEN bool_and(bid.auction_id IS NOT NULL) THEN MAX(bid.amount) 
+                        CASE
+                            WHEN bool_and(bid.auction_id IS NOT NULL) THEN MAX(bid.amount)
                             ELSE auction.base_price
                         END AS max_price
                         ')
@@ -118,9 +119,11 @@ class Auction extends Model
 
         if (isset($filters['maxPrice'])) {
             $values = $values->where('max_price', '<=', $filters['maxPrice']);
+            return PaginationHelper::paginate($values, 10)->withQueryString();
         }
-        
-        return $values;
+
+        return PaginationHelper::paginate($values, 10)->withQueryString();
+
     }
 
     public static function newAuctions()

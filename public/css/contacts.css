@@ -29,7 +29,6 @@
 
 #contactarea > #contact > form > input::placeholder, #contactarea > #contact > form > textarea::placeholder {
     font-family:  "Poppins", Arial, sans-serif;
-    font-size: 100;
     color: #000000;
     font-size: 1.2em;
     opacity: 1;
@@ -46,7 +45,6 @@
 #contactarea > #contact > form > button {
     margin: 0;
     background-color: var(--ten);
-    border: none;
     color: #FFFFFF;
     align-items: center;
     padding: 1em 1.5em;
@@ -91,7 +89,7 @@
 
 #contactarea > #contact > .rightside > a > figure > figcaption {
     font-size: 0.95em;
-    font-weight: "light";
+    font-weight: lighter;
     text-decoration: none;
 }
 
