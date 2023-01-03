@@ -94,7 +94,7 @@ class AuctionController extends Controller
                 'image' => 'mimes:jpeg,jpg,png,gif|required'
             );
 
-            $validator = Validator::make($fileArray, $rules);
+            $validator = Validator::make($fileArray, $rules, $messages = ['image.mime' => "The supported file types are jpeg, jpg, png and gif."]);
             $validated = $request->validate([
                 'title' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/()-]*$/',
                 'desc' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/()-]*$/',
@@ -296,7 +296,7 @@ class AuctionController extends Controller
         foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
             $all_bids = Bid::all_bids($auction->id);
-            if (count($all_bids) > 0){
+            if (count($all_bids) > 0) {
                 $max_bid = $all_bids[0];
                 $amount = $max_bid->amount;
                 $user_id = $max_bid->user_id;
