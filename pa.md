@@ -115,9 +115,7 @@ Regarding the A7 artifact, we made heavy changes (mostly additions to the origin
 
 ### 8. Web Resources Specification
 
-> Updated OpenAPI specification in YAML format to describe the final product's web resources.
-
-> Link to the `a9_openapi.yaml` file in the group's repository.
+[a9_openapi.yaml](https://git.fe.up.pt/lbaw/lbaw2223/lbaw2271/-/blob/main/a9_openapi.yaml)
 
 
 ```yaml
@@ -1829,17 +1827,11 @@ URL to the product: http://lbaw2271.lbaw.fe.up.pt
 
 Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
 
-URL to the product: http://lbaw2271.lbaw.fe.up.pt  
-
-> Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
-
 
 ### 2. Video presentation
 
-> Screenshot of the video plus the link to the lbaw2271.mp4 file.
+[Link of the video](https://git.fe.up.pt/lbaw/lbaw2223/lbaw2271/-/blob/main/a9_openapi.yaml)
 
-> - Upload the lbawYYgg.mp4 file to Moodle.
-> - The video must not exceed 2 minutes.
 ---
 
 
