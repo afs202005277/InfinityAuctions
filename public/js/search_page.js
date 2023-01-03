@@ -25,16 +25,18 @@ function SearchPageEventList() {
     let follow_button = document.getElementById("follow_word");
     let unfollow_button = document.getElementById("unfollow_word");
     let search = document.getElementById("search");
-    follow_button.addEventListener('click', function (event) {
-        sendAjaxRequest('post', '/api/user/follow_term', {
-            search: search.value
-        }, addedToWishlist);
-    })
-    unfollow_button.addEventListener('click', function (event) {
-        sendAjaxRequest('post', '/api/user/unfollow_term', {
-            search: search.value
-        }, removedFromWishlist);
-    })
+    if (follow_button !== null){
+        follow_button.addEventListener('click', function (event) {
+            sendAjaxRequest('post', '/api/user/follow_term', {
+                search: search.value
+            }, addedToWishlist);
+        })
+        unfollow_button.addEventListener('click', function (event) {
+            sendAjaxRequest('post', '/api/user/unfollow_term', {
+                search: search.value
+            }, removedFromWishlist);
+        })
+    }
 }
 
 function removedFromWishlist() {
@@ -87,7 +89,7 @@ function modifySearchAttributesRequest() {
 
     let order = document.querySelectorAll('#order-fieldset input[type=radio]:checked')
     if (order.length > 0) {
-        if( order[0].getAttribute("value") != "1")
+        if( order[0].getAttribute("value") !== "1")
             newUrlParams.append(order[0].getAttribute("name"), order[0].getAttribute("value"));
     }
 

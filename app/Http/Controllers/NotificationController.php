@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use Log;
 
 class NotificationController extends Controller
 {
@@ -15,6 +18,11 @@ class NotificationController extends Controller
         $notification->user_id = $user_id;
         $notification->auction_id = $auction_id;
         $notification->save();
+    }
+
+    public function getNotifications() {
+        $notifications = Notification::where('user_id', Auth::id())->orderBy('date', 'desc')->get();
+        return view('partials.notifications', compact('notifications'));
     }
 
     /**

@@ -30,7 +30,6 @@
     <link href="{{ asset('css/auction_card.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin_panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auction_edit.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/tmp.css') }}" rel="stylesheet">
     <link href="{{ asset('css/search_page.css') }}" rel="stylesheet">
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
     <link href="{{ asset('css/balance.css') }}" rel="stylesheet">
@@ -41,10 +40,12 @@
     <script type="text/javascript" src={{ asset('js/remove_notification.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/followbtn.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/rate_seller.js') }} defer></script>
-    <script type="text/javascript" src={{ asset('js/banner.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/pagination.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/search_page.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/admin_center.js') }} defer></script>
+    @if (Auth::check())
+        <script type="text/javascript" src={{ asset('js/update_notifications.js') }} defer></script>
+    @endif
   </head>
   <body>
     <main>

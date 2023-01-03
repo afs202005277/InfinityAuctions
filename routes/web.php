@@ -90,6 +90,7 @@ Route::post('auctions/report', 'ReportController@report')->name('reportAuction')
 
 //Notifications
 Route::delete('api/notifications/delete/{id}', 'NotificationController@destroy');
+Route::post('api/notifications/get', 'NotificationController@getNotifications');
 
 //Password
 Route::get('/forgot-password', function () {
@@ -102,7 +103,7 @@ Route::post('/forgot-password', function (Request $request) {
         $request->only('email')
     );
     return $status === Password::RESET_LINK_SENT
-        ? back()->with(['status' => __($status)])
+        ? back()->withErrors(['status' => __($status)])
         : back()->withErrors(['email' => __($status)]);
 })->middleware('guest')->name('password.email');
 

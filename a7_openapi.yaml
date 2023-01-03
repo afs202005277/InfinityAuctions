@@ -133,6 +133,10 @@ paths:
                 birthdate:
                   type: string
                   format: date
+                profile_picture:
+                  type: string
+                  format: binary
+                  description: 'Can be jpeg, jpg, png and gif'
                 address:
                   type: string
                 password:
@@ -147,6 +151,7 @@ paths:
                     - phone
                     - email
                     - birthdate
+                    - profile_picture
                     - address
                     - password
                     - confirm_password
@@ -165,6 +170,126 @@ paths:
                 302Failure:
                   description: 'Failed Registration. Redirect to Register Form.'
                   value: '/register'
+
+  /forgot-password:
+    get:
+      operationId: R106
+      summary: 'R106: Forgot Password page UI.'
+      description: 'Provide forgot password form UI. Access: PUB.'
+      tags:
+        - 'M01: Registration and authentication'
+
+      responses:
+        '200':
+          description: 'Ok. Show Forgot-Password UI.'
+
+    post:
+      operationId: R107
+      summary: 'R107: Forgot Password Action.'
+      description: 'Sends an email to reconfigure password. Access: PUB.'
+      tags:
+        - 'M01: Registration and authentication'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+              required:
+              - email
+
+      responses:
+        '302':
+          description: 'Redirect after processing user request.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfuly sent recover password email. Redirect to Forgot-Password page UI.'
+                  value: '/forgot-password'
+                302Failure:
+                  description: 'Failed to setn recover password email. Redirect to Forgot-Password Page UI.'
+                  value: '/forgot-password'
+
+    
+  /reset-password/{token}:
+    get:
+      operationId: R108
+      summary: 'R108: Reset-Password page UI.'
+      description: 'Provide Reset-Password form UI. Access: USR.'
+      tags:
+        - 'M01: Registration and authentication'
+      
+      parameters:
+        - in: path
+          name: token
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show Reset-Password UI.'
+
+    post:
+      operationId: R109
+      summary: 'R109: Reset Password Action.'
+      description: 'Resets user password. Access: USR.'
+      tags:
+        - 'M01: Registration and authentication'
+
+      parameters:
+        - in: path
+          name: token
+          schema:
+            type: string
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                confirm_password:
+                  type: string
+                  format: password
+                token:
+                  type: string
+              required:
+              - email
+              - password
+              - confirm_password
+              - token
+      
+      responses:
+        '302':
+          description: 'Redirect after processing user request.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfuly recovered password. Redirect to login page UI.'
+                  value: '/login'
+                302Failure:
+                  description: 'Failed to recover password email. Redirect to Reset-Password Page UI.'
+                  value: '/reset-password/{token}'
 
   # M02: Home page and Static pages
   /:
@@ -275,7 +400,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/x-www-form-urlencoded:
+          multipart/form-data:
             schema:
               type: object
               properties:
@@ -291,12 +416,23 @@ paths:
                   format: date
                 address:
                   type: string
+                profile_image:
+                  type: string
+                  format: binary
+                  description: 'Can be jpeg, jpg, png and gif'
+                password:
+                  type: string
+                  format: password
+                confirm_password:
+                  type: string
+                  format: password
               required:
                     - name
                     - phone
                     - email
                     - birthdate
                     - address
+                    - profile_image
 
       responses:
         '302':
@@ -333,7 +469,7 @@ paths:
     get:
       operationId: R404
       summary: 'R404: View user profile.'
-      description: 'Show user profile. Access: PUB.'
+      description: 'This resource fetchs the user profile page including private and public data. Depending on the role of the user, the resulting page hides sensitive information. The authenticated user that owns the account can see all the information. The admin can see all the information of every user account. Every other role can only see the pubic information. In the case of the admin account, it shows the admin center, containing the admin private info, reported auctions and reported users. This last information can only be consulted by the ADM role. Access: PUB, USR, ADM'
       tags:
         - 'M04: Users'
 
@@ -347,7 +483,305 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show User Profile UI.'
+          description: 'Ok. Show Profile UI [UI14]. Edit profile section UI [UI18] available for the USR and ADM. Bidding History section UI [UI20] available for the USR and ADM. Bidding auctions section UI available for the USR and ADM. Followed auctions section UI [UI17] available for the USR and ADM roles. Owned auctions section UI [UI09] available for the USR, ADM and PUB roles. Wishlist section UI available for the USR and ADM.  Won auctions section UI available for the USR and ADM. Admin center section UI available for the ADM. Reported users section UI available for the ADM. Reported auctions section UI available for the ADM'
+
+  /api/users/delete/{id}:
+    delete:
+      operationId: R405
+      summary: 'R405: Delete User.'
+      description: 'Delete User profile, by deleting personal information stored in the database. Access: USR, ADM.'
+      tags:
+        - 'M04: Users'
+      
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+      
+      responses:
+        '204':
+          description: 'User profile successfully deleted.'
+        '403':
+          description: 'Can be the result of 3 operations: unauthorized access; user has running auctions; user has the highest bid on a running auction.' 
+
+  /api/users/addReview:
+    post:
+      operationId: R406
+      summary: 'R406: Add Review.'
+      description: 'Add a five star rating review to another user. Access: USR'
+      tags:
+        - 'M04: Users'
+      
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                rate:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                user_id:
+                  type: integer
+              required:
+                    - rate
+                    - user_id
+      
+      responses:
+        '200':
+          description: 'Review added successfully!'
+        '403':
+          description: 'You do not have permissions to add this review!'
+        '500':
+          description: 'You can only review each seller once!'
+  
+  /api/user/follow_auction:
+    post:
+      operationId: R407
+      summary: 'R407: Follow auction.'
+      description: 'Proccesses request to follow auction. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                auction_id:
+                  type: integer
+                  minimum: 1
+                user_id:
+                  type: integer
+                  minimum: 1
+              required:
+                - auction_id
+                - user_id
+      
+      responses:
+        '200': 
+          description: 'Successfully followed target auction.'
+
+  /api/user/unfollow_auction:
+    post:
+      operationId: R408
+      summary: 'R408: Unfollow auction.'
+      description: 'Proccesses request to unfollow auction. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                auction_id:
+                  type: integer
+                  minimum: 1
+                user_id:
+                  type: integer
+                  minimum: 1
+              required:
+                - auction_id
+                - user_id
+      
+      responses:
+        '200':
+          description: 'Successfully unfollowed target auction.'
+
+  /api/user/follow_term:
+    post:
+      operationId: R409
+      summary: 'R409: Add term to wishlist.'
+      description: 'Proccesses request to follow term. Access: USR'
+      tags:
+        - 'M04: Users'
+    
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                search_term:
+                  type: string
+              required:
+                - search_term
+      
+      responses:
+        '200':
+          description: 'Successfully added term to wishlist.'
+  
+  /api/user/unfollow_term:
+    post:
+      operationId: R410
+      summary: 'R410: Remove term from wishlist.'
+      description: 'Proccesses request to unfollow term. Access: USR'
+      tags:
+        - 'M04: Users'
+    
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                search_term:
+                  type: string
+              required:
+                - search_term
+      
+      responses:
+        '200':
+          description: 'Successfully removed term from wishlist.'
+  
+  /api/user/follows_term:
+    post:
+      operationId: R411
+      summary: 'R411: Remove term from wishlist.'
+      description: 'Proccesses request to unfollow term. Access: USR'
+      tags:
+        - 'M04: Users'
+    
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                search_term:
+                  type: string
+              required:
+                - search_term
+      
+      responses:
+        '200':
+          description: 'Successfully removed term from wishlist.'
+
+  /balance:
+    get:
+      operationId: R412
+      summary: 'R412: Balance page UI.'
+      description: 'View funds of the account. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      responses:
+        '200':
+          description: 'Ok. Show Balance page UI.'
+
+  /deposit:
+    get:
+      operationId: R413
+      summary: 'R413: Paypal redirect.'
+      description: 'Fetchs paypal API for deposit. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                deposit_value:
+                  type: integer
+                  minimum: 5
+                  maximum: 999999999
+              required:
+                - deposit_value
+
+      responses:
+        '200':
+          description: 'Ok. Show Paypal page.'
+  
+  /deposit/cancel:
+    get:
+      operationId: R414
+      summary: 'R414: Show Cancelled Deposit page.'
+      description: 'If paypal request was cancelled, this page displays that information. Access: USR'
+      tags:
+        - 'M04: Users'
+    
+      responses:
+        '200':
+          description: 'Ok. Show Cancelled Deposit page.'
+
+  /deposit/success:
+    get:
+      operationId: R415
+      summary: 'R415: Paypal request validator'
+      description: 'Check if the deposit operation was successfull, and display Successfull Deposit page. Access: USR'
+      tags:
+        - 'M04: Users'
+    
+      responses:
+        '200':
+          description: 'Ok. Show Successfull Deposit page.'
+
+  /withdraw:
+    get:
+      operationId: R416
+      summary: 'R416: Paypal redirect.'
+      description: 'Fetchs paypal API for Withdraw. Access: USR'
+      tags:
+        - 'M04: Users'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                withdraw_value:
+                  type: integer
+                  minimum: 5
+                  maximum: 999999999
+              required:
+                - withdraw_value
+
+      responses:
+        '200':
+          description: 'Ok. Show Paypal page.'
+  
+  /withdraw/cancel:
+    get:
+      operationId: R417
+      summary: 'R417: Show Cancelled Withdraw page.'
+      description: 'If paypal request was cancelled, this page displays that information. Access: USR'
+      tags:
+        - 'M04: Users'
+    
+      responses:
+        '200':
+          description: 'Ok. Show Cancelled Withdraw page.'
+  
+  /withdraw/success:
+    get:
+      operationId: R418
+      summary: 'R418: Paypal request validator'
+      description: 'Check if the withdraw operation was successfull, and display Successfull Withdraw page. Access: USR'
+      tags:
+        - 'M04: Users'
+    
+      responses:
+        '200':
+          description: 'Ok. Show Successfull Withdraw page.'
+      
 
   # M05: Auctions
   /auctions/{auction_id}:
@@ -373,7 +807,7 @@ paths:
   /sell:
     get:
       operationId: R502
-      summary: 'R502: Create Auction page.'
+      summary: 'R502: Create Auction page UI.'
       description: 'Fetch Create Auction Form. Access: USR.'
       tags:
         - 'M05: Auctions'
@@ -392,7 +826,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/x-www-form-urlencoded:
+          multipart/form-data:
             schema:
               type: object
               properties:
@@ -446,6 +880,8 @@ paths:
                   value: '/sell'
         '403':
           description: 'Error admins do not create auctions.'
+        '500': 
+          description: 'Invalid database parameters.'
   
   /auctions/edit/{id}:
     get:
@@ -486,7 +922,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/x-www-form-urlencoded:
+          multipart/form-data:
             schema:
               type: object
               properties:
@@ -505,6 +941,12 @@ paths:
                 buy_now:
                   type: integer
                   nullable: true
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                    description: 'Can be jpeg, jpg, png and gif'
               required:
                 - title
                 - description
@@ -626,8 +1068,7 @@ paths:
                     user_id: 2
                     auction_id: 1
                     username: Maria
-                  
-
+                
 
   /api/auctions:
     post:
@@ -640,7 +1081,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
@@ -695,7 +1136,7 @@ paths:
               description: 'Full text search of an item that matches computer dell.'
               value: 'computer dell' # ?search=computer+dell
         - in: query
-          name: category
+          name: filter[category]
           schema:
             type: array
             items:
@@ -704,10 +1145,57 @@ paths:
           examples:
             oneFilter:
               description: 'Getting the results of one category.'
-              value: [1]   # ?category%5B0%5D=1
+              value: [1]   # ?filter%5Bcategory%5D%5B0%5D=1
             multipleFilters:
               description: 'Getting results matching many categories id.'
-              value: [1, 5, 7]   # ?category%5B0%5D=1&category%5B1%5D=5&category%5B2%5D=7
+              value: [1, 5, 7]   # ?filter%5Bcategory%5D%5B0%5D=1&filter%5Bcategory%5D%5B1%5D=5&filter%5Bcategory%5D%5B2%5D=7
+        - in: query
+          name: filter[state]
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+          examples:
+            oneFilter:
+              description: 'Getting the results of one state, in this case Cancelled auction state.'
+              value: ['Cancelled']   # ?filter%5Bstate%5D%5B0%5D=Cancelled
+            multipleFilters:
+              description: 'Getting results matching many states.'
+              value: ['Cancelled', 'Running']   # ?filter%5Bstate%5D%5B0%5D=Cancelled&filter%5Bstate%5D%5B1%5D=Running
+        - in: query
+          name: filter[maxPrice]
+          schema:
+            type: integer
+          required: false
+          examples:
+            maxPrice:
+              description: 'Getting the results whose current price is lower or equal to 200.'
+              value: 200  # ?filter%5BmaxPrice%5D=200 
+        - in: query
+          name: filter[buyNow]
+          schema:
+            type: string
+          required: false
+          examples:
+            buyNow:
+              description: 'Getting auctions who have buy now functionality.'
+              value: 'on'  # ? filter%5BbuyNow%5D=on
+        - in: query
+          name: order
+          schema:
+            type: integer
+          required: false
+          examples:
+            HighestPrice:
+              description: 'Getting auctions orderded by current price, from highest to lowest.'
+              value: 2
+            LowestPrice:
+              description: 'Getting auctions orderded by current price, from lowest to highest.'
+              value: 3
+            MostTrusted:
+              description: 'Getting auctions orderded by owner rating, from highest to lowest.'
+              value: 4
 
       responses:
         '200':
@@ -720,7 +1208,7 @@ paths:
                   type: object
                   properties:
                     id:
-                      type: string
+                      type: integer
                       minimum: 1
                     name:
                       type: string
@@ -789,10 +1277,10 @@ paths:
           required: false
           examples:
             searchQuery:
-              description: 'Full text search of an item that matches computer dell.'
+              description: 'Searching for items with computer dell in their description.'
               value: 'computer dell' # ?search=computer+dell
         - in: query
-          name: category
+          name: filter[category]
           schema:
             type: array
             items:
@@ -800,11 +1288,58 @@ paths:
           required: false
           examples:
             oneFilter:
-              description: 'Getting the results of one category.'
-              value: [1]   # ?category%5B0%5D=1
+              description: 'Searching for the results of one category.'
+              value: [1]   # ?filter%5Bcategory%5D%5B0%5D=1
             multipleFilters:
-              description: 'Getting results matching many categories id.'
-              value: [1, 5, 7]   # ?category%5B0%5D=1&category%5B1%5D=5&category%5B2%5D=7
+              description: 'Searching for the results matching many categories id.'
+              value: [1, 5, 7]   # ?filter%5Bcategory%5D%5B0%5D=1&filter%5Bcategory%5D%5B1%5D=5&filter%5Bcategory%5D%5B2%5D=7
+        - in: query
+          name: filter[state]
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+          examples:
+            oneFilter:
+              description: Searching for the results of one state, in this case Cancelled auction state.'
+              value: ['Cancelled']   # ?filter%5Bstate%5D%5B0%5D=Cancelled
+            multipleFilters:
+              description: 'Searching for the results matching many states.'
+              value: ['Cancelled', 'Running']   # ?filter%5Bstate%5D%5B0%5D=Cancelled&filter%5Bstate%5D%5B1%5D=Running
+        - in: query
+          name: filter[maxPrice]
+          schema:
+            type: integer
+          required: false
+          examples:
+            maxPrice:
+              description: 'Searching for the results whose current price is lower or equal to 200.'
+              value: 200  # ?filter%5BmaxPrice%5D=200 
+        - in: query
+          name: filter[buyNow]
+          schema:
+            type: string
+          required: false
+          examples:
+            buyNow:
+              description: 'Searching for the results who have buy now functionality.'
+              value: 'on'  # ?filter%5BbuyNow%5D=on
+        - in: query
+          name: order
+          schema:
+            type: integer
+          required: false
+          examples:
+            HighestPrice:
+              description: 'Searching for the auctions orderded by current price, from highest to lowest.'
+              value: 2  # ?order=2
+            LowestPrice:
+              description: 'Searching for the auctions orderded by current price, from lowest to highest.'
+              value: 3  # ?order=3
+            MostTrusted:
+              description: 'Searching for the auctions orderded by owner rating, from highest to lowest.'
+              value: 4  # ?order=4
 
       responses:
         '200':
@@ -829,3 +1364,292 @@ paths:
       responses:
         '200':
           description: 'Ok. Image was successfully deleted.'
+        '403':
+          description: 'Error, user does not have the required permissions.'
+  
+  /api/auctions/update:
+    post:
+      operationId: R512
+      summary: 'R512: Update Auctions state.'
+      description: 'Handles new auction state condition. Sends notifications regarding new states. Access: PUB'
+      tags:
+        - 'M05: Auctions'
+      
+      responses:
+        '200': 
+          description: 'Successfully updated'
+
+  /auctions/checkout/{id}:
+    get:
+      operationId: R513
+      summary: 'R513: Auction checkout UI.'
+      description: 'Provide auction checkout form UI Access: BDR.'
+      
+      parameters:
+        - in: path
+          name: auction_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+        
+      responses:
+        '200':
+          description: 'Ok. Show checkout UI.'
+
+  /auctions/checkout/{auction_id}/success:
+    get:
+      operationId: R514
+      summary: 'R514: Auction checkout success page.'
+      description: 'After successfull checkout this page gets fetched, confirming and displaying the checkout information for the user. Access: BDR.'
+
+      parameters:
+        - in: path
+          name: auction_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show'
+  # M06: Reports
+  /api/report/ban/{id}:
+    post:
+      operationId: R601
+      summary: 'R601: Issue report penalty.'
+      description: 'Processes the request to update a report with a penalty. Access: ADM.'
+      tags:
+        - 'M06: Reports'
+
+      parameters:
+        - in: path
+          name: report_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                ban_opt:
+                  type: integer
+              required:
+                - ban_opt
+
+      responses:
+        '302':
+          description: 'Redirect after issuing penalty.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully issued penalty. Redirect to admin center.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed to issue penalty. Redirect to admin center.'
+                  value: '/users/{id}'
+        '403':
+          description: 'Error, user does not have access to the target report.'
+        '500': 
+          description: 'The server has encountered a situation it does not know how to handle. Possibly invalid database parameters.'
+
+  /api/report/delete/{report_id}:
+    delete:
+      operationId: R602
+      summary: 'R602: Dismiss report.'
+      description: 'Processes the request to delete a report from the database. Access: ADM.'
+      tags:
+        - 'M06: Reports'
+
+      parameters:
+        - in: path
+          name: report_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+      
+      responses:
+        '302':
+          description: 'Redirect after issuing penalty.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully deleted report. Redirect to admin center.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed to delete report. Redirect to admin center.'
+                  value: '/users/{id}'
+        '403':
+          description: 'Error, user does not have access to the target report.'
+  
+  /users/report/{id}:
+    get:
+      operationId: R603
+      summary: 'R603: Get report form.'
+      description: 'Provide user report form UI. Access: USR.'
+      tags:
+        - 'M06: Reports'
+      
+      parameters:
+        - in: path
+          name: reported_user_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show Report form UI.'
+
+  /users/report:
+    post:
+      operationId: R604
+      summary: 'R604: Report form submission'
+      description: 'Processes the user report form submission. Access: USR'
+      tags:
+        - 'M06: Reports'
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                reported_id:
+                  type: integer
+                  minimum: 1
+                reported_name:
+                  type: string
+              required:
+                - reported_id
+      
+      responses:
+        '302':
+          description: 'Redirect after creating report.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully created report. Redirect to main page.'
+                  value: '/'
+                302Failure:
+                  description: 'Failed to create report. Redirect to report page.'
+                  value: 'users/report/{id}'   
+        '500': 
+          description: 'The server has encountered a situation it does not know how to handle. Possibly invalid database parameters.'
+  
+  /auctions/report/{id}:
+    get:
+      operationId: R605
+      summary: 'R605: Get report form.'
+      description: 'Provide auction report form UI. Access: USR.'
+      tags:
+        - 'M06: Reports'
+      
+      parameters:
+        - in: path
+          name: reported_user_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show Report form UI.'
+
+  /auctions/report:
+    post:
+      operationId: R606
+      summary: 'R606: Report form submission'
+      description: 'Processes the auction report form submission. Access: USR'
+      tags:
+        - 'M06: Reports'
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                reported_id:
+                  type: integer
+                  minimum: 1
+                reported_name:
+                  type: string
+              required:
+                - reported_id
+      
+      responses:
+        '302':
+          description: 'Redirect after creating report.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully created report. Redirect to main page.'
+                  value: '/'
+                302Failure:
+                  description: 'Failed to create report. Redirect to report page.'
+                  value: 'auctions/report/{id}'   
+        '500': 
+          description: 'The server has encountered a situation it does not know how to handle. Possibly invalid database parameters.'
+
+
+  # 'M07: Notifications'
+  /api/notifications/delete/{id}:
+    delete:
+      operationId: R701
+      summary: 'R701: Delete notification'
+      description: 'Issues request to delete notification from database. Access: USR'
+      tags:
+        - 'M07: Notifications'
+      
+      parameters:
+        - in: path
+          name: notification_id
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+      
+      responses:
+        '200':
+          description: 'Notification successfully deleted'
+        '403':
+          description: 'Error, user does not have the required permissions.'
+
+  /api/notifications/get:
+    post: 
+      operationId: R702
+      summary: 'R702: Get notifications'
+      description: 'Get user notifications from the database. Access: USR'
+      tags:
+        - 'M07: Notifications'
+
+      responses: 
+        '200':
+          description: 'Notification were successfully fetched.'
+
+
+

@@ -31,7 +31,7 @@ class ReportController extends Controller
 
     public function showAuctionReport($id)
     {
-        $auction = Auction::find($id);
+        $auction = Auction::findOrFail($id);
         $options = Report_Option::auctionOptions()->get();
         $isUserReport = False;
         $banned = False;

@@ -8,12 +8,10 @@ function pagination() {
             li.style.display = "none";
         }
 
-        if(li.innerText == current_page.innerText){
+        if(li.innerText === current_page.innerText){
             li.className = "is-active";
         }
     }
-
-    
 }
 
 pagination();

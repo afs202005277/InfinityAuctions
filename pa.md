@@ -13,7 +13,7 @@ Whether you are looking to sell items or find great deals on a wide range of pro
 ### 1. Installation
 
 > Link to the release with the final version of the source code in the group's Git repository.  
-> `docker run -it -p 8000:80 --name=lbaw2271 -e DB_DATABASE="lbaw2271" -e DB_SCHEMA="lbaw2271" -e DB_USERNAME="lbaw2271" -e DB_PASSWORD="OOlRpmGt" git.fe.up.pt:5050/lbaw/lbaw2223/lbaw2271`
+`docker run -it -p 8000:80 --name=lbaw2271 -e DB_DATABASE="lbaw2271" -e DB_SCHEMA="lbaw2271" -e DB_USERNAME="lbaw2271" -e DB_PASSWORD="OOlRpmGt" git.fe.up.pt:5050/lbaw/lbaw2223/lbaw2271`
 
 ### 2. Usage
 
@@ -21,7 +21,7 @@ URL to the product: http://lbaw2271.lbaw.fe.up.pt
 
 #### 2.1. Administration Credentials
 
-> Administration URL: URL  
+Administration URL: http://lbaw2271.lbaw.fe.up.pt/users/1002
 
 | Email | Password |
 | -------- | -------- |
@@ -29,10 +29,10 @@ URL to the product: http://lbaw2271.lbaw.fe.up.pt
 
 #### 2.2. User Credentials
 
-| Type          | Username  | Password |
-| ------------- | --------- | -------- |
-| basic account | user 1    | password |
-| news editor   | user 1    | password |
+| Type           | Username            | Password |
+|----------------|---------------------|----------|
+| Banned Account | banned@fe.up.pt     | 123456   |
+| Regular user   | regular@fe.up.pt    | 123456   |
 
 ### 3. Application Help
 
@@ -65,6 +65,7 @@ $validated = $request->validate([
 ### 5. Check Accessibility and Usability
 
 Accessibility: [Report](HTML_Reports/Checklist%20de%20Acessibilidade%20-%20SAPO%20UX.pdf)
+
 Usability: [Report](HTML_Reports/Checklist%20de%20Usabilidade%20-%20SAPO%20UX.pdf)
 
 ### 6. HTML & CSS Validation
@@ -203,8 +204,8 @@ URL to the product: http://lbaw2271.lbaw.fe.up.pt
 
 Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
 
-> URL to the product: http://lbaw2271.lbaw.fe.up.pt  
->
+URL to the product: http://lbaw2271.lbaw.fe.up.pt  
+
 > Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
 
 
@@ -225,7 +226,7 @@ Changes made to the first submission:
 ***
 GROUP2271, 03/01/2023
 
-* André Sousa, up202005277@fe.up.pt
+* André Sousa, up202005277@fe.up.pt (editor)
 * Pedro Moreira, <span dir="">up201905429@fe.up.pt</span>
 * Pedro Fonseca, up202008307@fe.up.pt
 * Vítor Cavaleiro, <span dir="">up202004724@edu.fe.up.pt</span>

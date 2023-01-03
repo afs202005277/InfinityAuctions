@@ -17,6 +17,7 @@ class ImageController extends Controller
      */
     public static function store($image, $pathPrefix, $auction_id)
     {
+        // stores an image in the format "ID.EXTENSION"
         $stored_image = new Image();
 
         $stored_image->id = Image::max('id') + 1;
