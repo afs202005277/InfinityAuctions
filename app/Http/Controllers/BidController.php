@@ -35,7 +35,7 @@ class BidController extends Controller
 
             $auction = Auction::find($validated['auction_id']);
 
-            if (User::getBalance($validated['user_id']) - User::heldBalance($validated['user_id']) < $validated['amount']) {
+            if (User::getBalance($validated['user_id']) - User::heldBalance($validated['user_id']) + User::heldBalanceOnAuction($validated['user_id'], $validated['auction_id']) < $validated['amount']) {
                 return response()->json([
                     'ms' => 'Not enough balance.'
                 ]);

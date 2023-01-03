@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use Log;
 
 class User extends Authenticatable
 {
@@ -241,6 +242,23 @@ class User extends Authenticatable
         }
         return $value[0]->sum;
 
+    }
+
+    public static function heldBalanceOnAuction($user_id, $auction_id) {
+
+        $value = DB::select(DB::raw('SELECT SUM(max)
+                                    FROM (  SELECT BID.auction_id, BID.user_id, MAX(BID.amount)
+                                            FROM BID
+                                            INNER JOIN AUCTION ON BID.auction_id=AUCTION.id
+                                            WHERE AUCTION.state = \'Running\' AND AUCTION.id = ' . $auction_id . '
+                                            GROUP BY auction_id, user_id
+                                         ) top_bids
+                                    WHERE user_id = ' . $user_id . ' GROUP BY user_id;'));
+
+        if (empty($value)) {
+            return 0;
+        }
+        return $value[0]->sum;
     }
 
     public static function getBanStates() {
