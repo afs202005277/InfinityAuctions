@@ -1,6 +1,6 @@
 # PA: Product and Presentation
 
-> Bidding the future and Selling the past.
+Bidding the future and Selling the past.
 
 ## A9: Product
 
@@ -17,7 +17,7 @@ Whether you are looking to sell items or find great deals on a wide range of pro
 
 ### 2. Usage
 
-> URL to the product: http://lbaw2271.lbaw.fe.up.pt 
+URL to the product: http://lbaw2271.lbaw.fe.up.pt 
 
 #### 2.1. Administration Credentials
 
@@ -68,7 +68,7 @@ Accessibility: [Report](HTML_Reports/Checklist%20de%20Acessibilidade%20-%20SAPO%
 Usability: [Report](HTML_Reports/Checklist%20de%20Usabilidade%20-%20SAPO%20UX.pdf)
 
 ### 6. HTML & CSS Validation
-
+## HTML Validation:
 - [About us](HTML_Reports/AboutUs.pdf)
 - [Contacts](HTML_Reports/Contacts.pdf)
 - [FAQ](HTML_Reports/FAQ.pdf)
@@ -81,9 +81,28 @@ Usability: [Report](HTML_Reports/Checklist%20de%20Usabilidade%20-%20SAPO%20UX.pd
 - [Auction Page](HTML_Reports/AuctionPagepdf)
 - [Search Page](HTML_Reports/Search.pdf)
 - [Admin Panel](HTML_Reports/AdminPanel.pdf)
->   
-> HTML: https://validator.w3.org/nu/  
-> CSS: https://jigsaw.w3.org/css-validator/  
+
+## CSS Validation:
+- [Admin Panel](CSS_Reports/admin_panel.pdf)
+- [Auction](CSS_Reports/auction.pdf)
+- [Auction Card](CSS_Reports/auction_card.pdf)
+- [Auction Edit](CSS_Reports/auction_edit.pdf)
+- [Balance](CSS_Reports/balance.pdf)
+- [Checkout](CSS_Reports/checkout.pdf)
+- [Confirmation Modal](CSS_Reports/confirmation_modal.pdf)
+- [Contacts](CSS_Reports/contacts.pdf)
+- [FAQ](CSS_Reports/faq.pdf)
+- [Footer](CSS_Reports/footer.pdf)
+- [Header](CSS_Reports/header.pdf)
+- [Login](CSS_Reports/login.pdf)
+- [Main](CSS_Reports/main.pdf)
+- [Miligram.min](CSS_Reports/miligram.min.pdf)
+- [Register](CSS_Reports/register.pdf)
+- [Search page](CSS_Reports/search_page.pdf)
+- [All users](CSS_Reports/search_users.pdf)
+- [Create Auction](CSS_Reports/sell.pdf)
+- [User](CSS_Reports/user.pdf)
+- [Users](CSS_Reports/users.pdf)
 
 ### 7. Revisions to the Project
 
@@ -105,15 +124,9 @@ openapi: 3.0.0
 ### 9. Implementation Details
 
 #### 9.1. Libraries Used
-> This project was implemented without the usage of any additional libraries or frameworks, besides the ones already specified in the [Computational Resources](https://docs.google.com/document/d/e/2PACX-1vQF1K-fObIOlwh8gLK-NthG6pHMN0fZRYG_RrQ-VUUaDH0gKi0YMH_-jIm-1vmslfRATS47GqaY_DvH/pub) artifact.
+This project was implemented without the usage of any additional libraries or frameworks, besides the ones already specified in the [Computational Resources](https://docs.google.com/document/d/e/2PACX-1vQF1K-fObIOlwh8gLK-NthG6pHMN0fZRYG_RrQ-VUUaDH0gKi0YMH_-jIm-1vmslfRATS47GqaY_DvH/pub) artifact.
 
 #### 9.2 User Stories
-
-> This subsection should include all high and medium priority user stories, sorted by order of implementation. Implementation should be sequential according to the order identified below. 
->
-> If there are new user stories, also include them in this table. 
-> The owner of the user story should have the name in **bold**.
-> This table should be updated when a user story is completed and another one started. 
 
 | US Identifier | Name                                         | Module                               | Priority | Team Members                   | State |
 |---------------|----------------------------------------------|--------------------------------------|----------|--------------------------------|-------|
