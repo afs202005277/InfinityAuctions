@@ -1,4 +1,4 @@
-<div>
+<div class="report_rigthside">
     <p>Make sure user didn't follow guidelines</p>
     <form method="POST" action="{{ url('/api/report/ban/' . $reportID) }}" enctype="multipart/form-data">
         @csrf
@@ -7,6 +7,6 @@
                 @include('partials.ban_options', ['ban_opt' => $ban_opt])
             @endforeach    
         </div>
-        <button type="submit">Ban</button>
+        <button id="ban-button" type="submit">Ban</button>
     </form>
 </div>

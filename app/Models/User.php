@@ -109,11 +109,15 @@ class User extends Authenticatable
 
     public function pendingAucReports() {
         return $this->reportsHandled()
+                ->join('auction', 'auction.id', '=', 'report.auction_reported')
                 ->whereNotNull('report.auction_reported')
                 ->whereNull('report.penalty')
                 ->selectRaw("report.id as id, report.reporter as reporter, 
                             report.reported_user as reported_user, report.auction_reported as auction_reported,
+                            users.name as user_name, auction.name as auction_name,
                             report.date as date, ARRAY_AGG(report_option.name) as reasons")
+                ->groupBy('users.id')
+                ->groupBy('auction.id')
                 ->groupBy('report.id');
     }
 
@@ -123,7 +127,9 @@ class User extends Authenticatable
                 ->whereNull('report.penalty')
                 ->selectRaw("report.id as id, report.reporter as reporter, 
                             report.reported_user as reported_user, 
+                            users.name as user_name,
                             report.date as date, ARRAY_AGG(report_option.name) as reasons")
+                ->groupBy('users.id')
                 ->groupBy('report.id');
     }
 
@@ -131,7 +137,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Report::class, 'admin_id')
                 ->join('report_reasons', 'report.id', '=', 'report_reasons.id_report')
-                ->join('report_option', 'report_reasons.id_report_option', '=', 'report_option.id');
+                ->join('report_option', 'report_reasons.id_report_option', '=', 'report_option.id')
+                ->join('users', 'users.id', '=', 'report.reported_user');
     }
 
     public function profileImage()
@@ -143,19 +150,23 @@ class User extends Authenticatable
     {
         $reports = $this->wasReported()->get();
         foreach ($reports as $report) {
-            if ($report->penalty == 'Banned for life')
-                return true;
-            if ($report->penalty == '3 day ban' && date_add(date_create($report->date), date_interval_create_from_date_string("3 days")) >= date('Y-m-d H:i:s')) {
-                return true;
+            $date = date_create($report->date);
+
+            if ($report->penalty == '3 day ban') {
+                date_add($date, date_interval_create_from_date_string("3 days")); 
+                if ($date >= date_create('now')) return true;
             }
-            if ($report->penalty == '5 day ban' && date_add(date_create($report->date), date_interval_create_from_date_string("5 days")) >= date('Y-m-d H:i:s')) {
-                return true;
+            else if ($report->penalty == '5 day ban') {
+                date_add($date, date_interval_create_from_date_string("5 days")); 
+                if ($date >= date_create('now')) return true;
             }
-            if ($report->penalty == '10 day ban' && date_add(date_create($report->date), date_interval_create_from_date_string("10 days")) >= date('Y-m-d H:i:s')) {
-                return true;
+            else if ($report->penalty == '10 day ban') {
+                date_add($date, date_interval_create_from_date_string("10 days")); 
+                if ($date >= date_create('now')) return true;
             }
-            if ($report->penalty == '1 month ban' && date_add(date_create($report->date), date_interval_create_from_date_string("1 months")) >= date('Y-m-d H:i:s')) {
-                return true;
+            else if ($report->penalty == '1 month ban') {
+                date_add($date, date_interval_create_from_date_string("1 months")); 
+                if ($date >= date_create('now')) return true;
             }
         }
         return false;

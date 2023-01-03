@@ -8,7 +8,7 @@ function AdminCenterEventList() {
     let usrReport_admin = document.querySelector(".info_bar_usr");
     if (usrReport_admin != null) { usrReport_admin.addEventListener("click", usrReportChannel); }
 
-    let dismiss = document.querySelectorAll("#del_rep_info");
+    let dismiss = document.querySelectorAll("#delete-report");
     [].forEach.call(dismiss, function(clickButton) {
         clickButton.addEventListener('click', function() {
         this.classList.toggle("active");
@@ -21,11 +21,12 @@ function AdminCenterEventList() {
         });
     });
 
-    let delete_report = document.querySelectorAll('#del_report');
-    [].forEach.call(delete_report, function(clickButton) {
+    let reportOption = document.querySelectorAll(".report_rigthside input[type=radio]");
+    [].forEach.call(reportOption, function(clickButton) {
         clickButton.addEventListener('click', function() {
-            let report_id = clickButton.getAttribute("value");
-            sendAjaxRequest('delete', '/api/report/delete/' + report_id, {});
+            let div = this.parentElement;
+            var button = div.nextElementSibling;
+            button.style.display = "block";
         });
     });
 }

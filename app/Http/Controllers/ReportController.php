@@ -147,6 +147,10 @@ class ReportController extends Controller
     }
 
     public function destroy($id) {
+        if (!Auth::id()) {
+            return redirect('/login');
+        }
+        
         $report = Report::find($id);
         try {
             $this->authorize('delete', $report);
@@ -154,6 +158,7 @@ class ReportController extends Controller
         } catch (AuthorizationException $exception) {
             return response($exception->getMessage(), 403);
         }
-        return $report;
+
+        return redirect('/users/' . Auth::id());;
     }
 }

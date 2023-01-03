@@ -46,6 +46,7 @@ class UsersController extends Controller
 
         if($user->is_admin) {
             $usrReports = $user->pendingUsrReports()->get();
+            
             $aucReports = $user->pendingAucReports()->get();
             return view('pages.admin', compact('user', 'image', 'usrReports', 'aucReports', 'ban_opts'));
         }

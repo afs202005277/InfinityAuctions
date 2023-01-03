@@ -114,7 +114,7 @@ class Auction extends Model
             $query->orderByRaw('average_rate DESC');
         }
 
-        $values = $query;
+        $values = $query->get();
 
         if (isset($filters['maxPrice'])) {
             $values = $values->where('max_price', '<=', $filters['maxPrice']);
