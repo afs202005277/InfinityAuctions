@@ -154,6 +154,7 @@ This project was implemented without the usage of any additional libraries or fr
 | US61          | Edit auctions                                | M05: Auctions                        | High     | **André Sousa**, Pedro Fonseca | 100%  |
 | US15          | Consult Contacts                             | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
 | US13          | Consult Services                             | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
+| US33          | View activity                                | M04: Users                           | High     | **Pedro Moreira**              | 100%  |
 | US12          | See About page                               | M02: Home page and Static pages      | High     | **Pedro Fonseca**              | 100%  |
 | US39          | Delete account                               | M04: Users                           | Medium   | **André Sousa**, Pedro Moreira | 100%  |
 | US19          | Report users                                 | M06: Reports                         | Medium   | **Pedro Moreira**              | 100%  |
@@ -178,6 +179,11 @@ This project was implemented without the usage of any additional libraries or fr
 | US42          | Notification                                 | M07: Notifications                   | Medium   | **André Sousa**                | 100%  |
 | US41          | Wishlist                                     | M07: Users                           | Medium   | **Pedro Fonseca**              | 100%  |
 | US74          | Delete user accounts                         | M03: Platform administration         | Medium   | **Vitor Cavaleiro**            | 100%  |
+| US64          | Notified on new bid on owned auction         | M07: Notifications                   | Medium   | **Pedro Moreira**              | 100%  |
+| US65          | Notified on owned auction ended              | M07: Notifications                   | Medium   | **Pedro Moreira**              | 100%  |
+| US66          | Notified on owned auction winner             | M07: Notifications                   | Medium   | **Pedro Moreira**              | 100%  |
+| US67          | Notified on owned auction canceled           | M07: Notifications                   | Medium   | **Pedro Moreira**              | 100%  |
+| US68          | Notified on owned auction ending             | M07: Notifications                   | Medium   | **Pedro Moreira**              | 100%  |
 | US75          | Manage auction reports                       | M03: Platform administration         | Low      | **Vitor Cavaleiro**            | 100%  |
 | US73          | Punish users                                 | M03: Platform administration         | Medium   | **Vitor Cavaleiro**            | 100%  |
 ---
@@ -214,7 +220,7 @@ Slides used during the presentation should be added, as a PDF file, to the group
 ## Revision history
 
 Changes made to the first submission:
-1. ..
+1. No changes were made
 
 ***
 GROUP2271, 03/01/2023
