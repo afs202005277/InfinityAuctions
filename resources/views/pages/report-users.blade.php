@@ -21,6 +21,8 @@
     <h3 style="text-align: center">{{$to_use['title']}}</h3>
     @if (!Auth::user())
         <p class="not-auth">Please <a href="{{ route('login') }}">login</a> to proceed.</p>
+    @elseif($banned)
+        <p>Your account state does not allow you to perform this action.</p>
     @else
         <form method="POST" class="sell" action="{{$to_use['route']}}">
             {{ csrf_field() }}

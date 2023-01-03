@@ -15,7 +15,7 @@ function SearchPageEventList() {
         if (content.style.maxHeight){
           content.style.maxHeight = null;
         } else {
-          content.style.maxHeight = "10000px";
+          content.style.maxHeight = "852px";
         }
         });
     });

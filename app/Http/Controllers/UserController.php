@@ -152,8 +152,4 @@ class UserController extends Controller
         return response('Review added successfully!', 200);
     }
 
-    public function banUser(Request $request)
-    {
-
-    }
 }

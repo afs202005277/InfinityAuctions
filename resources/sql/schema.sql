@@ -156,6 +156,6 @@ CREATE TABLE IF NOT EXISTS report_option
 CREATE TABLE IF NOT EXISTS report_reasons
 (
     id_report_option INTEGER REFERENCES report_option ON UPDATE CASCADE,
-    id_report        INTEGER REFERENCES report ON UPDATE CASCADE,
+    id_report        INTEGER REFERENCES report ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (id_report_option, id_report)
 );
