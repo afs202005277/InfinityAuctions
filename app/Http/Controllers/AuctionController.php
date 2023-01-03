@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\Bid;
+use DateTime;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -14,21 +15,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Validation\ValidationException;
-use App\Models\Image;
-use App\Models\Report;
-use App\Models\Report_Option;
-
-
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-
-
-use Log;
 
 class AuctionController extends Controller
 {
@@ -128,6 +118,7 @@ class AuctionController extends Controller
 
             $auction->save();
 
+            // connect auction to its categories
             foreach (Category::all() as $key => $category) {
                 $cat = str_replace(' ', '', $category->name);
                 if (in_array($cat, $validated['categories'])) {
@@ -275,7 +266,7 @@ class AuctionController extends Controller
         }
     }
 
-    public function addNotificationOwner($auction_id, $type)
+    public static function addNotificationOwner($auction_id, $type)
     {
         $owner = Auction::find($auction_id)->owner()->get()[0];
 
@@ -307,6 +298,8 @@ class AuctionController extends Controller
 
     public static function updateAuctionsState()
     {
+        // gathers all auction that ended just now and sends the respective notifications.
+        // gathers all auction that will end 1 hour from now and sends the respective notifications.
         $auctionsToEnd = Auction::toEndAuctions();
         foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
@@ -317,9 +310,9 @@ class AuctionController extends Controller
                 $user_id = $max_bid->user_id;
                 User::removeBalance($user_id, (float)$amount);
                 User::addBalance($auction->auction_owner_id, $amount * 0.95);
-                User::addBalance(2, $amount * 0.05);
+                User::addBalance(1002, $amount * 0.05);
             }
-            AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ended');
+            AuctionController::addNotificationOwner($auction->id, 'Auction Canceled');
         }
 
         $auctionsEnding = Auction::nearEndAuctions();

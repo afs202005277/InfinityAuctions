@@ -13,7 +13,7 @@ class BidPolicy
 
     /**
      * Determine whether the user can create models.
-     *
+     * Any authenticated user that is not banned and is not an admin can make a bid.
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */

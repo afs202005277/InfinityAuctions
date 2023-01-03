@@ -40,7 +40,6 @@ class BidController extends Controller
                     'ms' => 'Not enough balance.'
                 ]);
             }
-            \Log::info("Controlo");
             $bid->amount = $validated['amount'];
             $bid->auction_id = $validated['auction_id'];
             $bid->user_id = $validated['user_id'];
@@ -50,9 +49,7 @@ class BidController extends Controller
 
             $this->addNewBidNotification($auction->id);
             if ($auction->buy_now) {
-                \Log::info("ola");
                 if ((float) $auction->buy_now <= (float) $validated['amount']) {
-                    \Log::info("INside");
                     $d = new DateTime('now');
                     $dstr = $d->format('Y-m-d H:i:s');
                     $auction->end_date = $dstr;
@@ -71,7 +68,6 @@ class BidController extends Controller
     {
         $biddingUsers = Auction::find($auction_id)->biddingUsers()->get();
         foreach ($biddingUsers as $biddingUser) {
-            // NAO ALTERAR O LOOP!! OS IF  ESTAO #cursed
             if ($biddingUser->id == $except_user_id) {
                 continue;
             } else {

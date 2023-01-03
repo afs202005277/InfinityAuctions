@@ -13,6 +13,7 @@ class ReportPolicy
 
     /**
      * Determine whether the user can view the model.
+     * Only admins can view reports
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Report  $report
@@ -25,17 +26,19 @@ class ReportPolicy
 
     /**
      * Determine whether the user can create models.
+     * Only non banned users and admins can create reports
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create($user)
     {
-        return !$user->isBanned() && !$user->admin;
+        return !$user->isBanned();
     }
 
     /**
      * Determine whether the user can update the model.
+     * Only admins can make changes to reports
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Report  $report
@@ -48,7 +51,7 @@ class ReportPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
+     * Only admins can make delete reports
      * @param  \App\Models\User  $user
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Auth\Access\Response|bool

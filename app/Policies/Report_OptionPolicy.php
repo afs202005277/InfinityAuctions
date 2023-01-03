@@ -12,6 +12,7 @@ class Report_OptionPolicy
 
     /**
      * Determine whether the user can create models.
+     * Only admins can manage report options
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
@@ -23,6 +24,7 @@ class Report_OptionPolicy
 
     /**
      * Determine whether the user can delete the model.
+     * Only admins can manage report options
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Report_Option  $reportOption

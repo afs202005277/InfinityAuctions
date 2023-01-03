@@ -225,7 +225,7 @@ Changes made to the first submission:
 ***
 GROUP2271, 03/01/2023
 
-* André Sousa, up202005277@fe.up.pt
+* André Sousa, up202005277@fe.up.pt (editor)
 * Pedro Moreira, <span dir="">up201905429@fe.up.pt</span>
 * Pedro Fonseca, up202008307@fe.up.pt
 * Vítor Cavaleiro, <span dir="">up202004724@edu.fe.up.pt</span>
