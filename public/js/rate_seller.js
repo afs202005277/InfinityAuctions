@@ -14,6 +14,7 @@ function rateAdded() {
     } else {
         document.querySelector('#popup').className = "";
         document.querySelector('#popup').style.display = 'none';
+        window.location.reload();
     }
 }
 

@@ -254,6 +254,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0 auto;
+    z-index: 1;
 }
 
 .activeRateSeller .in_stars svg:hover{
@@ -267,6 +268,7 @@
     position: absolute;
     right: 4%;
     top: 5%;
+
 }
 
 /*.activeRateSeller .background{
