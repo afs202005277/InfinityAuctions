@@ -1,5 +1,5 @@
 <button type="button" class="collapsible"><i class="material-icons">tune</i></button>
-<section id="search-filter" class="filter-panel">
+<div id="search-filter" class="filter-panel">
     <div id="category-fieldset">
         <p>CATEGORIES</p>
         <hr>
@@ -40,5 +40,5 @@
         <hr>
         @include('partials.order_results', ['order' => $order])
     </div>
-</section>
+</div>
 <hr>

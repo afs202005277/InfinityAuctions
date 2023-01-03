@@ -39,31 +39,18 @@
                         <form action="{{url('/logout')}}" method="get">
                             <button type="submit">Logout</button>
                         </form>
-
-                        @if(Auth::user()->is_admin)
-                            <a class="manage_btn" href="{{ url('/manage') }}">
-                                <button> Admin Panel</button>
-                            </a>
-                        @endif
-                    </div>
-                @elseif(Auth::user()->is_admin)
-                    <div>
-                        <a class="edit" href="{{ url('/user/' . Auth::user()->id) }}">
-                            <button> Edit Profile</button>
-                        </a>
-                        <a class="manage_btn" href="{{ url('/manage') }}">
-                            <button> Admin Panel</button>
-                        </a>
                     </div>
                 @endif
             @endif
 
-            @if(Auth::user()!=null && !Auth::user()->is_admin)
+            @if(Auth::user()!=null)
                 @if (Auth::user()->id!=$user->id)
                     <form class="report_btn" action="{{ url('/users/report/' . $user->id) }}">
                         <button type="submit">Report</button>
                     </form>
-                    <button id="rateSellerButton">Rate this seller</button>
+                    @if(!Auth::user()->is_admin)
+                        <button id="rateSellerButton">Rate this seller</button>
+                    @endif
                 @endif
             @endif
         </div>

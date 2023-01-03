@@ -18,9 +18,9 @@
 
             @if( Auth::user()!=null && Auth::user()->id==$user->id && Auth::user()->is_admin )
                 <div>
-                    <a class="edit" href="{{ url('/logout') }}">
-                        <button> Logout</button>
-                    </a>
+                    <form method="get" action="{{ url('/logout') }}" class="edit">
+                        <button type="submit"> Logout</button>
+                    </form>
                 </div>
             @endif
         </div>
@@ -34,7 +34,7 @@
                 <h4 class="info_bar_auc"> Reported Auctions </h4>
                 <h4 class="info_bar_usr"> Reported Users </h4>
             </div>
-            <hr/>
+            <hr>
 
             <!-- Users Data -->
             <div class="change_data_admin">

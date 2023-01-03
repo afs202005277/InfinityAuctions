@@ -78,6 +78,9 @@ Usability: [Report](HTML_Reports/Checklist%20de%20Usabilidade%20-%20SAPO%20UX.pd
 - [Other user page](HTML_Reports/OtherUserPage.pdf)
 - [Self user page](HTML_Reports/SelfUserPage.pdf)
 - [Balance](HTML_Reports/Balance.pdf)
+- [Auction Page](HTML_Reports/AuctionPagepdf)
+- [Search Page](HTML_Reports/Search.pdf)
+- [Admin Panel](HTML_Reports/AdminPanel.pdf)
 >   
 > HTML: https://validator.w3.org/nu/  
 > CSS: https://jigsaw.w3.org/css-validator/  
