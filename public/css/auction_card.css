@@ -12,15 +12,6 @@
   justify-items: center;
   grid-template-columns: auto auto;
   min-height: 100vh;
-  display: none;
-}
-
-.auctions_owned{
-  display: none;
-  align-self: center;
-  justify-items: center;
-  grid-template-columns: auto auto;
-  min-height: 100vh;
 }
 
 .containerAuction{
@@ -49,7 +40,7 @@
 
   .containerAuction .cardAuction:hover .imgBxAuction{
     top: 0% !important;
-    opacity: 0;    
+    opacity: 0;
   }
 
   .containerAuction .cardAuction:hover .contentBxAuction{
@@ -80,7 +71,7 @@
 
   .containerAuction .cardAuction:hover .imgBxAuction{
     top: 0% !important;
-    opacity: 0;    
+    opacity: 0;
   }
 
   .containerAuction .cardAuction:hover .contentBxAuction{
@@ -195,7 +186,7 @@
 .containerAuction .cardAuction:hover .imgBxAuction{
   top: 0%;
   transform: translateY(0%);
-    
+
 }
 
 .containerAuction .cardAuction .contentBxAuction{
@@ -303,5 +294,5 @@
   opacity: 1;
   transform: translateY(0px);
   transition-delay: 0.75s;
-  
+
 }

@@ -176,8 +176,9 @@ class User extends Authenticatable
         return ["rate" => round($this->rate_bidders()->average('rate'), 2), "numberOfRatings" => $this->rate_bidders()->count()];
     }
 
+    //Users com auctions -> sort desc por rating -> Top 5
     public static function getTopSellers(){
-        return DB::select(DB::raw('SELECT * FROM users, (SELECT id_seller, avg(rate) as average FROM rates group by id_seller) as avgRates, image where image.id = profile_image and average > 4 and users.id = id_seller;'));
+        return DB::select(DB::raw('SELECT users.*, image.path, rate FROM users, (SELECT id_seller, avg(rate) as rate FROM rates group by id_seller) as avgRates, auction, image where users.id=auction.auction_owner_id AND image.id = profile_image AND users.id = id_seller ORDER BY rate DESC LIMIT 5;'));
     }
 
     public function hasPendingMaxBids()

@@ -17,7 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {

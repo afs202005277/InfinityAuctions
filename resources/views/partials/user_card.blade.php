@@ -6,7 +6,11 @@
         <div class="contentBx">
             <h2>{{$user->name}}</h2>
             <div class="size">
-                @php($details = App\Models\User::find($user->id)->getRatingDetails())
+                @if(isset($user->rate))
+                    @php($details['rate'] = $user->rate)
+                @else
+                    @php($details = App\Models\User::find($user->id)->getRatingDetails())
+                @endif
                 @include('partials.rate',['ratingDetails' => $details])
             </div>
             <div class="color">
