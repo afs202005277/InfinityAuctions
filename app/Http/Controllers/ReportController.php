@@ -17,7 +17,7 @@ class ReportController extends Controller
 {
     public function showUserReport($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $options = Report_Option::userOptions()->get();
         $isUserReport = True;
         $banned = False;
@@ -117,7 +117,7 @@ class ReportController extends Controller
             } else {
                 throw ValidationException::withMessages(['Missing parameters in request!']);
             }
-        
+
             $report = Report::find($id);
             $this->authorize('update', $report);
 
@@ -130,9 +130,9 @@ class ReportController extends Controller
             foreach($reportedUserAuc as $auction) {
                 if($auction->state == 'To be started' || $auction->state == 'Running') {
                     $object->cancel($auction->id);
-                }  
+                }
             }
-            
+
             return redirect('/users/' . Auth::id());
         } catch (AuthorizationException $exception) {
             if ($id !== NULL)
@@ -148,7 +148,7 @@ class ReportController extends Controller
         if (!Auth::id()) {
             return redirect('/login');
         }
-        
+
         $report = Report::find($id);
         try {
             $this->authorize('delete', $report);

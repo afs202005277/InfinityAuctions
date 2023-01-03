@@ -35,7 +35,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $banned = $user->isBanned();
         if ($banned && (!Auth::check() || Auth::id() != $id)){
             return view('pages.banned_page');
@@ -46,7 +46,7 @@ class UsersController extends Controller
 
         if($user->is_admin) {
             $usrReports = $user->pendingUsrReports()->get();
-            
+
             $aucReports = $user->pendingAucReports()->get();
             return view('pages.admin', compact('user', 'image', 'usrReports', 'aucReports', 'ban_opts'));
         }

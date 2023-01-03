@@ -31,7 +31,7 @@ class AuctionController extends Controller
      */
     public function show($auction_id)
     {
-        $details = Auction::find($auction_id);
+        $details = Auction::findOrFail($auction_id);
         $owner = $details->owner()->first();
         $name = $owner->name;
         $auctions = $owner->ownedAuctions()->where('auction.id', '<>', $auction_id)->get();
@@ -144,7 +144,7 @@ class AuctionController extends Controller
      */
     public function edit($id)
     {
-        $auction = Auction::find($id);
+        $auction = Auction::findOrFail($id);
         $this->authorize('update', $auction);
         return view('pages.sell')
             ->with('title', $auction->name)
@@ -169,7 +169,7 @@ class AuctionController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $auction = Auction::find($id);
+            $auction = Auction::findOrFail($id);
             $this->authorize('update', $auction);
             $validated = $request->validate([
                 'title' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/()-]*$/',

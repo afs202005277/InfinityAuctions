@@ -14,6 +14,7 @@
 // Home
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\MainPageController;
+use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
