@@ -219,6 +219,22 @@ CREATE TRIGGER check_wishlist
     FOR EACH ROW
 EXECUTE PROCEDURE wishlist_targeted();
 
+-- saves current time on report after update
+CREATE OR REPLACE FUNCTION update_date_report() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    NEW.date = now();
+    RETURN NEW;
+END;
+$BODY$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS update_report_modtime ON report;
+CREATE TRIGGER update_report_modtime 
+    BEFORE 
+        UPDATE 
+    ON report 
+    FOR EACH ROW 
+EXECUTE PROCEDURE  update_date_report();
+
 -- INSERT INTO users_wishlist(users_id, wishlist_id) values (1002, 42);
 -- insert into auction(id, name, description, base_price, start_date, end_date, buy_now, state, auction_owner_id) values(101, 'emerald green', 'teste', 50, '2021-09-09', '2022-01-03', NULL, 'Ended', 268);
 

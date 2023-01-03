@@ -7,6 +7,28 @@ function AdminCenterEventList() {
     
     let usrReport_admin = document.querySelector(".info_bar_usr");
     if (usrReport_admin != null) { usrReport_admin.addEventListener("click", usrReportChannel); }
+
+    let dismiss = document.querySelectorAll("#delete-report");
+    [].forEach.call(dismiss, function(clickButton) {
+        clickButton.addEventListener('click', function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+        });
+    });
+
+    let reportOption = document.querySelectorAll(".report_rigthside input[type=radio]");
+    [].forEach.call(reportOption, function(clickButton) {
+        clickButton.addEventListener('click', function() {
+            let div = this.parentElement;
+            var button = div.nextElementSibling;
+            button.style.display = "block";
+        });
+    });
 }
 
 function infoChannel() {
@@ -35,5 +57,6 @@ function usrReportChannel() {
     document.querySelector(".auc-report").style.display = "none";
     document.querySelector(".usr-report").style.display = "grid";
 };
+
 
 AdminCenterEventList();

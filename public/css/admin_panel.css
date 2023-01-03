@@ -12,6 +12,105 @@
     background-image: linear-gradient(to right, var(--ten) 0%, #f8d8c4 100%);
 }
 
+#report-card {
+    border: 1px solid var(--ten);
+    border-radius: 12px;    
+}
+
+.report_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--ten);
+    color: var(--sixty);
+    border-radius: 12px 12px 0px 0px;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.report_overview {
+    display: flex;
+    flex-direction: row;
+}
+
+.report_rigthside {
+    padding: 1rem;
+}
+
+.report_rigthside > p {
+    margin: 0%;
+}
+
+.report_leftside {
+    padding: 1rem;
+}
+
+.reporter_icon > img{
+    width: 2.5rem;
+    filter: invert(100%)
+}
+
+.reported_user {
+    font-weight: 600;
+    font-size: 2rem;
+    text-decoration: underline;
+    color:var(--thirty);
+}
+
+.reported_auction_owner {
+    text-decoration: underline;
+    color:var(--thirty);
+}
+
+.reported_auction {
+    font-weight: 600;
+    font-size: 2rem;
+    color: var(--thirty);
+}
+
+#delete-report {
+    background-color: var(--sixty);
+    color: var(--thirty);
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+#delete-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.2s ease-out
+}
+
+.confirm_delete {
+    cursor: pointer;
+    background-color: var(--sixty);
+    color: var(--thirty);
+    border-radius: 12px;
+}
+
+.confirm_delete:hover {
+    cursor: pointer;
+    background-color: red;
+    color: var(--sixty);
+    border-radius: 12px;
+}
+
+#ban-button {
+    cursor: pointer;
+    background-color: red;
+    color: var(--sixty);
+    border-radius: 12px;
+    width: 14rem;
+}
+
+.report_rigthside > form > button {
+    display: none;
+}
+
 .stats > div {
     background-color: rgb(255, 255, 255);
     width: 25em;

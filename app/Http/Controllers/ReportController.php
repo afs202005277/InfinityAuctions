@@ -11,6 +11,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -19,7 +20,13 @@ class ReportController extends Controller
         $user = User::find($id);
         $options = Report_Option::userOptions()->get();
         $isUserReport = True;
-        return view('pages.report-users', compact('user', 'options', 'isUserReport'));
+        $banned = False;
+        if(Auth::check()) {
+            $loggedUser = User::find(Auth::id());
+            $banned = $loggedUser->isBanned();
+        }
+
+        return view('pages.report-users', compact('user', 'options', 'isUserReport', 'banned'));
     }
 
     public function showAuctionReport($id)
@@ -27,7 +34,12 @@ class ReportController extends Controller
         $auction = Auction::find($id);
         $options = Report_Option::auctionOptions()->get();
         $isUserReport = False;
-        return view('pages.report-users', compact('auction', 'options', 'isUserReport'));
+        $banned = False;
+        if(Auth::check()) {
+            $loggedUser = User::find(Auth::id());
+            $banned = $loggedUser->isBanned();
+        }
+        return view('pages.report-users', compact('auction', 'options', 'isUserReport', 'banned'));
     }
 
     public function createReport($reportedUserId, $reportedAuctionId = NULL)
@@ -43,9 +55,11 @@ class ReportController extends Controller
 
     public function report(Request $request)
     {
-        try {
-            $this->authorize('create', new Report());
+        if (!Auth::id()) {
+            return redirect('/login');
+        }
 
+        try {
             $validated = array();
             if ($request->has('reported_user')) {
                 $validated = $request->validate([
@@ -61,6 +75,7 @@ class ReportController extends Controller
                 throw ValidationException::withMessages(['Missing parameters in request!']);
             }
 
+            $this->authorize('create', Report::class);
             $report = $this->createReport($validated['reported_user'], $validated['reported_auction']);
 
             $report->save();
@@ -78,13 +93,70 @@ class ReportController extends Controller
             return redirect('/');
         } catch (AuthorizationException $exception) {
             if ($validated['reported_user'] !== NULL)
-                return redirect('/users/report/' . $report->reported_user)->withErrors(["error", "You don't have permissions to report this user!"]);
+                return redirect('/users/report/' . $validated['reported_user'])->withErrors(["error", "You don't have permissions to report this user!"]);
             else
-                return redirect('/auctions/report/' . $report->reported_auction)->withErrors(["error", "You don't have permissions to report this auction!"]);
+                return redirect('/auctions/report/' . $validated['reported_auction'])->withErrors(["error", "You don't have permissions to report this auction!"]);
         } catch (QueryException $sqlExcept) {
             return redirect()->back()->withErrors(["error", "Invalid database parameters!"]);
         } catch (\Exception $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }
+    }
+
+    public function banUser(Request $request, $id) {
+        if (!Auth::id()) {
+            return redirect('/login');
+        }
+
+        try {
+            $validated = array();
+            if ($request->has('ban_opt')) {
+                $validated = $request->validate([
+                    'ban_opt' => 'required|min:1|max:255',
+                ]);
+            } else {
+                throw ValidationException::withMessages(['Missing parameters in request!']);
+            }
+        
+            $report = Report::find($id);
+            $this->authorize('update', $report);
+
+            $report->penalty = $validated['ban_opt'];
+            $report->save();
+
+            $reportedUser = User::find($report->reported_user);
+            $reportedUserAuc = $reportedUser->ownedAuctions()->get();
+            $object = new AuctionController();
+            foreach($reportedUserAuc as $auction) {
+                if($auction->state == 'To be started' || $auction->state == 'Running') {
+                    $object->cancel($auction->id);
+                }  
+            }
+            
+            return redirect('/users/' . Auth::id());
+        } catch (AuthorizationException $exception) {
+            if ($id !== NULL)
+                return redirect('/users/' . Auth::id())->withErrors(["error", "You don't have permissions to ban this user!"]);
+        } catch (QueryException $sqlExcept) {
+            return redirect()->back()->withErrors(["error", "Invalid database parameters!"]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->withErrors($exception->getMessage());
+        }
+    }
+
+    public function destroy($id) {
+        if (!Auth::id()) {
+            return redirect('/login');
+        }
+        
+        $report = Report::find($id);
+        try {
+            $this->authorize('delete', $report);
+            $report->delete();
+        } catch (AuthorizationException $exception) {
+            return response($exception->getMessage(), 403);
+        }
+
+        return redirect('/users/' . Auth::id());;
     }
 }
