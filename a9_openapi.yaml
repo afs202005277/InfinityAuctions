@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   version: '1.0'
   title: 'LBAW Infinity Auction Web API'
-  description: 'Web Resources Specification (A7) for Infinity Auction'
+  description: 'Web Resources Specification (A9) for Infinity Auction'
 
 servers:
   - url: https://lbaw2271.lbaw.fe.up.pt/
@@ -11,7 +11,7 @@ servers:
 
 externalDocs:
   description: Find more info here.
-  url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw2271/-/blob/main/a7_openapi.yaml
+  url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw2271/-/blob/main/a9_openapi.yaml
 
 
 tags:
