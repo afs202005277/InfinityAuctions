@@ -45,6 +45,9 @@
     <script type="text/javascript" src={{ asset('js/pagination.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/search_page.js') }} defer></script>
     <script type="text/javascript" src={{ asset('js/admin_center.js') }} defer></script>
+    @if (Auth::check())
+        <script type="text/javascript" src={{ asset('js/update_notifications.js') }} defer></script>
+    @endif
   </head>
   <body>
     <main>
