@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layouts.app', function($view) {
             $view->with('categories', Category::all());
             if(Auth::user()!==null){
-                $view->with('notifications', Notification::where('user_id', Auth::id())->get());
+                $view->with('notifications', Notification::where('user_id', Auth::id())->orderBy('date', 'desc')->get());
             }
 
         });
