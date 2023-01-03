@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use App\Models\Notification;
 use App\Models\Report;
 use App\Models\Report_Option;
 use App\Models\User;
@@ -123,6 +124,12 @@ class ReportController extends Controller
 
             $report->penalty = $validated['ban_opt'];
             $report->save();
+
+            $notification = new Notification();
+            $notification->user_id = $report->reported_user;
+            $notification->report_id = $report->id;
+            $notification->type = "Report";
+            $notification->save();
 
             $reportedUser = User::find($report->reported_user);
             $reportedUserAuc = $reportedUser->ownedAuctions()->get();

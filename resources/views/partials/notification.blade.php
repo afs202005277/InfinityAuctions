@@ -42,11 +42,15 @@
         <p> YOU'VE WON!! The auction <strong>{{ $notification->auction()->value('name') }}</strong> is now yours.</p>
     </div>
 @elseif($notification->type== "Report")
-    <div>
-        <h5 hidden>{{$notification->id }}</h5>
-        <a href=""><img src={{ asset("img/cross.svg") }} alt="Dismiss notification button"></a>
-        <p> The auction <strong>{{ $notification->report()->value('name') }}</strong> is about to end. Hurry up!</p>
-    </div>
+    @php($banDur = \App\Models\Report::find($notification->report_id)->penalty)
+    @if($banDur !== NULL)
+        <div>
+            <h5 hidden>{{$notification->id }}</h5>
+            <a href=""><img src={{ asset("img/cross.svg") }} alt="Dismiss notification button"></a>
+            <p> You were reported and an admin issued a penalty. You are now <strong> banned
+                    for {{substr($banDur, 0, strlen($banDur)-4)}}</strong>!</p>
+        </div>
+    @endif
 @elseif($notification->type== "New Bid")
     <div>
         <h5 hidden>{{$notification->id }}</h5>
