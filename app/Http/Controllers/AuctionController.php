@@ -86,16 +86,12 @@ class AuctionController extends Controller
 
         try {
             $this->authorize('create', $auction);
-            $postData = $request->only('images');
-            $file = $postData['images'];
 
-            $fileArray = array('image' => $file);
 
             $rules = array(
                 'image' => 'mimes:jpeg,jpg,png,gif|required'
             );
-
-            $validator = Validator::make($fileArray, $rules, $messages = ['image.mime' => "The supported file types are jpeg, jpg, png and gif."]);
+            //$validator = Validator::make($fileArray, $rules, $messages = ['image.mime' => "The supported file types are jpeg, jpg, png and gif."]);
             $validated = $request->validate([
                 'title' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/()-]*$/',
                 'desc' => 'required|min:1|max:255|regex:/^[a-zA-Z\s0-9,;\'.:\/()-]*$/',
@@ -103,24 +99,14 @@ class AuctionController extends Controller
                 'baseprice' => 'required|numeric|gt:0',
                 'startdate' => 'required|date|after_or_equal:' . (new \DateTime('now'))->format('m/d/Y'),
                 'enddate' => 'required|date|after:startdate',
-                'buynow' => 'nullable|numeric|gt:baseprice'
+                'buynow' => 'nullable|numeric|gt:baseprice',
+                'categories' => 'required|min:1'
             ], ['buynow.gt' => 'The "buy now" value must be greater than the base price.',
                 'title.regex' => 'Invalid characters detected.',
                 'desc.regex' => 'Invalid characters detected.',
-                'images.min' => 'You need to select at least 3 images for your auction.']);
+                'images.min' => 'You need to select at least 3 images for your auction.',
+                'categories.required' => "You need to select at least one category for your auction."]);
 
-            $cat_found = false;
-            foreach (Category::all() as $category) {
-                $cat = str_replace(' ', '', $category->name);
-                if ($request->has($cat)) {
-                    $cat_found = true;
-                    break;
-                }
-            }
-
-            if (!$cat_found) {
-                return redirect()->back()->withErrors("Choose at least one category for your auction!");
-            }
 
             $auction->name = $validated['title'];
             $auction->description = $validated['desc'];
@@ -135,7 +121,7 @@ class AuctionController extends Controller
 
             foreach (Category::all() as $key => $category) {
                 $cat = str_replace(' ', '', $category->name);
-                if ($request->has($cat)) {
+                if (in_array($cat, $validated['categories'])) {
                     $auction->categories()->attach($key + 1);
                 }
             }

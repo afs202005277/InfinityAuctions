@@ -127,14 +127,18 @@
                                 }
                             }
                         @endphp
-                        <input type="checkbox" id="{{$id}}" name="{{$id}}" {{$checked}}>
+                        <input type="checkbox" id="{{$id}}" name="categories[]" value="{{$id}}" {{$checked}}>
                     @else
-                        <input type="checkbox" id="{{$id}}" name="{{$id}}">
+                        <input type="checkbox" id="{{$id}}" name="categories[]" value="{{$id}}">
                     @endif
                     <label for="{{$id}}">{{$category->name}}</label><br>
                 @endforeach
             </fieldset>
-
+            @if ($errors->has('categories'))
+                <span class="error">
+                {{ $errors->first('categories') }}
+            </span>
+            @endif
             <button type="submit">SUBMIT</button>
         </form>
 
