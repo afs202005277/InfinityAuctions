@@ -109,6 +109,19 @@ class AuctionController extends Controller
                 'desc.regex' => 'Invalid characters detected.',
                 'images.min' => 'You need to select at least 3 images for your auction.']);
 
+            $cat_found = false;
+            foreach (Category::all() as $category) {
+                $cat = str_replace(' ', '', $category->name);
+                if ($request->has($cat)) {
+                    $cat_found = true;
+                    break;
+                }
+            }
+
+            if (!$cat_found) {
+                return redirect()->back()->withErrors("Choose at least one category for your auction!");
+            }
+
             $auction->name = $validated['title'];
             $auction->description = $validated['desc'];
             $auction->base_price = $validated['baseprice'];
@@ -185,6 +198,10 @@ class AuctionController extends Controller
             ], ['buynow.gt' => 'The "buy now" value must be greater than the base price.',
                 'title.regex' => 'Invalid characters detected.',
                 'desc.regex' => 'Invalid characters detected.']);
+
+            if ($validated['startdate'] != $auction->start_date && $auction->state == 'Running') {
+                return redirect()->back()->withErrors("You can't change the start date on a running auction");
+            }
 
             $auction->name = $validated['title'];
             $auction->description = $validated['desc'];
