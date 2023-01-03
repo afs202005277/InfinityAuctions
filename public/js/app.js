@@ -2,7 +2,10 @@ function addEventListeners() {
     let bidCreator = document.querySelector('#make_bid');
     let buyNow = document.querySelector('#buy-now');
     if (bidCreator != null)
-        bidCreator.addEventListener('click', sendCreateBidRequest);
+        if (document.querySelector('.log-in') !== null)
+            bidCreator.addEventListener('click', function (){window.location.href='/login'});
+        else
+            bidCreator.addEventListener('click', sendCreateBidRequest);
     if (buyNow != null)
         buyNow.onclick = function (event) {
             let bn = document.querySelector('#buy-now').textContent.split(' ');
@@ -32,11 +35,6 @@ function sendAjaxRequest(method, url, data, handler) {
     request.send(encodeForAjax(data));
 }
 
-function sendBanRequest(event) {
-    let user_id =
-        event.preventDefault();
-}
-
 function sendCreateBidRequest(event) {
     let amount = document.querySelector('#bid_amount').value;
     if (!(/^\d*\.?\d+$/).test(amount)){
@@ -59,7 +57,7 @@ function sendCreateBidRequest(event) {
 
 function bidAddedHandler() {
     if (this.status === 403){
-        window.location.href='/login';
+        document.querySelector('.error').textContent =  "Banned users cannot bid!";
     } else if (this.status !== 201) {
         document.querySelector('.error').textContent = this.responseText.substring(this.responseText.indexOf('ERROR:') + "ERROR:".length + 2, this.responseText.indexOf('.') + 1);
     } else {

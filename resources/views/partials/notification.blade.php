@@ -20,7 +20,9 @@
         <h5 hidden>{{$notification->id }}</h5>
         <a><img src={{ asset("img/cross.svg") }} alt="Dismiss notification button"></a>
         @php($images = App\Models\Auction::find($notification->auction()->value('id'))->images()->get())
-        <img src="{{ asset($images[0]->path) }}" alt="Auction image">
+        @if(isset($images[0]))
+            <img src="{{ asset($images[0]->path) }}" alt="Auction image">
+        @endif
         <p> The auction <strong>{{ $notification->auction()->value('name') }}</strong> you own was cancelled! You
             infringed one of our policies.</p>
     </div>
