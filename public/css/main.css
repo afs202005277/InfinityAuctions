@@ -225,6 +225,11 @@ body {
       -ms-flex-flow: row nowrap;
           flex-flow: row nowrap;
 }
+
+.slider__contents i{
+  color: var(--ten);
+}
+
 .slider__contents:nth-child(1){
   background-image: url('../img/fashion.webp');
 }

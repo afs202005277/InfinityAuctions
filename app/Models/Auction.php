@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use App\Helpers\PaginationHelper;
 class Auction extends Model
 {
     protected $table = 'auction';
@@ -118,9 +118,11 @@ class Auction extends Model
 
         if (isset($filters['maxPrice'])) {
             $values = $values->where('max_price', '<=', $filters['maxPrice']);
+            return PaginationHelper::paginate($values, 10)->withQueryString();
         }
-        
-        return $values;
+
+        return PaginationHelper::paginate($values, 10)->withQueryString();
+
     }
 
     public static function newAuctions()
