@@ -19,11 +19,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Image;
-use App\Models\User;
 use App\Models\Report;
 use App\Models\Report_Option;
 
-use Illuminate\Http\Request;
+
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
@@ -306,15 +305,6 @@ class AuctionController extends Controller
         foreach ($auctionsToEnd as $auction) {
             AuctionController::addNotificationsAuction($auction->id, 'Auction Ended');
             $all_bids = Bid::all_bids($auction->id);
-<<<<<<< HEAD
-            $max_bid = $all_bids[0];
-            $amount = $max_bid->amount;
-            $user_id = $max_bid->user_id;
-            User::removeBalance($user_id, (float)$amount);
-            User::addBalance($auction->auction_owner_id, $amount * 0.95);
-            User::addBalance(2, $amount * 0.05);
-            AuctionController::addNotificationOwner($auction->id, 'Auction Ended');
-=======
             if (count($all_bids) > 0){
                 $max_bid = $all_bids[0];
                 $amount = $max_bid->amount;
@@ -324,7 +314,6 @@ class AuctionController extends Controller
                 User::addBalance(2, $amount * 0.05);
             }
             //AuctionController::addNotificationCanceledOwner($auction->id, 'Auction Ended');
->>>>>>> ac5ad31ec1860971f5405cdd2b8afc10243e36d8
         }
 
         $auctionsEnding = Auction::nearEndAuctions();
