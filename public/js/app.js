@@ -97,4 +97,11 @@ function createErrorMessage(message) {
     return error;
 }
 
+function deleteErrorMessage() {
+    let element = document.querySelectorAll(".error");
+    Array.prototype.forEach.call( element, function( node ) {
+        node.parentNode.removeChild( node );
+    });
+}
+
 addEventListeners();

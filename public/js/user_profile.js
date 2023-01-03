@@ -131,6 +131,7 @@ function deleteAccountButton(){
     let button = document.querySelector('.delete_account');
     if (button){
         button.addEventListener('click', function (event){
+            deleteErrorMessage();
             const user_id = parseInt(window.location.href.substring(window.location.href.lastIndexOf('/')+1, window.location.href.length));
             sendAjaxRequest('delete', '/api/users/delete/' + user_id, {user_id: user_id}, accountDeleted);
         })
