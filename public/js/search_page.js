@@ -87,7 +87,7 @@ function modifySearchAttributesRequest() {
 
     let order = document.querySelectorAll('#order-fieldset input[type=radio]:checked')
     if (order.length > 0) {
-        if( order[0].getAttribute("value") != "1")
+        if( order[0].getAttribute("value") !== "1")
             newUrlParams.append(order[0].getAttribute("name"), order[0].getAttribute("value"));
     }
 

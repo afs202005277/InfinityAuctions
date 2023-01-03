@@ -122,7 +122,6 @@ function accountDeleted(){
         const error = createErrorMessage(this.responseText);
         document.querySelector('.delete_account').insertAdjacentElement('afterend', error);
     } else{
-        console.log(this.responseText);
         window.location.href = '/logout';
     }
 }

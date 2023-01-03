@@ -7,10 +7,6 @@ function updateButtons(bid) {
     buttons[2].textContent = ((parseFloat(bid.amount) * 1.50).toFixed(2)).toString() + '€';
 }
 
-async function updateAuctionState() {
-    return await (fetch('/api/auctions/update/'));
-}
-
 function bidsReceivedHandler() {
     let bids = JSON.parse(this.responseText);
     if (bids.length !== 0) {
@@ -33,7 +29,6 @@ function bidsReceivedHandler() {
 
 function buttonsSuggestionsListener() {
     let buttons = document.querySelectorAll('.price-suggestions form button');
-    console.log(buttons);
     for (let button of buttons) {
         button.addEventListener('click', function (event) {
             event.preventDefault();

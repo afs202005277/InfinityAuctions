@@ -13,7 +13,7 @@ Whether you are looking to sell items or find great deals on a wide range of pro
 ### 1. Installation
 
 > Link to the release with the final version of the source code in the group's Git repository.  
-> `docker run -it -p 8000:80 --name=lbaw2271 -e DB_DATABASE="lbaw2271" -e DB_SCHEMA="lbaw2271" -e DB_USERNAME="lbaw2271" -e DB_PASSWORD="OOlRpmGt" git.fe.up.pt:5050/lbaw/lbaw2223/lbaw2271`
+`docker run -it -p 8000:80 --name=lbaw2271 -e DB_DATABASE="lbaw2271" -e DB_SCHEMA="lbaw2271" -e DB_USERNAME="lbaw2271" -e DB_PASSWORD="OOlRpmGt" git.fe.up.pt:5050/lbaw/lbaw2223/lbaw2271`
 
 ### 2. Usage
 
@@ -65,6 +65,7 @@ $validated = $request->validate([
 ### 5. Check Accessibility and Usability
 
 Accessibility: [Report](HTML_Reports/Checklist%20de%20Acessibilidade%20-%20SAPO%20UX.pdf)
+
 Usability: [Report](HTML_Reports/Checklist%20de%20Usabilidade%20-%20SAPO%20UX.pdf)
 
 ### 6. HTML & CSS Validation
