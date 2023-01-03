@@ -262,7 +262,7 @@ class AuctionController extends Controller
 
     public function addNotificationOwner($auction_id, $type)
     {
-        $owner = Auction::find($auction_id)->owner()->get();
+        $owner = Auction::find($auction_id)->owner()->get()[0];
 
         $notification = new Notification();
         $notification->type = $type;
