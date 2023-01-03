@@ -90,6 +90,7 @@ Route::post('auctions/report', 'ReportController@report')->name('reportAuction')
 
 //Notifications
 Route::delete('api/notifications/delete/{id}', 'NotificationController@destroy');
+Route::post('api/notifications/get', 'NotificationController@getNotifications');
 
 //Password
 Route::get('/forgot-password', function () {
