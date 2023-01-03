@@ -11,7 +11,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -21,7 +20,7 @@ class ReportController extends Controller
         $options = Report_Option::userOptions()->get();
         $isUserReport = True;
         $banned = False;
-        if(Auth::check()) {
+        if (Auth::check()) {
             $loggedUser = User::find(Auth::id());
             $banned = $loggedUser->isBanned();
         }
@@ -35,7 +34,7 @@ class ReportController extends Controller
         $options = Report_Option::auctionOptions()->get();
         $isUserReport = False;
         $banned = False;
-        if(Auth::check()) {
+        if (Auth::check()) {
             $loggedUser = User::find(Auth::id());
             $banned = $loggedUser->isBanned();
         }
@@ -103,7 +102,8 @@ class ReportController extends Controller
         }
     }
 
-    public function banUser(Request $request, $id) {
+    public function banUser(Request $request, $id)
+    {
         if (!Auth::id()) {
             return redirect('/login');
         }
@@ -127,8 +127,8 @@ class ReportController extends Controller
             $reportedUser = User::find($report->reported_user);
             $reportedUserAuc = $reportedUser->ownedAuctions()->get();
             $object = new AuctionController();
-            foreach($reportedUserAuc as $auction) {
-                if($auction->state == 'To be started' || $auction->state == 'Running') {
+            foreach ($reportedUserAuc as $auction) {
+                if ($auction->state == 'To be started' || $auction->state == 'Running') {
                     $object->cancel($auction->id);
                 }
             }
@@ -144,7 +144,8 @@ class ReportController extends Controller
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         if (!Auth::id()) {
             return redirect('/login');
         }

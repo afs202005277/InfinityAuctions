@@ -46,7 +46,7 @@
 
             <!-- Reported Auctions -->
             <div class="auc-report">
-                @if(!$aucReports->isEmpty())
+                @if(count($aucReports) !== 0)
                     @foreach ($aucReports as $report)
                         @include('partials.report', compact('report', 'ban_opts'))
                     @endforeach
@@ -57,7 +57,7 @@
 
             <!-- Reported Users -->
             <div class="usr-report">
-                @if(!$usrReports->isEmpty())
+                @if(count($aucReports) !== 0)
                     @foreach ($usrReports as $report)
                         @include('partials.report', compact('report'))
                     @endforeach
